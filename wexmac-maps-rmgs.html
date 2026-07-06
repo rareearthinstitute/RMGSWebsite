@@ -5025,8 +5025,8 @@ function buildGlobe(){
   const gTech=gRoot.append('g');
   const gThreat=gRoot.append('g');
   const gMarks=gRoot.append('g');
-  const gRmgs=gRoot.append('g');
-  const gStingraiOps=gRoot.append('g');
+  const gRmgs=gRoot.append('g').style('display','none');
+  const gStingraiOps=gRoot.append('g').style('display','none');
   const vign=svgSel.append('rect').attr('class','vignette-rect').attr('x',0).attr('y',0);
 
   let countriesSel=null, countriesHi=null, statesPath=null, islandDots=null, loadOblasts=()=>{}, checkProv=()=>{};
