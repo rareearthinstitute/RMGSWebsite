@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+/* access gate — Logistics Capture Tool (shared unlock with the Opportunity Map) */
+(function(){try{if(localStorage.getItem('rmgsMapAuth')==='1')return;if(new URLSearchParams(location.search).get('embed')==='1')return;var pw=prompt('Logistics Capture Tool — access restricted. Enter the password:');if(pw==='STINGRAI26'){localStorage.setItem('rmgsMapAuth','1');return;}if(pw!==null)alert('Incorrect password.');location.replace('index.html');}catch(e){}})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logistics Capture Tool v3 — Forecast &amp; Match | RMGS-Versar MPJV</title>
+<meta name="description" content="RMGS Internal — forecast and combined-capability matchmaking across WEXMAC 2.0, LOGCAP, and EAGLE contracts. Built on the Soto Cano win pattern: timing, fit, ground truth.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%23081C33'/><path d='M14 30 A18 18 0 0 1 50 30' fill='none' stroke='%231f86c9' stroke-width='5' stroke-linecap='round'/><path d='M50 34 A18 18 0 0 1 14 34' fill='none' stroke='%238b9298' stroke-width='5' stroke-linecap='round'/></svg>">
+<style>
+/* ============================================================
+   RMGS · LOGISTICS CAPTURE TOOL v3 — design system
+   deep-navy / stark-white alternating sections
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* dark (navy) scope — default */
+  --bg:#081C33;          /* section background */
+  --bg-deep:#05121F;     /* header / footer */
+  --panel:#0C2440;       /* raised panels, detail rows */
+  --text:#EAF0F7;
+  --mist:#C3D0DF;
+  --slate:#8CA1B7;
+  --dim:#5D7288;
+  --line:rgba(255,255,255,.13);
+  --line-hi:rgba(255,255,255,.28);
+  --card:rgba(255,255,255,.02);
+  --gold:#E5B54D;
+  --amber:#E0A33E;
+  --orange:#F07B4A;
+  --green:#46D6A0;
+  --red-soft:#FF8F8F;
+  --accent:#E5B54D;
+  --wex:#37C4B4;--log:#E0A33E;--eag:#6E97F2;--adj:#A28FEF;
+  --wex-t:rgba(55,196,180,.12);--log-t:rgba(224,163,62,.12);--eag-t:rgba(110,151,242,.12);--adj-t:rgba(162,143,239,.12);
+  --win-tint:rgba(240,123,74,.09);
+  --track:rgba(255,255,255,.05);
+  --hover:rgba(255,255,255,.04);
+  --mono:ui-monospace,'SF Mono','JetBrains Mono',Menlo,Consolas,monospace;
+  --sans:'Helvetica Neue',Helvetica,-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+}
+.lt{
+  /* light (stark white) scope */
+  --bg:#FFFFFF;
+  --bg-deep:#F3F5F8;
+  --panel:#F4F6F9;
+  --text:#081C33;
+  --mist:#2C4157;
+  --slate:#51667C;
+  --dim:#8B9AAB;
+  --line:rgba(8,28,51,.16);
+  --line-hi:rgba(8,28,51,.38);
+  --card:#FFFFFF;
+  --gold:#8C6A14;
+  --amber:#8E6410;
+  --orange:#C25A25;
+  --green:#0E7C50;
+  --red-soft:#B3382F;
+  --accent:#8C6A14;
+  --wex:#0B7F71;--log:#96660D;--eag:#2B57C4;--adj:#6247C8;
+  --wex-t:rgba(11,127,113,.08);--log-t:rgba(150,102,13,.08);--eag-t:rgba(43,87,196,.08);--adj-t:rgba(98,71,200,.08);
+  --win-tint:rgba(194,90,37,.08);
+  --track:rgba(8,28,51,.05);
+  --hover:rgba(8,28,51,.035);
+}
+html{scroll-behavior:smooth;background:var(--bg-deep)}
+body{font-family:var(--sans);background:#081C33;color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1320px;margin:0 auto;padding:0 32px}
+::selection{background:#E5B54D;color:#081C33}
+
+/* ---------- micro-label utility ---------- */
+.mlabel{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--slate)}
+
+/* ---------- header ---------- */
+header.nav{position:sticky;top:0;z-index:100;background:rgba(5,18,31,.94);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.13)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1320px;margin:0 auto;padding:0 32px;gap:16px}
+.logo{display:flex;align-items:center;color:#fff}
+.logo-mark{width:44px;height:44px;flex:none;display:block;transition:transform .35s cubic-bezier(.34,1.45,.4,1)}
+.logo:hover .logo-mark{transform:scale(1.06)}
+.logo-svg{width:100%;height:100%;display:block;overflow:visible}
+.arc{fill:none;stroke-width:9;stroke-linecap:round;stroke-dasharray:120;stroke-dashoffset:120;animation:logoDraw 1.1s ease forwards}
+.arc-blue{stroke:#1f86c9}
+.arc-gray{stroke:#8b9298;animation-delay:.22s}
+.orbit{fill:none;stroke:#8ff0e6;stroke-width:9;stroke-linecap:round;stroke-dasharray:5 246;stroke-dashoffset:0;animation:logoOrbit 3.6s linear infinite}
+.logo-word{fill:#fff;font:800 30px/1 'Helvetica Neue',Arial,sans-serif;letter-spacing:-1px;opacity:0;animation:logoWord .55s ease .5s forwards}
+@keyframes logoDraw{to{stroke-dashoffset:0}}
+@keyframes logoOrbit{to{stroke-dashoffset:-251.3}}
+@keyframes logoWord{from{opacity:0}to{opacity:1}}
+.logo-tag{display:block;font-family:var(--mono);font-size:8.5px;line-height:1.5;letter-spacing:.22em;color:#8CA1B7;text-transform:uppercase;max-width:12ch;margin-left:14px;padding-left:14px;border-left:1px solid rgba(255,255,255,.2)}
+.nav-r{display:flex;align-items:center;gap:26px;flex-wrap:wrap;justify-content:flex-end}
+.nav-r a{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#8CA1B7;padding:4px 0;border-bottom:1px solid transparent;transition:color .2s,border-color .2s;white-space:nowrap}
+.nav-r a:hover{color:#fff;border-bottom-color:rgba(255,255,255,.4)}
+.nav-r a.here{color:#E5B54D;border-bottom-color:#E5B54D}
+
+/* ---------- control deck ---------- */
+.controls{position:sticky;top:64px;z-index:90;background:rgba(5,18,31,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.13);padding:0 0 12px}
+.jumps{display:flex;flex-wrap:nowrap;align-items:center;gap:2px;max-width:1320px;margin:0 auto;padding:9px 32px;overflow-x:auto;border-bottom:1px solid rgba(255,255,255,.08)}
+.jumps .jk{font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#5D7288;margin-right:12px;flex:none}
+.jumps .jl{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#8CA1B7;padding:3px 11px;white-space:nowrap;transition:color .15s}
+.jumps .jl:hover{color:#E5B54D}
+.jumps .jl + .jl{border-left:1px solid rgba(255,255,255,.1)}
+.controls-inner{display:flex;flex-wrap:wrap;align-items:center;gap:8px;max-width:1320px;margin:0 auto;padding:12px 32px 0}
+.ctl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8CA1B7;border:1px solid rgba(255,255,255,.22);background:none;padding:7px 14px;cursor:pointer;transition:all .15s}
+.ctl:hover{border-color:#fff;color:#fff}
+.ctl.on{background:#fff;border-color:#fff;color:#081C33;font-weight:700}
+.ctl-sep{width:1px;height:22px;background:rgba(255,255,255,.2);margin:0 6px}
+input.search{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.22);color:#EAF0F7;padding:7px 14px;font-family:var(--mono);font-size:11.5px;min-width:220px;letter-spacing:.02em}
+input.search::placeholder{color:#5D7288}
+input.search:focus{outline:none;border-color:#E5B54D}
+.ctl-note{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#5D7288;margin-left:auto}
+
+/* ---------- hero ---------- */
+.hero{background:
+  linear-gradient(rgba(8,28,51,0) 0%,rgba(8,28,51,0) 60%,rgba(5,18,31,.5) 100%),
+  repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0,rgba(255,255,255,.03) 1px,transparent 1px,transparent 160px),
+  #081C33;
+  padding:84px 0 0;border-bottom:1px solid rgba(255,255,255,.13)}
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#E5B54D;margin-bottom:26px;display:flex;align-items:center;gap:14px}
+.eyebrow::before{content:'';width:34px;height:1px;background:#E5B54D;display:inline-block}
+h1{font-size:clamp(34px,4.6vw,58px);line-height:1.04;letter-spacing:-.022em;font-weight:700;max-width:20ch;margin-bottom:26px;color:#fff}
+h1 .hl{color:#5D7288}
+.sub{color:#C3D0DF;max-width:78ch;font-size:15.5px;line-height:1.7;margin-bottom:56px}
+.meta-row{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid rgba(255,255,255,.13)}
+.meta-cell{padding:18px 20px 22px 0;border-right:1px solid rgba(255,255,255,.13);margin-right:20px}
+.meta-cell:last-child{border-right:none;margin-right:0}
+.meta-cell .mk{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#5D7288;margin-bottom:7px}
+.meta-cell .mv{font-family:var(--mono);font-size:12.5px;color:#EAF0F7;line-height:1.45}
+.meta-cell.internal .mv{color:#FF8F8F}
+@media(max-width:900px){.meta-row{grid-template-columns:repeat(2,1fr)}.meta-cell{border-bottom:1px solid rgba(255,255,255,.13)}}
+
+/* ---------- sections ---------- */
+section.blk{padding:76px 0 84px;background:var(--bg);border-bottom:1px solid var(--line)}
+section.blk.lt + section.blk.lt{border-top:none}
+.kick{font-family:var(--mono);font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:14px}
+.kick::after{content:'';flex:1;height:1px;background:var(--line)}
+h2{font-size:clamp(22px,2.4vw,30px);letter-spacing:-.015em;font-weight:700;margin-bottom:12px;color:var(--text)}
+.sec-lead{color:var(--slate);font-size:13.5px;line-height:1.7;max-width:88ch;margin-bottom:30px}
+section.blk,#forecast,#pivot,#targets,#method,#register{scroll-margin-top:150px}
+#calendar,h2[id]{scroll-margin-top:150px}
+
+/* ---------- method framework ---------- */
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:0;margin:22px 0 0;border:1px solid var(--line)}
+.fnode{position:relative;border-right:1px solid var(--line);padding:18px 18px 20px;background:var(--card);cursor:pointer;transition:background .15s}
+.fnode:last-child{border-right:none}
+.fnode:hover{background:var(--hover)}
+.fnode.on{background:var(--text)}
+.fnode.on .fn{color:var(--bg);opacity:.6}
+.fnode.on .fq{color:var(--bg)}
+.fnode.on .fx{color:var(--bg)}
+.fnode .fn{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:9px}
+.fnode .fq{font-size:12.5px;font-weight:600;color:var(--text);line-height:1.45}
+.fnode .fx{position:absolute;right:12px;top:14px;font-family:var(--mono);font-size:13px;color:var(--dim)}
+@media(max-width:1100px){.flow{grid-template-columns:repeat(auto-fit,minmax(178px,1fr))}.fnode{border-bottom:1px solid var(--line)}}
+.fdetail{border:1px solid var(--line-hi);border-top:3px solid var(--accent);background:var(--panel);padding:26px 28px;margin:0 0 14px;display:none;position:relative}
+.fdetail.show{display:block}
+.fdetail h3{font-size:17px;margin-bottom:18px;color:var(--text)}
+.fdetail h3 .fn2{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:8px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+.fgrid h4{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.fgrid p,.fgrid li{font-size:12.5px;color:var(--mist);line-height:1.65}
+.fgrid ul{margin-left:16px}
+.fgrid .fsoto{color:var(--text);font-weight:500}
+.fgrid a.jlink{font-family:var(--mono);font-size:11px;color:var(--accent);border-bottom:1px solid var(--line-hi)}
+.fgrid a.jlink:hover{border-bottom-color:var(--accent)}
+
+/* ---------- tables ---------- */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;border-top:1px solid var(--line-hi);min-width:680px}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tbl th{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);text-align:left;padding:12px 10px;border-bottom:1px solid var(--line-hi);white-space:nowrap;font-weight:500}
+.tbl td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl tr.trow{cursor:pointer}
+.tbl tr.trow:hover td{background:var(--hover)}
+.rank{font-family:var(--mono);color:var(--dim);font-size:11px}
+.opp{font-weight:600;color:var(--text)}
+.opp .site{display:block;font-weight:400;font-family:var(--mono);font-size:10px;letter-spacing:.02em;color:var(--dim);margin-top:2px}
+.tbl td .site{display:block;font-weight:400;font-family:var(--mono);font-size:10px;letter-spacing:.02em;color:var(--dim);margin-top:3px}
+.fam{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;white-space:nowrap;border:1px solid}
+.fam.WEXMAC{color:var(--wex);border-color:var(--wex);background:var(--wex-t)}
+.fam.LOGCAP{color:var(--log);border-color:var(--log);background:var(--log-t)}
+.fam.EAGLE{color:var(--eag);border-color:var(--eag);background:var(--eag-t)}
+.fam.ADJACENT{color:var(--adj);border-color:var(--adj);background:var(--adj-t)}
+.win{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;white-space:nowrap;display:inline-block;border:1px solid}
+.win.w-open{border-color:var(--orange);color:var(--orange);background:var(--win-tint)}
+.win.w-tbd{border-color:var(--gold);color:var(--gold);background:transparent}
+.win.w-dis{border-color:var(--red-soft);color:var(--red-soft);background:transparent}
+.win.w-pipe{border-color:var(--green);color:var(--green);background:transparent}
+.win.w-unk{border-color:var(--line-hi);color:var(--slate);background:transparent}
+.win.w-long{border-color:var(--line);color:var(--dim);background:transparent}
+.win.w-own{border-color:var(--gold);color:var(--gold);background:transparent}
+.acap{font-family:var(--mono);font-size:10px;color:var(--text);background:var(--track);border:1px solid var(--line-hi);padding:2px 7px;margin:1px 3px 1px 0;display:inline-block}
+.acap.p{color:var(--slate);border-color:var(--line);background:transparent}
+.acap.g{color:var(--red-soft);border-color:var(--red-soft);background:transparent}
+.endcell{font-family:var(--mono);font-size:11.5px;white-space:nowrap;color:var(--text)}
+.gt{font-size:11.5px;color:var(--slate);max-width:230px;line-height:1.5}
+
+/* ---------- expanded detail rows ---------- */
+tr.det td{background:var(--panel);border-bottom:2px solid var(--accent);border-top:1px solid var(--line-hi);padding:22px 24px}
+.det-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:28px}
+@media(max-width:800px){.det-grid{grid-template-columns:1fr}}
+.det h4{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin:14px 0 6px;padding-bottom:5px;border-bottom:1px solid var(--line)}
+.det h4:first-child{margin-top:0}
+.det p,.det li{font-size:12.5px;color:var(--mist);line-height:1.6}
+.det ul{margin-left:16px}
+.ev{font-family:var(--mono);font-size:10.5px;color:var(--slate);padding:3px 0;line-height:1.5}
+.ev b{color:var(--text)}
+.ev .src-r{color:var(--green)}.ev .src-v{color:var(--adj)}.ev .src-m{color:var(--gold)}
+
+/* ---------- timeline ---------- */
+.milestones{border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--card);padding:18px 22px;margin:0 0 26px;font-size:12.5px;color:var(--mist);line-height:1.65}
+.milestones b{color:var(--text)}
+.milestones > b{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+.milestones .mi{padding:4px 0}
+.tl-legend{display:flex;flex-wrap:wrap;gap:18px;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--slate);margin-bottom:16px;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.tl-legend span i{display:inline-block;width:10px;height:10px;margin-right:7px;vertical-align:-1px}
+.tl-group{margin:26px 0 8px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);cursor:pointer;display:flex;align-items:center;gap:12px}
+.tl-group b{color:var(--text)}
+.tl-group::after{content:'';flex:1;height:1px;background:var(--line)}
+.tl-axis{position:relative;height:20px;margin:0 230px 0 280px;font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--dim)}
+.tl-axis span{position:absolute;top:0;transform:translateX(-50%)}
+.tl-row{display:flex;align-items:center;min-height:25px;font-size:11.5px}
+.tl-lbl{width:280px;padding-right:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--mist);cursor:pointer}
+.tl-lbl:hover{color:var(--accent)}
+.tl-track{position:relative;flex:1;height:15px;background:var(--track)}
+.tl-bar{position:absolute;top:3px;height:9px;opacity:.9}
+.tl-bar.ong::after{content:'›';position:absolute;right:-9px;top:-5px;color:inherit;font-size:13px}
+.tl-bar.est{opacity:.38;border:1px dashed currentColor;background:transparent!important}
+.tl-cap{position:absolute;top:2px;width:8px;height:8px;background:var(--gold);transform:rotate(45deg);border:1px solid var(--bg);z-index:2}
+.tl-end{width:230px;padding-left:12px;font-family:var(--mono);font-size:10px;color:var(--slate);white-space:nowrap}
+.tl-end b{color:var(--text)}
+.tl-end .est-t{color:var(--dim)}
+.tl-end .cap-t{color:var(--gold)}
+.tl-today{position:absolute;top:-2px;bottom:-2px;width:1.5px;background:var(--gold);opacity:.9}
+.tl-win{position:absolute;top:0;bottom:0;background:var(--win-tint)}
+.qhead td{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);background:var(--card);padding:10px;border-bottom:1px solid var(--line-hi)}
+.now-t{color:var(--orange);font-weight:700}
+
+/* ---------- pivot ---------- */
+.pv{width:100%;border-collapse:collapse;font-size:12px;min-width:680px}
+.pv th,.pv td{border:1px solid var(--line);padding:8px 10px;text-align:center}
+.pv th{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);background:var(--card);font-weight:500}
+.pv td.aname{text-align:left;color:var(--text);cursor:pointer;white-space:nowrap;font-weight:500}
+.pv td.aname:hover{color:var(--accent)}
+.pv td.cell{cursor:pointer;font-family:var(--mono);font-size:11px}
+.pv td.cell:hover{outline:1px solid var(--accent);outline-offset:-1px}
+.pv td.c-hi{background:var(--wex-t);color:var(--green);font-weight:700}
+.pv td.c-md{background:var(--log-t);color:var(--amber)}
+.pv td.c-lo{color:var(--slate)}
+.pv td.c-z{color:var(--dim)}
+.own-chip{font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;padding:2px 8px;margin-left:8px;border:1px solid}
+.own-chip.RMGS{color:var(--green);border-color:var(--green)}
+.own-chip.Versar{color:var(--adj);border-color:var(--adj)}
+.own-chip.Both{color:var(--wex);border-color:var(--wex)}
+.own-chip.MPJV{color:var(--gold);border-color:var(--gold)}
+.own-chip.Gap{color:var(--red-soft);border-color:var(--red-soft)}
+.drill{border:1px solid var(--line-hi);border-top:3px solid var(--accent);background:var(--panel);padding:20px 24px;margin:18px 0;display:none}
+.drill.show{display:block}
+.drill h4{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--gold);margin-bottom:10px}
+.drill .di{font-size:12.5px;color:var(--mist);padding:4px 0;cursor:pointer;border-bottom:1px solid var(--line)}
+.drill .di:last-child{border-bottom:none}
+.drill .di:hover{color:var(--accent)}
+
+/* ---------- register ---------- */
+.reg{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:0;border:1px solid var(--line)}
+.rcard{position:relative;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 24px;background:var(--card)}
+.rcard::before{content:'+';position:absolute;top:6px;right:10px;font-family:var(--mono);font-size:11px;color:var(--dim);opacity:.5}
+.rcard.gap::before{content:'GAP';color:var(--red-soft);font-size:8.5px;letter-spacing:.18em;opacity:1}
+.rcard .rt{font-size:14px;font-weight:700;margin-bottom:6px;color:var(--text)}
+.rcard p{font-size:12px;color:var(--slate);margin:8px 0;line-height:1.6}
+
+/* ---------- flags / footer ---------- */
+.foot{padding:70px 0 90px;background:var(--bg-deep);color:var(--dim);font-size:11.5px}
+.fl{font-family:var(--mono);font-size:11px;color:var(--slate);margin:0;padding:10px 0;border-bottom:1px solid var(--line);line-height:1.6}
+.unv{color:var(--orange)}.gapb{color:var(--red-soft)}.sig{color:var(--gold)}
+.foot-note{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+
+@media(max-width:640px){
+  h1{font-size:30px}
+  .wrap{padding:0 20px}
+  .nav-inner,.controls-inner{padding-left:20px;padding-right:20px}
+  .jumps{padding-left:20px;padding-right:20px}
+  .tl-lbl{width:150px}.tl-axis{margin:0 0 0 150px}.tl-end{display:none}
+  .nav-r{gap:14px}
+  .nav-r a[data-optional]{display:none}
+  .logo-tag{display:none}
+  section.blk{padding:54px 0 60px}
+  .hero{padding-top:56px}
+}
+</style>
+</head>
+<body>
+<header class="nav"><div class="nav-inner">
+  <a href="index.html" class="logo">
+    <span class="logo-mark"><svg class="logo-svg" viewBox="0 0 100 100" role="img" aria-label="RMGS"><g class="ring"><path class="arc arc-blue" d="M10.15 46.5 A40 40 0 0 1 89.85 46.5"/><path class="arc arc-gray" d="M89.85 53.5 A40 40 0 0 1 10.15 53.5"/></g><circle class="orbit" cx="50" cy="50" r="40"/><text class="logo-word" x="50" y="59" text-anchor="middle" textLength="70" lengthAdjust="spacingAndGlyphs">RMGS</text></svg></span>
+    <small class="logo-tag">Special Operations Solutions</small>
+  </a>
+  <div class="nav-r">
+    <a href="index.html#capabilities" data-optional>Capabilities</a>
+    <a href="index.html#performance" data-optional>Performance</a>
+    <a href="wexmac-maps-rmgs.html">Opportunity Map</a>
+    <a href="logistics-capture-tool.html" class="here">Capture Tool</a>
+    <a href="stingrai.html" data-optional>STINGRAI</a>
+  </div>
+</div></header>
+
+<div class="controls">
+<div class="jumps">
+  <span class="jk">Index</span>
+  <a class="jl" href="#method">01 Method</a>
+  <a class="jl" href="#targets">02 Target board</a>
+  <a class="jl" href="#forecast">03 Forecast</a>
+  <a class="jl" href="#calendar">04 Capture calendar</a>
+  <a class="jl" href="#pivot">05 Match pivot</a>
+  <a class="jl" href="#register">06 Capability register</a>
+  <a class="jl" href="#flags">07 Standing flags</a>
+</div>
+<div class="controls-inner">
+  <button class="ctl on" data-f="fam" data-v="ALL">All</button>
+  <button class="ctl" data-f="fam" data-v="WEXMAC">WEXMAC</button>
+  <button class="ctl" data-f="fam" data-v="LOGCAP">LOGCAP</button>
+  <button class="ctl" data-f="fam" data-v="EAGLE">EAGLE</button>
+  <button class="ctl" data-f="fam" data-v="ADJACENT">Adjacent</button>
+  <span class="ctl-sep"></span>
+  <button class="ctl on" data-f="win" data-v="ALL">All windows</button>
+  <button class="ctl" data-f="win" data-v="OPENING">Opening now</button>
+  <span class="ctl-sep"></span>
+  <input class="search" id="q" placeholder="SEARCH SITE / INCUMBENT / SCOPE">
+  <span class="ctl-note" id="count"></span>
+</div></div>
+
+<div class="hero"><div class="wrap">
+  <div class="eyebrow">Intel Briefs · Capture Tools · V3</div>
+  <h1>Logistics Capture Tool <span class="hl">— Forecast &amp; Match</span></h1>
+  <p class="sub">Every WEXMAC, LOGCAP, and EAGLE contract on the opportunity map, forecast by start and end date, and matched against the combined RMGS + Versar capability corpus. Built on the Soto Cano win pattern: find the window, prove the combined fit, then get ground truth on the incumbent before anyone else does.</p>
+  <div class="meta-row">
+    <div class="meta-cell internal"><div class="mk">Classification</div><div class="mv">RMGS · VERSAR INTERNAL</div></div>
+    <div class="meta-cell"><div class="mk">Contracts</div><div class="mv" id="mSrcC"></div></div>
+    <div class="meta-cell"><div class="mk">RMGS corpus</div><div class="mv" id="mSrcR"></div></div>
+    <div class="meta-cell"><div class="mk">Versar corpus</div><div class="mv" id="mSrcV"></div></div>
+    <div class="meta-cell"><div class="mk">Built</div><div class="mv" id="mBuilt"></div></div>
+  </div>
+</div></div>
+
+<section class="blk lt" id="method"><div class="wrap">
+  <div class="kick">01 / Method</div>
+  <h2>Seven research questions, in sequence</h2>
+  <p class="sec-lead">The question sequence behind the Soto Cano win, generalized. Work them in order — each question only matters if the one before it survived. Click any stage for why it matters, what to collect, and where this tool answers it.</p>
+  <div class="flow" id="flow"></div>
+  <div class="fdetail" id="fdetail" style="margin-top:14px"></div>
+  <p class="sec-lead" style="margin:22px 0 0">Calls carry over from the methodology doc: <b style="color:var(--green)">PURSUE</b> · <b style="color:var(--amber)">PURSUE-IF</b> (condition, owner, date) · <b style="color:var(--slate)">WATCH</b> (tripwire) · <b style="color:var(--red-soft)">PASS</b> (written rationale).</p>
+</div></section>
+
+<section class="blk" id="targets"><div class="wrap">
+  <div class="kick">02 / Target board</div>
+  <h2>Every record, ranked by window then combined fit</h2>
+  <p class="sec-lead">Click a row for scope, evidence, and the ground-truth checklist. Own positions (Soto Cano BOS, STINGRAI, Ecuador) are pinned separately below the board.</p>
+  <div class="tblwrap"><table class="tbl"><thead><tr>
+    <th>#</th><th>Opportunity</th><th>Vehicle</th><th>Incumbent</th><th>End</th><th>Window</th><th>Combined fit</th><th>Next move</th>
+  </tr></thead><tbody id="board"></tbody></table></div>
+  <div class="kick" style="margin-top:56px">02.1 / Own positions</div>
+  <div class="tblwrap"><table class="tbl"><thead><tr>
+    <th></th><th>Position</th><th>Vehicle</th><th>Holder</th><th>End</th><th>Status</th><th>Combined fit</th><th></th>
+  </tr></thead><tbody id="ownBoard"></tbody></table></div>
+</div></section>
+
+<section class="blk lt" id="forecast"><div class="wrap">
+  <div class="kick">03 / Forecast</div>
+  <h2>Contract start / end timeline</h2>
+  <p class="sec-lead">All records with a published or vehicle-bounded end date, 2016&ndash;2032; records with no date signal at all are tracked on the target board only. Gold line = today; the gold diamond on each bar is the <b style="color:var(--gold)">capture-start point (end date minus 18 months)</b> — the date ground-truth recon must begin. Solid bars have a published end date. Dashed bars have no published task-order end date, so they are bounded by the vehicle ceiling: LOGCAP V PoP ends Mar 2, 2030; WEXMAC 2.0 base ordering ends Dec 2029 (option to 2034). Vehicle-ceiling estimates are marked EST and are a worst case — pull the real PoP from FPDS/GovWin before committing B&amp;P.</p>
+  <div class="milestones" id="miles"></div>
+  <div class="tl-legend">
+    <span><i style="background:var(--wex)"></i>WEXMAC</span>
+    <span><i style="background:var(--log)"></i>LOGCAP</span>
+    <span><i style="background:var(--eag)"></i>EAGLE</span>
+    <span><i style="background:var(--adj)"></i>Adjacent</span>
+    <span><i style="background:var(--gold)"></i>today (Jul 2026)</span>
+    <span><i style="background:var(--win-tint);border:1px solid var(--orange)"></i>recompete window</span>
+    <span><i style="background:var(--gold);transform:rotate(45deg)"></i>capture-start (end − 18 mo)</span>
+  </div>
+  <div id="timeline"></div>
+  <div class="kick" style="margin-top:72px" id="calendar">04 / Capture activation calendar</div>
+  <h2>The forecast, turned into a schedule</h2>
+  <p class="sec-lead">Every target sorted by the date capture activities must begin (end date minus 18 months). Anything at or before today is <b class="now-t">NOW</b>. EST rows are bounded by the vehicle ceiling, so their real activation date is probably earlier — treat EST as the latest possible start and collect the actual PoP.</p>
+  <div class="tblwrap"><table class="tbl"><thead><tr>
+    <th>Begin capture</th><th>Opportunity</th><th>Vehicle</th><th>Incumbent</th><th>Contract end</th><th>Basis</th><th>Window</th>
+  </tr></thead><tbody id="calBody"></tbody></table></div>
+</div></section>
+
+<section class="blk" id="pivot"><div class="wrap">
+  <div class="kick">05 / Match pivot</div>
+  <h2>Combined corpus × vehicle</h2>
+  <p class="sec-lead">Cells count contracts with a strong / partial match to each combined capability area. Click a cell to list the contracts; click an area name for its evidence. Strong requires a named performance record in the combined corpus — RMGS, Versar, or the MPJV itself — and claims don&rsquo;t count. Owner chips mark who actually holds the record: base operations is held by the <b style="color:var(--gold)">MPJV</b> (Soto Cano), with Versar as the stronger delivery partner.</p>
+  <div style="overflow-x:auto"><table class="pv"><thead><tr>
+    <th style="text-align:left">Combined capability area</th><th>Owner</th><th>WEXMAC</th><th>LOGCAP</th><th>EAGLE</th><th>Adjacent</th><th>Total</th>
+  </tr></thead><tbody id="pvBody"></tbody></table></div>
+  <div class="drill" id="drill"></div>
+</div></section>
+
+<section class="blk lt" id="register"><div class="wrap">
+  <div class="kick">06 / Capability register</div>
+  <h2>The combined RMGS + Versar corpus — 15 areas</h2>
+  <p class="sec-lead">The records behind each area. Gap areas are part of the register on purpose: they are teaming requirements, not embarrassments.</p>
+  <div class="reg" id="reg"></div>
+</div></section>
+
+<div class="foot" id="flags"><div class="wrap">
+  <div class="kick" style="margin-bottom:22px">07 / Standing flags — never silently included</div>
+  <div class="fl"><span class="unv">[UNVERIFIED]</span> Price / wrap competitiveness — no rate data in either corpus. Price-to-win before any gate. The Soto Cano price win does not transfer automatically.</div>
+  <div class="fl"><span class="gapb">[GAP]</span> Transportation, food service / DFAC, and executed HA-DR surge — no records in either corpus. Teaming requirements on any TO where these dominate.</div>
+  <div class="fl"><span class="gapb">[GATE]</span> No EAGLE II BOA (watch SAM.gov for on-ramp). No LOGCAP V position — "dual LOGCAP + WEXMAC reach" stays retired.</div>
+  <div class="fl"><span class="unv">[UNVERIFIED]</span> NAICS 561210 registration — confirm in SAM before any BOS prime bid.</div>
+  <div class="fl"><span class="sig">[COLLECT]</span> Records with no published task-order end date carry an EST end bounded by the vehicle ceiling (LOGCAP V PoP ends Mar 2, 2030; WEXMAC 2.0 base ordering ends Dec 2029, option to 2034). EST is a latest-possible date — the real PoP is a collection requirement (FPDS/GovWin) before B&amp;P commitment.</div>
+  <div class="fl"><span class="sig">[SIGNAL]</span> Disrupted records (TITUS conversions, ICE detention orders) reflect court/exec actions as of the map snapshot — perishable; re-verify.</div>
+  <div class="fl foot-note" id="prov" style="margin-top:18px;border-bottom:none"></div>
+  <div class="foot-note" style="margin-top:10px">RMGS Internal · computed client-side from the embedded corpus extract · no data leaves the browser.</div>
+</div></div>
+
+<script id="data" type="application/json">{"meta":{"built":"2026-07-09","sources":{"contracts":"wexmac-maps-rmgs.html LOCS layer (78 locations, 85 contract records)","rmgs":"RMGS, Inc. v1.0 (2026-06-18) — 94 past-performance records","versar":"Deltek GovWin IQ extract 2026-07-08 — 44 active contracts"}},"areas":[{"id":"base-ops","name":"Base operations & life support","owner":"MPJV","note":"Held by the JV itself: the Soto Cano win (JTF-Bravo BOS, WEXMAC 2.0) put life-support past performance on the MPJV’s own record. RMGS held no BOS work before Soto Cano; Versar is the stronger partner here — BOS is its core market (Comalapa Air Base BOS, long-run facility operations) and it supplies the delivery backbone. The offer is the MPJV record plus Versar’s bench.","rmgs":[{"ref":"WEXMAC2-TO-SotoCano-BOS","name":"WEXMAC 2.0 — Base Operating Support (BOS), Soto Cano Air Base, Honduras (JTF-Bra","value":null,"end":"","src":"MPJV"}],"versar":[{"ref":"68HERD21D0001","name":"RTP FACILITY MAINTENANCE AND SUPPORT SERVICES","value":"$75,134","end":null,"src":"Versar"},{"ref":"N6945022D0015","name":"AEC BASE OPERATION SUPPORT SERVICES AT COMALAPA AIR BASE EL SALVADOR","value":"$18,040","end":null,"src":"Versar"}]},{"id":"fuels-pol","name":"Fuels & POL operations","owner":"Versar","note":"Deep Versar bench: GOCO/COCO fuel terminals (Camp Lejeune since 2008), bulk fuel receipt/storage/issue since 2011, aviation refueling, fuel facility optimization.","rmgs":[],"versar":[{"ref":"SP060011C5103","name":"BULK FUEL RECEIPT STORAGE TRANSFER ISSUE QUALITY CONTROL AND ACCOUNTING","value":"$38,071","end":"08/31/2027","src":"Versar"},{"ref":"SP060008C5815","name":"OPERATION OF GOCO AND COCO FUEL TERMINALS AT CAMP LEJEUNE, NC","value":"$23,593","end":"03/15/2029","src":"Versar"},{"ref":"SPE60015C5002","name":"IGF::OT::IGF 8501861766!OPTIMIZATION OF FUEL FACILITI","value":"$21,022","end":"11/30/2029","src":"Versar"},{"ref":"SPE60321C5017","name":"GOCO NAS - GOVERNMENT OWNED CONTRACT OR OPERATED AIRCRAFT REFUELING AVIATION GRO","value":"$19,294","end":"03/31/2031","src":"Versar"},{"ref":"SPE60015C5007","name":"AEC COCO STORAGE AND ALONGSIDE REFUELING SERVICES AT FORT KNOX KY","value":"$12,876","end":"11/30/2025","src":"Versar"}]},{"id":"air-terminal","name":"Air terminal & ground handling","owner":"Versar","note":"Versar performs ATGHS at Rota (Spain), Kuwait, and for the US Navy, plus transient alert at Stuttgart AAF. Directly on-scope for WEXMAC/LOGCAP airfield task orders.","rmgs":[],"versar":[{"ref":"N6817122C6000","name":"ATGHS - ROTA AIR TERMINAL GROUND HANDLING SERVICES","value":"$46,907","end":"12/31/2026","src":"Versar"},{"ref":"HTC71123CC004","name":"ATGHS - KUWAIT AIR TERMINAL AND GROUND HANDLING SERVICES","value":"$33,555","end":"11/30/2026","src":"Versar"},{"ref":"N6817122C0001","name":"ATGHS - AIR TERMINAL GROUND HANDLING SERVICES IN SUPPORT OF THE US NAVAL SUPPORT","value":"$15,930","end":"11/30/2026","src":"Versar"},{"ref":"W91WFU22C0002","name":"SAAF - TRANSIENT ALERT SERVICES FOR STUTTGART ARMY AIRFIELD GERMANY","value":"$2,546","end":"09/01/2026","src":"Versar"}]},{"id":"supply-warehouse","name":"Supply, warehousing & distribution","owner":"Both","note":"Versar runs commodity receipt, storage, transfer, and issue at installation scale and has since 2008 (Camp Lejeune GOCO terminals, bulk fuel since 2011, air cargo at Rota/Kuwait). RMGS adds SOF-scale supply records (LOGSU2 $9.3M, NSWC Logistics $15.2M) and the SOF customer set. Together the scale gap closes.","rmgs":[{"ref":"H9224020F0324","name":"MSOFS — LOGSU2","value":"$9.3M","end":"2025-07-07","src":"RMGS"},{"ref":"0001","name":"NSWC Logistics & Engineering Support Services","value":"$15.3M","end":"2019-09-24","src":"RMGS"},{"ref":"0005","name":"NSWC Logistics Support Services","value":"$6.2M","end":"2019-12-24","src":"RMGS"},{"ref":"H9224019F0388","name":"Logistics Support Services","value":"$0.5M","end":"2020-08-31","src":"RMGS"}],"versar":[{"ref":"N6817122C6000","name":"ATGHS - ROTA AIR TERMINAL GROUND HANDLING SERVICES","value":"$46,907","end":"12/31/2026","src":"Versar"},{"ref":"SP060011C5103","name":"BULK FUEL RECEIPT STORAGE TRANSFER ISSUE QUALITY CONTROL AND ACCOUNTING","value":"$38,071","end":"08/31/2027","src":"Versar"},{"ref":"HTC71123CC004","name":"ATGHS - KUWAIT AIR TERMINAL AND GROUND HANDLING SERVICES","value":"$33,555","end":"11/30/2026","src":"Versar"},{"ref":"SP060008C5815","name":"OPERATION OF GOCO AND COCO FUEL TERMINALS AT CAMP LEJEUNE, NC","value":"$23,593","end":"03/15/2029","src":"Versar"}]},{"id":"property","name":"Property accountability & asset management","owner":"Both","note":"Two complementary records: RMGS runs the SOF property systems (APSR $7.2M active to 2029, RASM), while Versar has decades of accountable government-property operations — GOCO plants and bulk-fuel quality control and accounting since 2008/2011. Directly relevant to COSIS / prepositioned-stock work.","rmgs":[{"ref":"H9224025FE298","name":"Personal Property Analyst Support (Virginia Beach)","value":"$0.6M","end":"2030-09-17","src":"RMGS"},{"ref":"H9224020F0331","name":"MSOFS — G10 RASM Contractor Support","value":"$2.9M","end":"2025-07-31","src":"RMGS"},{"ref":"H9224024F0232","name":"MSOFS — APSR Support","value":"$7.2M","end":"2029-04-24","src":"RMGS"}],"versar":[{"ref":"SP060011C5103","name":"BULK FUEL RECEIPT STORAGE TRANSFER ISSUE QUALITY CONTROL AND ACCOUNTING","value":"$38,071","end":"08/31/2027","src":"Versar"},{"ref":"SP060008C5815","name":"OPERATION OF GOCO AND COCO FUEL TERMINALS AT CAMP LEJEUNE, NC","value":"$23,593","end":"03/15/2029","src":"Versar"}]},{"id":"maintenance","name":"Equipment maintenance & sustainment","owner":"Both","note":"RMGS: dive, outboard, weapons maintenance at SOF scale. Versar: systems preventative maintenance. Neither holds vehicle-fleet or installation-maintenance scale records.","rmgs":[{"ref":"0017","name":"NSWC Logistics & Engineering Support Services","value":"$0.3M","end":"2020-01-01","src":"RMGS"},{"ref":"0012","name":"Logistics & Engineering Support Services","value":"$0.4M","end":"2020-09-28","src":"RMGS"},{"ref":"0013","name":"Logistics & Engineering Support Services","value":"$0.3M","end":"2020-09-28","src":"RMGS"}],"versar":[{"ref":"SP330024P0894","name":"8510653288!PREVENTATIVE MAINTENANCE ON I","value":"$1,179","end":"06/06/2026","src":"Versar"},{"ref":"SP330024P1105","name":"8510755626!PREVENTATIVE MAINTENANCE ON I","value":"$734","end":"08/14/2026","src":"Versar"},{"ref":"SP330024P0609","name":"8510530419!DDSP LENEL/GFMS/CCTV MAINTEN","value":"$533","end":"03/31/2026","src":"Versar"},{"ref":"SP330023P0672","name":"ESS)(EKS - OPERATIONS SUSTAINMENT AND MAINTENANCE SERVICES FOR LENEL ELECTRONIC ","value":"$518","end":"05/15/2026","src":"Versar"}]},{"id":"facilities","name":"Facilities O&M & public works","owner":"Versar","note":"Versar facility maintenance and long-running GOCO plant operations. Core EAGLE/LRC scope area.","rmgs":[],"versar":[{"ref":"68HERD21D0001","name":"RTP FACILITY MAINTENANCE AND SUPPORT SERVICES","value":"$75,134","end":null,"src":"Versar"},{"ref":"SP060008C5815","name":"OPERATION OF GOCO AND COCO FUEL TERMINALS AT CAMP LEJEUNE, NC","value":"$23,593","end":"03/15/2029","src":"Versar"},{"ref":"SPE60321C5017","name":"GOCO NAS - GOVERNMENT OWNED CONTRACT OR OPERATED AIRCRAFT REFUELING AVIATION GRO","value":"$19,294","end":"03/31/2031","src":"Versar"}]},{"id":"engineering","name":"Engineering & construction management","owner":"Versar","note":"Versar holds USACE A-E and power-construction MATOCs (incl. CENTCOM AOR) and fire/electrical safety assessment task forces.","rmgs":[],"versar":[{"ref":"SPE8EJ25D0503","name":"4610119553!FIRE & EMERGENCY SVCS EQUIP I","value":"$980,000","end":null,"src":"Versar"},{"ref":"W912BU22D0009","name":"USACE AEC POWER CONSTRUCTION AND SUPPORT SERVICES MATOC CENTCOM AOR","value":"$249,000","end":null,"src":"Versar"},{"ref":"W912DQ21D3002","name":"A-E - USACE AEC UNRESTRICTED ARCHITECT ENGINEER SERVICES MATOC","value":"$225,000","end":null,"src":"Versar"},{"ref":"W912DY25C0003","name":"TF SAFE/UFC CENTCOM - USACE TASK FORCE SAFETY ASSESSMENTS OF FIRE AND ELECTRICIT","value":"$31,770","end":"07/05/2027","src":"Versar"}]},{"id":"environmental","name":"Environmental services","owner":"Versar","note":"Versar’s heritage line: AFCEC EIS/EA, environmental schedules, risk assessment. Differentiator on EAGLE/LOGCAP scopes with environmental line items.","rmgs":[],"versar":[{"ref":"140D0425D0056","name":"EIS)(EA - AFCEC ENVIRONMENTAL IMPACT STATEMENT AND ENVIRONMENTAL ASSESSMENT SERV","value":"$100,000","end":null,"src":"Versar"},{"ref":"68HERH23A0019","name":"PEER REVIEW AND RISK ASSESSMENT ACTIVITIES","value":"$4,600","end":"03/31/2028","src":"Versar"}]},{"id":"security","name":"Security & electronic security systems","owner":"Both","note":"Versar installs and sustains electronic security (Lenel ESS, CCTV, access control) at DLA sites; RMGS brings protective-security and cleared-manpower capability (claim-level; TS FCL is VERIFIED).","rmgs":[],"versar":[{"ref":"15F06721C0003985","name":"ACCESS CONTROL","value":"$1,434","end":"09/29/2026","src":"Versar"},{"ref":"SP330024P0609","name":"8510530419!DDSP LENEL/GFMS/CCTV MAINTEN","value":"$533","end":"03/31/2026","src":"Versar"},{"ref":"SP330023P0672","name":"ESS)(EKS - OPERATIONS SUSTAINMENT AND MAINTENANCE SERVICES FOR LENEL ELECTRONIC ","value":"$518","end":"05/15/2026","src":"Versar"},{"ref":"693JK421P500018","name":"SUPPORT SERVICES FOR SECURITY ALARM SYSTEM","value":"$159","end":"09/29/2026","src":"Versar"},{"ref":"15F06725P0001148","name":"BRIEFCAM SYSTEM INSTALLATION","value":"$144","end":"09/29/2026","src":"Versar"},{"ref":"15JUST25P00000021","name":"REPLACE DOUBLE DOOR AND CARD READER","value":"$6","end":"08/31/2026","src":"Versar"}]},{"id":"maritime","name":"Maritime, port & vessel operations","owner":"RMGS","note":"Crewed-vessel chartering BPA and port-engineer support. Relevant to WEXMAC port/harbor task orders.","rmgs":[{"ref":"0019","name":"Maritime Port Engineer (Stennis, MS) — Logistics & Engineering","value":"$0.2M","end":"2019-09-19","src":"RMGS"},{"ref":"H9224019F0394","name":"Port Engineer Support Services","value":"$0.1M","end":"2020-09-18","src":"RMGS"}],"versar":[]},{"id":"transport","name":"Transportation & distribution","owner":"Gap","note":"GAP: neither company holds a standalone ground-transportation record. Flag on any TO where trans is the dominant line; close via teammate.","rmgs":[],"versar":[]},{"id":"staffing","name":"Contingency staffing & local-national services","owner":"Both","note":"Versar runs local-national personal services for Iraq/Syria (CASA). RMGS’s industrialized cadre sourcing/vetting/clearing is a documented differentiator. This is the Soto Cano win lever: staffing approach.","rmgs":[],"versar":[{"ref":"W5J9JE24D0001","name":"CASA - LOCAL NATIONAL PERSONAL SERVICES FOR IRAQ SYRIA AND THE CENTRAL AND SOUTH","value":"$3,303","end":null,"src":"Versar"}]},{"id":"food-service","name":"Food service & dining facility operations","owner":"Gap","note":"GAP: neither company holds a food-service record. A standard LOGCAP/EAGLE line item; flag on any TO where DFAC operations are in scope; close via teammate.","rmgs":[],"versar":[]},{"id":"hadr","name":"Surge & HA/DR response","owner":"Gap","note":"GAP: WEXMAC 2.0 PWS demands 72-hour response; no executed surge/HA-DR record exists in either corpus. Close by documenting the first Soto Cano surge/exercise actions.","rmgs":[],"versar":[]}],"contracts":[{"id":"C01","locId":"stingrai","locName":"STINGRAI — SOUTHCOM All-Domain ISR","site":"SOUTHCOM HQ, Doral, FL + AOR","gcc":"southcom","locType":"rmgsawd","incumbent":"RMGS, Inc. (subcontractor)","vehicle":"GSA ASTRO — Data Operations Pool","family":"ADJACENT","role":"RMGS is positioned as a mission subcontractor on the pending STINGRAI award — all-domain intelligence support to the USSOUTHCOM counter-TCO/DTO mission (ISR operations, intelligence analysis, C2, and mission-enabling services across the AOR). Prospective targets of opportunity, not validated requirements. Prime undisclosed; NAICS 541990, PSC R423 Intelligence Services; TS/SCI.","ceiling":"Pending award · ASTRO Data Ops Pool TO — 1 base + 6 option years","period":"Anticipated award — 2026","status":"Pending award","start":"2026-01","end":null,"ongoing":false,"window":"own","own":true,"matches":[],"estEnd":null,"estBasis":null,"captureBy":null,"strong":0,"partial":0,"rank":0},{"id":"C02","locId":"south-ecuador-judsec","locName":"Ecuador Judicial Security Strengthening","site":"Quito, Ecuador · DoS INL (U.S. Embassy Quito)","gcc":"southcom","locType":"rmgspursuit","incumbent":"RMGS, Inc. (capture / pursuit)","vehicle":"DoS INL · Full & Open · Sol. RFI001J","family":"ADJACENT","role":"Strengthen judicial security systems and institutional protection for Ecuador’s Judicial Council & National Police — standardized operating procedures (SOPs), risk-management methodology, threat identification/assessment & protection planning for justice officials, a centralized risk-information-sharing system with interagency coordination protocols, monitoring & evaluation, and a full workforce-development/training package (needs assessment, curriculum, simulations, personnel vetting, certification). NAICS 541611; place of performance Ecuador. Click for the full SOUTHCOM dossier.","ceiling":"Value TBD — Pre-RFP (RFI responses were due Jun 5, 2026)","period":"Sol. est. 07/2026 · Award est. 09/2026","status":"Pre-RFP","start":"2026-01","end":"2026-12","ongoing":false,"window":"own","own":true,"matches":[{"area":"security","s":2,"kw":["security"]}],"estEnd":null,"estBasis":null,"captureBy":"2025-06","strong":1,"partial":0,"rank":2},{"id":"C03","locId":"ft-cavazos","locName":"Fort Cavazos","site":"Fort Cavazos, TX","gcc":"northcom","locType":"both","incumbent":"Akima Support Operations (prior incumbent)","vehicle":"EAGLE","family":"EAGLE","role":"LRC — maintenance, supply, ammo, transportation. EAGLE recompete W519TC-23-R-0102 awarded ~Oct–Nov 2025; protests resolved (GAO B-423998.1 dismissed, B-423998.2 withdrawn, Dec 2025). Successor awardee not yet public.","ceiling":"$101M (prior award)","period":"2020–2025","status":"Recompete awarded — winner TBD","start":"2020-01","end":"2025-12","ongoing":false,"window":"awarded-tbd","own":false,"matches":[{"area":"supply-warehouse","s":2,"kw":["supply"]},{"area":"maintenance","s":2,"kw":["maintenance"]},{"area":"transport","s":1,"kw":["transportation"]}],"estEnd":null,"estBasis":null,"captureBy":"2024-06","strong":2,"partial":1,"rank":35},{"id":"C04","locId":"ft-cavazos","locName":"Fort Cavazos","site":"Fort Cavazos, TX","gcc":"northcom","locType":"both","incumbent":"KBR","vehicle":"LOGCAP","family":"LOGCAP","role":"Life support, contingency ops, Warfighter exercise support","ceiling":"LOGCAP V TO","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"hadr","s":1,"kw":["contingency"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":1,"partial":1,"rank":13},{"id":"C05","locId":"ft-bliss","locName":"Fort Bliss","site":"Fort Bliss, TX","gcc":"northcom","locType":"logcap","incumbent":"KBR","vehicle":"LOGCAP","family":"LOGCAP","role":"Life support, contingency ops, border mission support","ceiling":"LOGCAP V TO","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"hadr","s":1,"kw":["contingency"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":1,"partial":1,"rank":13},{"id":"C06","locId":"ft-riley","locName":"Fort Riley","site":"Fort Riley, KS","gcc":"northcom","locType":"both","incumbent":"Marton Technologies","vehicle":"EAGLE","family":"EAGLE","role":"LRC maintenance, supply & transportation","ceiling":"Not disclosed","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"supply-warehouse","s":2,"kw":["supply"]},{"area":"maintenance","s":2,"kw":["maintenance"]},{"area":"transport","s":1,"kw":["transportation"]}],"estEnd":null,"estBasis":null,"captureBy":null,"strong":2,"partial":1,"rank":15},{"id":"C07","locId":"ft-riley","locName":"Fort Riley","site":"Fort Riley, KS","gcc":"northcom","locType":"both","incumbent":"KBR","vehicle":"LOGCAP","family":"LOGCAP","role":"Warfighter exercise support","ceiling":"LOGCAP V TO","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":0,"partial":0,"rank":10},{"id":"C08","locId":"ft-carson","locName":"Fort Carson","site":"Fort Carson, CO","gcc":"northcom","locType":"both","incumbent":"Sunik (Akima)","vehicle":"EAGLE","family":"EAGLE","role":"LRC maintenance, supply & transportation — 4th ID (~350 FTE)","ceiling":"$85M","period":"2022–2027","status":"Active","start":"2022-01","end":"2027-12","ongoing":false,"window":"window-open","own":false,"matches":[{"area":"supply-warehouse","s":2,"kw":["supply"]},{"area":"maintenance","s":2,"kw":["maintenance"]},{"area":"transport","s":1,"kw":["transportation"]}],"estEnd":null,"estBasis":null,"captureBy":"2026-06","strong":2,"partial":1,"rank":45},{"id":"C09","locId":"ft-carson","locName":"Fort Carson","site":"Fort Carson, CO","gcc":"northcom","locType":"both","incumbent":"KBR","vehicle":"LOGCAP","family":"LOGCAP","role":"Life support & exercise support","ceiling":"LOGCAP V TO","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":1,"partial":0,"rank":12},{"id":"C10","locId":"ft-campbell","locName":"Fort Campbell","site":"Fort Campbell, KY/TN","gcc":"northcom","locType":"eagle","incumbent":"Vanquish Worldwide","vehicle":"EAGLE","family":"EAGLE","role":"LRC — maintenance, supply & transportation — 101st ABN, 5th SFG(A), 160th SOAR(A)","ceiling":"$115M","period":"2025–2030","status":"Active","start":"2025-01","end":"2030-12","ongoing":false,"window":"active-long","own":false,"matches":[{"area":"supply-warehouse","s":2,"kw":["supply"]},{"area":"maintenance","s":2,"kw":["maintenance"]},{"area":"transport","s":1,"kw":["transportation"]}],"estEnd":null,"estBasis":null,"captureBy":"2029-06","strong":2,"partial":1,"rank":15},{"id":"C11","locId":"ft-bragg","locName":"Fort Bragg","site":"Fort Bragg, NC","gcc":"northcom","locType":"recomp","incumbent":"V2X / Vectrus (incumbent)","vehicle":"EAGLE","family":"EAGLE","role":"Full LRC — maintenance, supply, ammo, transportation — 82nd ABN, XVIII Corps","ceiling":"$593M","period":"2016–2026","status":"Expiring","start":"2016-01","end":"2026-12","ongoing":false,"window":"window-open","own":false,"matches":[{"area":"supply-warehouse","s":2,"kw":["supply"]},{"area":"maintenance","s":2,"kw":["maintenance"]},{"area":"transport","s":1,"kw":["transportation"]}],"estEnd":null,"estBasis":null,"captureBy":"2025-06","strong":2,"partial":1,"rank":45},{"id":"C12","locId":"ft-bragg","locName":"Fort Bragg","site":"Fort Bragg, NC","gcc":"northcom","locType":"recomp","incumbent":"Marton Technologies","vehicle":"EAGLE","family":"EAGLE","role":"SSA — sub scope","ceiling":"Not disclosed","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"supply-warehouse","s":2,"kw":["ssa"]}],"estEnd":null,"estBasis":null,"captureBy":null,"strong":1,"partial":0,"rank":12},{"id":"C13","locId":"ft-bragg","locName":"Fort Bragg","site":"Fort Bragg, NC","gcc":"northcom","locType":"recomp","incumbent":"Vanquish Worldwide (sub)","vehicle":"EAGLE","family":"EAGLE","role":"189th DSSB SSA assistance team","ceiling":"Not disclosed","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"supply-warehouse","s":2,"kw":["ssa"]}],"estEnd":null,"estBasis":null,"captureBy":null,"strong":1,"partial":0,"rank":12},{"id":"C14","locId":"ft-benning","locName":"Fort Benning","site":"Fort Benning, GA","gcc":"northcom","locType":"recomp","incumbent":"V2X / Vectrus (incumbent)","vehicle":"EAGLE","family":"EAGLE","role":"Full LRC — maintenance, supply, transportation","ceiling":"$265M","period":"2022–2026","status":"Expiring — recompete open (RFP live)","start":"2022-01","end":"2026-12","ongoing":false,"window":"window-open","own":false,"matches":[{"area":"supply-warehouse","s":2,"kw":["supply"]},{"area":"maintenance","s":2,"kw":["maintenance"]},{"area":"transport","s":1,"kw":["transportation"]}],"estEnd":null,"estBasis":null,"captureBy":"2025-06","strong":2,"partial":1,"rank":45},{"id":"C15","locId":"jblm","locName":"JBLM","site":"Joint Base Lewis-McChord, WA","gcc":"northcom","locType":"recomp","incumbent":"PD Systems","vehicle":"EAGLE","family":"EAGLE","role":"Supply & transportation — JBLM LRC + Yakima Training Center","ceiling":"$28M","period":"2018–2023","status":"Expiring","start":"2018-01","end":"2023-12","ongoing":false,"window":"lapsed","own":false,"matches":[{"area":"supply-warehouse","s":2,"kw":["supply"]},{"area":"transport","s":1,"kw":["transportation"]}],"estEnd":null,"estBasis":null,"captureBy":"2022-06","strong":1,"partial":1,"rank":23},{"id":"C16","locId":"jblm","locName":"JBLM","site":"Joint Base Lewis-McChord, WA","gcc":"northcom","locType":"recomp","incumbent":"KBR","vehicle":"LOGCAP","family":"LOGCAP","role":"Life support & contingency exercise support","ceiling":"LOGCAP V TO","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"hadr","s":1,"kw":["contingency"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":1,"partial":1,"rank":13},{"id":"C17","locId":"ft-mccoy","locName":"Fort McCoy","site":"Fort McCoy, WI","gcc":"northcom","locType":"eagle","incumbent":"Vanquish Worldwide","vehicle":"EAGLE","family":"EAGLE","role":"LRC maintenance, supply & transportation","ceiling":"$58M","period":"2025–2030","status":"Active","start":"2025-01","end":"2030-12","ongoing":false,"window":"active-long","own":false,"matches":[{"area":"supply-warehouse","s":2,"kw":["supply"]},{"area":"maintenance","s":2,"kw":["maintenance"]},{"area":"transport","s":1,"kw":["transportation"]}],"estEnd":null,"estBasis":null,"captureBy":"2029-06","strong":2,"partial":1,"rank":15},{"id":"C18","locId":"ft-leonard-wood","locName":"Fort Leonard Wood","site":"Fort Leonard Wood, MO","gcc":"northcom","locType":"eagle","incumbent":"Vanquish Worldwide","vehicle":"EAGLE","family":"EAGLE","role":"LRC maintenance, supply & transportation","ceiling":"$35M","period":"2024–2029","status":"Active","start":"2024-01","end":"2029-12","ongoing":false,"window":"active-long","own":false,"matches":[{"area":"supply-warehouse","s":2,"kw":["supply"]},{"area":"maintenance","s":2,"kw":["maintenance"]},{"area":"transport","s":1,"kw":["transportation"]}],"estEnd":null,"estBasis":null,"captureBy":"2028-06","strong":2,"partial":1,"rank":15},{"id":"C19","locId":"ft-drum","locName":"Fort Drum","site":"Fort Drum, NY","gcc":"northcom","locType":"logcap","incumbent":"KBR","vehicle":"LOGCAP","family":"LOGCAP","role":"Life support, facilities management, contingency support","ceiling":"LOGCAP V TO","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"facilities","s":2,"kw":["facilities"]},{"area":"hadr","s":1,"kw":["contingency"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":2,"partial":1,"rank":15},{"id":"C20","locId":"ft-knox","locName":"Fort Knox","site":"Fort Knox, KY","gcc":"northcom","locType":"logcap","incumbent":"KBR","vehicle":"LOGCAP","family":"LOGCAP","role":"Food service — cadet summer training (600K+ meals/yr)","ceiling":"LOGCAP V TO","period":"Seasonal","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"food-service","s":1,"kw":["food service","meals"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":0,"partial":1,"rank":11},{"id":"C21","locId":"ft-irwin","locName":"Fort Irwin (NTC)","site":"National Training Center, CA","gcc":"northcom","locType":"logcap","incumbent":"KBR","vehicle":"LOGCAP","family":"LOGCAP","role":"NTC logistics, life support & exercise support. $145M task-order modification announced May 2026 (part of $449M in KBR LOGCAP extensions; GAO backed the Army sole-source extension Feb 2026).","ceiling":"LOGCAP V TO — $145M mod (May 2026)","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":1,"partial":1,"rank":13},{"id":"C22","locId":"west-point","locName":"West Point","site":"U.S. Military Academy, NY","gcc":"northcom","locType":"eagle","incumbent":"Akima Facilities Operations","vehicle":"EAGLE","family":"EAGLE","role":"Comprehensive logistics support & vehicle maintenance","ceiling":"Not disclosed","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"maintenance","s":2,"kw":["maintenance"]}],"estEnd":null,"estBasis":null,"captureBy":null,"strong":1,"partial":1,"rank":13},{"id":"C23","locId":"rock-island","locName":"Rock Island Arsenal","site":"Rock Island Arsenal, IL","gcc":"northcom","locType":"eagle","incumbent":"Vanquish Worldwide (sub)","vehicle":"EAGLE","family":"EAGLE","role":"LRC maintenance & transportation","ceiling":"Not disclosed","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"maintenance","s":2,"kw":["maintenance"]},{"area":"transport","s":1,"kw":["transportation"]}],"estEnd":null,"estBasis":null,"captureBy":null,"strong":1,"partial":1,"rank":13},{"id":"C24","locId":"ft-wainwright","locName":"Fort Wainwright","site":"Fort Wainwright, AK","gcc":"northcom","locType":"logcap","incumbent":"Chenega CBLS","vehicle":"LOGCAP","family":"LOGCAP","role":"Base operations support — Wainwright + training areas","ceiling":"$220M","period":"2023–2028","status":"Active","start":"2023-01","end":"2028-12","ongoing":false,"window":"window-open","own":false,"matches":[{"area":"base-ops","s":2,"kw":["base operations"]}],"estEnd":null,"estBasis":null,"captureBy":"2027-06","strong":1,"partial":0,"rank":42},{"id":"C25","locId":"jber","locName":"JBER","site":"Joint Base Elmendorf-Richardson, AK","gcc":"northcom","locType":"logcap","incumbent":"Chenega CBLS","vehicle":"LOGCAP","family":"LOGCAP","role":"Base operations support — INDOPACOM/NORTHCOM interface","ceiling":"$110M","period":"2024–2029","status":"Active","start":"2024-01","end":"2029-12","ongoing":false,"window":"active-long","own":false,"matches":[{"area":"base-ops","s":2,"kw":["base operations"]}],"estEnd":null,"estBasis":null,"captureBy":"2028-06","strong":1,"partial":0,"rank":12},{"id":"C26","locId":"north-1","locName":"Arctic Edge 2025 — Life Support","site":"Eielson AFB / Fort Wainwright, AK","gcc":"northcom","locType":"wexmac","incumbent":"Response AI","vehicle":"WEXMAC 2.0","family":"WEXMAC","role":"Exercise life support — cold weather billeting, dining, transportation, sustainment; Arctic Edge 2025","ceiling":"~$5M (part of 2025 TOs)","period":"2025","status":"Active","start":"2025-01","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support","billeting"]},{"area":"maintenance","s":2,"kw":["sustainment"]},{"area":"transport","s":1,"kw":["transportation"]},{"area":"food-service","s":1,"kw":["dining"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":2,"partial":2,"rank":16},{"id":"C27","locId":"north-2","locName":"USNS Billeting Support","site":"U.S. Eastern seaboard port","gcc":"northcom","locType":"wexmac","incumbent":"Response AI","vehicle":"WEXMAC 2.0","family":"WEXMAC","role":"Naval vessel billeting — crew berthing and life support services for USNS personnel in port","ceiling":"Included in ~$5M 2025 TOs","period":"2025","status":"Active","start":"2025-01","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support","billeting"]},{"area":"maritime","s":2,"kw":["vessel","port"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":2,"partial":0,"rank":14},{"id":"C28","locId":"north-3","locName":"Southern Border Emergency Logistics","site":"U.S. Southern Border, TX/AZ","gcc":"northcom","locType":"wexmac","incumbent":"Response AI","vehicle":"WEXMAC 2.0","family":"WEXMAC","role":"Emergency rapid logistics — life support materials, temporary facilities, ground transportation for border operations","ceiling":"Included in ~$5M 2025 TOs","period":"2025","status":"Active","start":"2025-01","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"facilities","s":2,"kw":["facilities"]},{"area":"transport","s":1,"kw":["transportation"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":2,"partial":2,"rank":16},{"id":"C29","locId":"north-4","locName":"Williamsport, MD — ICE Detention","site":"Williamsport (near Hagerstown), MD","gcc":"northcom","locType":"wexmac","incumbent":"KVG / Bodwé-KVG","vehicle":"WEXMAC TITUS 2.1","family":"WEXMAC","role":"Detention facility ops — 825,000 sq ft warehouse. Construction halted by U.S. District Court (Judge Hurson) Apr 2026 over NEPA non-compliance; ICE conducting a deeper environmental and contractor review. ICE is winding down detention use of WEXMAC (DHS Sec. Mullin, Jun 2026).","ceiling":"$113M","period":"Dec 2025 – halted Apr 2026","status":"Halted — court injunction","start":"2025-12","end":"2026-04","ongoing":false,"window":"disrupted","own":false,"matches":[{"area":"supply-warehouse","s":2,"kw":["warehouse"]},{"area":"facilities","s":2,"kw":["facility"]},{"area":"engineering","s":2,"kw":["construction"]},{"area":"environmental","s":2,"kw":["environmental"]}],"estEnd":null,"estBasis":null,"captureBy":"2024-10","strong":4,"partial":0,"rank":28},{"id":"C30","locId":"north-5","locName":"Surprise, AZ — ICE Detention","site":"Surprise, Arizona","gcc":"northcom","locType":"wexmac","incumbent":"GardaWorld Federal","vehicle":"WEXMAC TITUS 2.1","family":"WEXMAC","role":"Detention facility ops — 418,000 sq ft warehouse (~1,500 beds). Stop-work order Apr 22–23, 2026; Arizona AG suit Apr 24; Jul 1, 2026 agreement pauses any physical conversion until a final environmental assessment is complete.","ceiling":"$313.4M (ceiling ~$704M)","period":"Mar 2026 – stop-work Apr 2026","status":"Stop-work — conversion paused","start":"2026-03","end":"2026-04","ongoing":false,"window":"disrupted","own":false,"matches":[{"area":"supply-warehouse","s":2,"kw":["warehouse"]},{"area":"facilities","s":2,"kw":["facility"]},{"area":"environmental","s":2,"kw":["environmental"]}],"estEnd":null,"estBasis":null,"captureBy":"2024-10","strong":3,"partial":0,"rank":26},{"id":"C31","locId":"terr-2","locName":"UNITAS 2025 — Camp Lejeune Life Support","site":"Camp Lejeune / Stone Bay / MCAS Cherry Point, NC","gcc":"northcom","locType":"wexmac","incumbent":"Terrestris","vehicle":"WEXMAC 2.0","family":"WEXMAC","role":"Exercise life support — 200-man tents, floodlights, mobile showers, laundry, water delivery, grey water, 24/7 maintenance; UNITAS 2025","ceiling":"Confirmed Oct 2025","period":"2025","status":"Active","start":"2025-01","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"maintenance","s":2,"kw":["maintenance"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":2,"partial":0,"rank":14},{"id":"C32","locId":"eucom-grafenwöhr","locName":"Grafenwöhr Training Area","site":"Grafenwöhr, Bavaria, Germany","gcc":"eucom","locType":"logcap","incumbent":"V2X","vehicle":"LOGCAP V + WEXMAC 2.0","family":"WEXMAC","role":"Full base life support — dining, facilities, utilities, transportation, supply; WEXMAC: exercise surge, short-fuse procurement","ceiling":"LOGCAP V TO (extended June 2030)","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"supply-warehouse","s":2,"kw":["supply"]},{"area":"facilities","s":2,"kw":["facilities"]},{"area":"transport","s":1,"kw":["transportation"]},{"area":"food-service","s":1,"kw":["dining"]},{"area":"hadr","s":1,"kw":["surge"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":3,"partial":3,"rank":19},{"id":"C33","locId":"eucom-vicenza","locName":"Vicenza — Caserma Ederle","site":"Vicenza, Italy","gcc":"eucom","locType":"logcap","incumbent":"V2X","vehicle":"LOGCAP V + WEXMAC 2.0","family":"WEXMAC","role":"173rd IBCT (Airborne) life support — base ops, dining, facilities; WEXMAC: contingency exercise surge","ceiling":"LOGCAP V TO (extended June 2030)","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"facilities","s":2,"kw":["facilities"]},{"area":"food-service","s":1,"kw":["dining"]},{"area":"hadr","s":1,"kw":["surge","contingency"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":2,"partial":2,"rank":16},{"id":"C34","locId":"eucom-ramstein","locName":"Ramstein Air Base","site":"Ramstein AB, Germany","gcc":"eucom","locType":"logcap","incumbent":"V2X","vehicle":"LOGCAP V + WEXMAC 2.0","family":"WEXMAC","role":"USAFE-AFAFRICA hub — cargo staging, life support, airlift logistics; WEXMAC: non-LOGCAP procurement","ceiling":"LOGCAP V TO","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"air-terminal","s":1,"kw":["cargo"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":1,"partial":2,"rank":14},{"id":"C35","locId":"eucom-adazi","locName":"Camp Adazi — eFP Latvia","site":"Camp Adazi, Latvia","gcc":"eucom","locType":"logcap","incumbent":"V2X","vehicle":"LOGCAP V + WEXMAC 2.0","family":"WEXMAC","role":"eFP Battle Group Latvia — billeting, food service, supply, transportation; WEXMAC: short-fuse Baltic battlegroup surge","ceiling":"LOGCAP V / WEXMAC 2.0 scope","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["billeting"]},{"area":"supply-warehouse","s":2,"kw":["supply"]},{"area":"transport","s":1,"kw":["transportation"]},{"area":"food-service","s":1,"kw":["food service"]},{"area":"hadr","s":1,"kw":["surge"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":2,"partial":3,"rank":17},{"id":"C36","locId":"eucom-romania","locName":"Romania — Jet Fuel Storage (JFSI)","site":"Otopeni / Bucharest area, Romania","gcc":"eucom","locType":"wexmac","incumbent":"Relyant Global","vehicle":"WEXMAC 2.0","family":"WEXMAC","role":"Construction — cut-and-cover jet fuel storage tanks (5,000 M3); JFSI critical infrastructure for USEUCOM posture","ceiling":"$29M","period":"Confirmed executed","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"fuels-pol","s":2,"kw":["fuel"]},{"area":"supply-warehouse","s":2,"kw":["storage"]},{"area":"engineering","s":2,"kw":["construction","infrastructure"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":3,"partial":0,"rank":16},{"id":"C37","locId":"eucom-narvik","locName":"Narvik — PORTS Stevedoring","site":"Port of Narvik, Norway","gcc":"eucom","locType":"wexmac","incumbent":"Trailer Bridge","vehicle":"WEXMAC 2.0 / PORTS","family":"WEXMAC","role":"Port & terminal ops — stevedoring, cargo handling, vessel loading/offloading at Arctic logistics hub","ceiling":"Undisclosed","period":"Confirmed executed 2025","status":"Active","start":"2025-01","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"air-terminal","s":1,"kw":["cargo"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"maritime","s":2,"kw":["vessel","port"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":1,"partial":2,"rank":14},{"id":"C38","locId":"eucom-eatlantic","locName":"Op. Atlantic Resolve — eFP Shaping","site":"Eastern Europe / Poland-Baltic","gcc":"eucom","locType":"wexmac","incumbent":"Amentum","vehicle":"WEXMAC 1.0 → 2.0","family":"WEXMAC","role":"Theater logistics & sustainment — theater opening, staging, RSOI; life support; 150+ TOs / $45M Ukraine deterrence shaping","ceiling":"$45M (WEXMAC 1.0 precedent)","period":"Ongoing → 2.0","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"maintenance","s":2,"kw":["sustainment"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":2,"partial":1,"rank":15},{"id":"C39","locId":"eucom-bondsteel","locName":"Camp Bondsteel — Kosovo","site":"Camp Bondsteel, near Ferizaj, Kosovo","gcc":"eucom","locType":"logcap","incumbent":"KBR","vehicle":"LOGCAP V (EUCOM)","family":"LOGCAP","role":"KBR's longest-running LOGCAP site — since 1999. Full base life support: dining, facilities, maintenance, MWR, supply chain, engineering. 750+ local nationals employed. KFOR Regional Command East HQ.","ceiling":"LOGCAP V EUCOM ($304M mod May 2026)","period":"1999–ongoing","status":"Active","start":"1999-01","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"supply-warehouse","s":2,"kw":["supply"]},{"area":"maintenance","s":2,"kw":["maintenance"]},{"area":"facilities","s":2,"kw":["facilities"]},{"area":"food-service","s":1,"kw":["dining"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":4,"partial":1,"rank":19},{"id":"C40","locId":"eucom-novo-selo","locName":"Novo Selo Training Area — Bulgaria","site":"Novo Selo Training Area (NSTA), Sliven Province, Bulgaria","gcc":"eucom","locType":"logcap","incumbent":"KBR","vehicle":"LOGCAP V (EUCOM)","family":"LOGCAP","role":"Base ops & exercise support at NSTA — field maintenance, wash rack operations, material handling equipment, base life support. 1M+ labor hours without recordable injury milestone reached 2022.","ceiling":"LOGCAP V EUCOM ($304M mod May 2026)","period":"2016–ongoing","status":"Active","start":"2016-01","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"maintenance","s":2,"kw":["maintenance"]},{"area":"staffing","s":2,"kw":["labor"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":3,"partial":0,"rank":16},{"id":"C41","locId":"eucom-mumaiciai","locName":"Mumaičiai Site — Lithuania","site":"Mumaičiai, near Šiauliai, Lithuania","gcc":"eucom","locType":"logcap","incumbent":"KBR","vehicle":"LOGCAP V (EUCOM)","family":"LOGCAP","role":"eFP Baltic logistics — field maintenance, material handling, vehicle wash rack, base life support for rotational US forces. KBR established vehicle wash rack in 10 days upon government request.","ceiling":"LOGCAP V EUCOM ($304M mod May 2026)","period":"2015–ongoing","status":"Active","start":"2015-01","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"maintenance","s":2,"kw":["maintenance"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":2,"partial":1,"rank":15},{"id":"C42","locId":"eucom-drawsko","locName":"Drawsko Pomorskie Training Area — Poland","site":"Drawsko Pomorskie, West Pomeranian, Poland","gcc":"eucom","locType":"logcap","incumbent":"KBR","vehicle":"LOGCAP V (EUCOM)","family":"LOGCAP","role":"Op. Atlantic Resolve exercise logistics — base life support, tents, latrines, power generation, laundry for rotational armored brigade forces. US soldiers moved into new Polish-built barracks March 2025.","ceiling":"LOGCAP V EUCOM ($304M mod May 2026)","period":"2016–ongoing","status":"Active","start":"2016-01","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"engineering","s":2,"kw":["power "]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":2,"partial":1,"rank":15},{"id":"C43","locId":"eucom-powidz","locName":"Powidz Air Base — Poland","site":"Powidz Air Base, Greater Poland Voivodeship, Poland","gcc":"eucom","locType":"logcap","incumbent":"KBR","vehicle":"LOGCAP V (EUCOM)","family":"LOGCAP","role":"Aviation & logistics hub life support — $93M new barracks and dining facility under construction 2025. Major prepositioning site and aviation hub for US forces in Poland.","ceiling":"LOGCAP V EUCOM ($304M mod May 2026)","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"facilities","s":2,"kw":["facility"]},{"area":"engineering","s":2,"kw":["construction"]},{"area":"food-service","s":1,"kw":["dining"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":3,"partial":2,"rank":18},{"id":"C44","locId":"eucom-mihail","locName":"Mihail Kogălniceanu AB — Romania","site":"Mihail Kogălniceanu Air Base, near Constanța, Romania","gcc":"eucom","locType":"logcap","incumbent":"KBR","vehicle":"LOGCAP V (EUCOM)","family":"LOGCAP","role":"Black Sea hub base ops — field maintenance, material handling, logistics support for rotational forces. ASG-Black Sea supported. Equipment turn-in and prepo operations.","ceiling":"LOGCAP V EUCOM ($304M mod May 2026)","period":"2015–ongoing","status":"Active","start":"2015-01","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"maintenance","s":2,"kw":["maintenance"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":1,"partial":1,"rank":13},{"id":"C45","locId":"eucom-incirlik","locName":"Incirlik AB / Turkey — LOGCAP V + UABOS","site":"Incirlik Air Base, Adana, Turkey","gcc":"eucom","locType":"logcap","incumbent":"KBR","vehicle":"LOGCAP V (EUCOM) + UABOS Turkey $974M","family":"LOGCAP","role":"LOGCAP V: life support, facility management, supply chain, equipment readiness across Turkey. UABOS: civil engineering, MWR, postal ops, vehicle management, fuel operations, air terminal services at Incirlik AB, İzmir Air Station, ODC Turkey, and Ankara Support Facility","ceiling":"LOGCAP V option ($304M EUCOM mod May 2026) + UABOS $974M","period":"Ongoing — May 2026 mod confirmed","status":"Active","start":"2026-05","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"fuels-pol","s":2,"kw":["fuel"]},{"area":"air-terminal","s":2,"kw":["air terminal"]},{"area":"supply-warehouse","s":2,"kw":["supply"]},{"area":"facilities","s":2,"kw":["facility"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":5,"partial":0,"rank":20},{"id":"C46","locId":"eucom-izmir","locName":"İzmir Air Station + Ankara Support Facility","site":"İzmir, Turkey / Ankara, Turkey","gcc":"eucom","locType":"logcap","incumbent":"KBR","vehicle":"UABOS Turkey — $974M USAF base ops","family":"ADJACENT","role":"Base operations — program management, civil engineering, MWR, postal operations, safety and occupational health, logistics support, fuel operations at İzmir Air Station and Ankara Support Facility","ceiling":"$974M (USAF AICC, 5-yr base + 3 options)","period":"Awarded 2020 — ongoing","status":"Active","start":"2020-01","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["base operations"]},{"area":"fuels-pol","s":2,"kw":["fuel"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"facilities","s":2,"kw":["facility"]}],"estEnd":null,"estBasis":null,"captureBy":null,"strong":3,"partial":1,"rank":17},{"id":"C47","locId":"eucom-noble","locName":"NOBLE — EUCOM AOR Rapid Delivery","site":"Europe-wide (regional warehouse)","gcc":"eucom","locType":"wexmac","incumbent":"NOBLE Supply","vehicle":"WEXMAC 2.0 + GSA","family":"WEXMAC","role":"Rapid supply delivery — 1,000+ NSNs to any EU country within 3–5 days; MRO, consumables, force protection, medical","ceiling":"$173M (GSA EUCOM AOR)","period":"Confirmed active 2025","status":"Active","start":"2025-01","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"supply-warehouse","s":2,"kw":["supply"]},{"area":"security","s":2,"kw":["force protection"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":2,"partial":0,"rank":14},{"id":"C48","locId":"centcom-arifjan","locName":"Camp Arifjan, Kuwait","site":"Camp Arifjan, Kuwait","gcc":"centcom","locType":"logcap","incumbent":"V2X","vehicle":"LOGCAP V + WEXMAC 2.0","family":"WEXMAC","role":"Full theater life support — ~9,000+ personnel; APS-5 logistics; WEXMAC: short-fuse procurement, exercise surge","ceiling":"LOGCAP V CENTCOM (extended June 2030)","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"hadr","s":1,"kw":["surge"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":1,"partial":2,"rank":14},{"id":"C49","locId":"centcom-udeid","locName":"Al Udeid AB, Qatar","site":"Al Udeid Air Base, Qatar","gcc":"centcom","locType":"logcap","incumbent":"V2X","vehicle":"LOGCAP V + WEXMAC 2.0","family":"WEXMAC","role":"USAFCENT hub — life support, dining, facilities, logistics; WEXMAC: contingency surge beyond LOGCAP base scope","ceiling":"LOGCAP V CENTCOM (extended June 2030)","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"facilities","s":2,"kw":["facilities"]},{"area":"food-service","s":1,"kw":["dining"]},{"area":"hadr","s":1,"kw":["surge","contingency"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":2,"partial":3,"rank":17},{"id":"C50","locId":"centcom-alisalem","locName":"Ali Al Salem AB, Kuwait","site":"Ali Al Salem Air Base, Kuwait","gcc":"centcom","locType":"logcap","incumbent":"V2X","vehicle":"LOGCAP V + WEXMAC 2.0","family":"WEXMAC","role":"Rotational hub — life support, logistics, dining; WEXMAC: contingency and exercise surge","ceiling":"LOGCAP V CENTCOM (extended June 2030)","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"food-service","s":1,"kw":["dining"]},{"area":"hadr","s":1,"kw":["surge","contingency"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":1,"partial":3,"rank":15},{"id":"C51","locId":"centcom-kuwait-port","locName":"Kuwait Naval Base — DLA GAS","site":"Shuwaikh Port / Kuwait Naval Base","gcc":"centcom","locType":"wexmac","incumbent":"Inchcape Govt Svcs","vehicle":"WEXMAC 2.0 + DLA","family":"WEXMAC","role":"Port ops & ship husbanding — vessel berthing, fuel supply, cargo coordination; 2,800+ RTOPs/yr across Gulf","ceiling":"DLA GAS CENTCOM (sole-sourced Dec 2024)","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"fuels-pol","s":2,"kw":["fuel"]},{"area":"air-terminal","s":1,"kw":["cargo"]},{"area":"supply-warehouse","s":2,"kw":["supply"]},{"area":"maritime","s":2,"kw":["vessel","port","ship"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":3,"partial":1,"rank":17},{"id":"C52","locId":"centcom-biap","locName":"BIAP / Victory Base Complex, Iraq","site":"Baghdad International Airport / VBC, Iraq","gcc":"centcom","locType":"logcap","incumbent":"V2X","vehicle":"LOGCAP V + WEXMAC 2.0","family":"WEXMAC","role":"OSC-I support, residual force life support; WEXMAC: short-fuse non-LOGCAP requirements for advisory mission","ceiling":"LOGCAP V Iraq (extended June 2030)","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":1,"partial":0,"rank":12},{"id":"C53","locId":"centcom-jordan","locName":"Muwaffaq Salti AB, Jordan","site":"Muwaffaq Salti AB, Azraq, Jordan","gcc":"centcom","locType":"wexmac","incumbent":"Amentum","vehicle":"WEXMAC 2.0","family":"WEXMAC","role":"Bilateral exercise logistics — life support, transportation, fuel, lodging for Eager Lion exercise rotations","ceiling":"Included in WEXMAC scope","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support","lodging"]},{"area":"fuels-pol","s":2,"kw":["fuel"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"transport","s":1,"kw":["transportation"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":2,"partial":2,"rank":16},{"id":"C54","locId":"indo-schofield","locName":"Schofield Barracks / Fort Shafter — Hawaii","site":"Schofield Barracks / Fort Shafter, Oahu, Hawaii","gcc":"indopacom","locType":"logcap","incumbent":"V2X","vehicle":"LOGCAP V (INDOPACOM)","family":"LOGCAP","role":"USARPAC and 25th Infantry Division life support — base ops, dining, facilities management, supply chain. INDOPACOM Task Order extended through June 2030. Hawaii hosts 45,528 US military personnel (Sep 2025).","ceiling":"LOGCAP V INDOPACOM (extended June 2030)","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"supply-warehouse","s":2,"kw":["supply"]},{"area":"facilities","s":2,"kw":["facilities"]},{"area":"food-service","s":1,"kw":["dining"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":3,"partial":1,"rank":17},{"id":"C55","locId":"indo-kwajalein-logcap","locName":"Kwajalein Atoll — LOGCAP V Garrison Support","site":"US Army Garrison Kwajalein Atoll, Marshall Islands","gcc":"indopacom","locType":"logcap","incumbent":"V2X","vehicle":"LOGCAP V (INDOPACOM)","family":"LOGCAP","role":"Full garrison support — life support for personnel and families; mission support to Ronald Reagan Ballistic Missile Defense Test Site; archaeological diving services and watercraft marine ops. Army.mil confirmed July 2024.","ceiling":"LOGCAP V INDOPACOM (extended June 2030)","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support","garrison"]},{"area":"maritime","s":2,"kw":["watercraft"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":2,"partial":0,"rank":14},{"id":"C56","locId":"indo-guam","locName":"Andersen AFB / Naval Base Guam","site":"Andersen AFB / Naval Base Guam, Guam","gcc":"indopacom","locType":"logcap","incumbent":"V2X","vehicle":"LOGCAP V (INDOPACOM)","family":"LOGCAP","role":"INDOPACOM Pacific island chain life support — base ops, logistics, supply for Andersen AFB and Naval Base Guam. 6,986 US military personnel (Sep 2025). Strategic hub for Pacific deterrence.","ceiling":"LOGCAP V INDOPACOM (extended June 2030)","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"supply-warehouse","s":2,"kw":["supply","logistics"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":2,"partial":0,"rank":14},{"id":"C57","locId":"indo-aps-kor-jpn","locName":"APS-3/4 Korea-Japan — Army Prepositioned Stock","site":"Korea / Japan (multiple sites)","gcc":"indopacom","locType":"logcap","incumbent":"Amentum-Parsons (LOGCAP V)","vehicle":"LOGCAP V APS (INDOPACOM)","family":"LOGCAP","role":"Care of Supplies in Storage (COSIS) for Army Prepositioned Stock sets in Korea and Japan. Original ~$63.7M APS-4 award (Jun 2024) protested; GAO sustained the protest (Oct 2024) and the award is being re-run as \"LOGCAP V.V.\" Re-award not yet issued.","ceiling":"~$63.7M ceiling (APS-4 TO — under re-competition)","period":"2024 award vacated; re-competing","status":"Under re-competition (LOGCAP V.V)","start":"2024-01","end":null,"ongoing":false,"window":"window-open","own":false,"matches":[{"area":"supply-warehouse","s":2,"kw":["cosis","prepositioned","storage","stock"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":1,"partial":0,"rank":42},{"id":"C58","locId":"indo-yokosuka","locName":"Yokosuka / COMSUBPAC — Japan TO","site":"Fleet Activities Yokosuka, Japan","gcc":"indopacom","locType":"wexmac","incumbent":"Logistics Plus","vehicle":"WEXMAC 2.0","family":"WEXMAC","role":"Ashore support — interpreter services, logistics coordination, transportation for COMSUBPAC / CTF-77 / MCMGRU7","ceiling":"Confirmed executed 2025","period":"2025","status":"Active","start":"2025-01","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"transport","s":1,"kw":["transportation"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":0,"partial":2,"rank":12},{"id":"C59","locId":"indo-kadena","locName":"Kadena AB, Okinawa","site":"Kadena Air Base, Okinawa, Japan","gcc":"indopacom","locType":"logcap","incumbent":"V2X","vehicle":"LOGCAP V + WEXMAC 2.0","family":"WEXMAC","role":"PACAF hub — life support, logistics, facilities; WEXMAC: Yama Sakura / Orient Shield exercise surge","ceiling":"LOGCAP V INDOPACOM (extended June 2030)","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"facilities","s":2,"kw":["facilities"]},{"area":"hadr","s":1,"kw":["surge"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":2,"partial":2,"rank":16},{"id":"C60","locId":"indo-humphreys","locName":"Camp Humphreys, Korea","site":"Camp Humphreys, Pyeongtaek, South Korea","gcc":"indopacom","locType":"logcap","incumbent":"V2X","vehicle":"LOGCAP V + WEXMAC 2.0","family":"WEXMAC","role":"~36,000 personnel full life support — dining, lodging, facilities, utilities; WEXMAC: UFS/RSOI exercise surge","ceiling":"LOGCAP V Korea (active)","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support","lodging"]},{"area":"facilities","s":2,"kw":["facilities"]},{"area":"food-service","s":1,"kw":["dining"]},{"area":"hadr","s":1,"kw":["surge"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":2,"partial":2,"rank":16},{"id":"C61","locId":"indo-clark","locName":"Clark / Magsaysay — EDCA Philippines","site":"Clark AB / Fort Magsaysay, Philippines","gcc":"indopacom","locType":"wexmac","incumbent":"V2X","vehicle":"WEXMAC 2.0","family":"WEXMAC","role":"EDCA site logistics — base support augmentation, MRF-P bilateral exercise logistics, force protection","ceiling":"Philippines revenue 7x growth 2022","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["base support"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"security","s":2,"kw":["force protection"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":2,"partial":1,"rank":15},{"id":"C62","locId":"indo-darwin","locName":"Darwin MRF-D — Australia","site":"Darwin, Northern Territory, Australia","gcc":"indopacom","locType":"wexmac","incumbent":"Constellis/Centerra","vehicle":"WEXMAC 2.0","family":"WEXMAC","role":"MRF-D life support — billeting, dining, transportation, force protection, base ops for US Marine rotational force","ceiling":"Included in $700M seat","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support","billeting"]},{"area":"security","s":2,"kw":["force protection"]},{"area":"transport","s":1,"kw":["transportation"]},{"area":"food-service","s":1,"kw":["dining"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":2,"partial":2,"rank":16},{"id":"C63","locId":"terr-3","locName":"Kwajalein — INDOPACOM Wargame Research","site":"Kwajalein Atoll, Marshall Islands","gcc":"indopacom","locType":"wexmac","incumbent":"Terrestris","vehicle":"U.S. Army INDOPACOM","family":"ADJACENT","role":"Environmental security research & wargame development — sea level / base workforce human security analysis; research fellows deployed","ceiling":"Confirmed","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"environmental","s":2,"kw":["environmental"]},{"area":"security","s":2,"kw":["security"]}],"estEnd":null,"estBasis":null,"captureBy":null,"strong":2,"partial":0,"rank":14},{"id":"C64","locId":"afr-simba","locName":"Camp Simba / Manda Bay — Kenya","site":"Camp Simba, Manda Bay, Lamu County, Kenya","gcc":"africom","locType":"logcap","incumbent":"Fluor (LOGCAP V)","vehicle":"LOGCAP V (AFRICOM)","family":"LOGCAP","role":"Base life support — LOGCAP responsibility per 405th AFSB site visit Sep 2024. Supports AFRICOM CT ops against al-Shabaab in Somalia. $71M US-Kenya runway expansion broke ground Jan 2026.","ceiling":"LOGCAP V AFRICOM TO","period":"Ongoing — Jan 2026 expansion","status":"Active","start":"2026-01","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":1,"partial":0,"rank":12},{"id":"C65","locId":"afr-accra","locName":"CSL Accra — Ghana","site":"Cooperative Security Location, Accra, Ghana","gcc":"africom","locType":"logcap","incumbent":"Fluor (LOGCAP V)","vehicle":"LOGCAP V (AFRICOM)","family":"LOGCAP","role":"Cooperative Security Location life support — LOGCAP summit site visit confirmed active. West Africa staging hub for AFRICOM operations. Fluor LOGCAP AFRICOM TO403 confirmed Ghana in scope.","ceiling":"LOGCAP V AFRICOM TO","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"security","s":2,"kw":["security"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":2,"partial":0,"rank":14},{"id":"C66","locId":"afr-mogadishu","locName":"Mogadishu — Somalia LOGCAP Support","site":"Mogadishu / Baledogle, Somalia","gcc":"africom","locType":"logcap","incumbent":"Fluor (LOGCAP V)","vehicle":"LOGCAP V (AFRICOM)","family":"LOGCAP","role":"Forward logistics and life support for USSOCOM and AFRICOM CT advisory mission. 405th AFSB manages active services in Somalia. Fluor LOGCAP AFRICOM TO403 confirmed Somalia in scope.","ceiling":"LOGCAP V AFRICOM TO","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":1,"partial":1,"rank":13},{"id":"C67","locId":"afr-uganda","locName":"Uganda — LOGCAP Forward Support","site":"Entebbe / Kasenyi, Uganda","gcc":"africom","locType":"logcap","incumbent":"Fluor (LOGCAP V)","vehicle":"LOGCAP V (AFRICOM)","family":"LOGCAP","role":"Forward logistics support — 405th AFSB manages active LOGCAP services and property in Uganda. Staging for East Africa CT operations.","ceiling":"LOGCAP V AFRICOM TO","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"property","s":2,"kw":["property"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":1,"partial":1,"rank":13},{"id":"C68","locId":"afr-liberia","locName":"Liberia — LOGCAP Support","site":"Monrovia / Roberts Field, Liberia","gcc":"africom","locType":"logcap","incumbent":"Fluor (LOGCAP V)","vehicle":"LOGCAP V (AFRICOM)","family":"LOGCAP","role":"West Africa LOGCAP life support. Fluor LOGCAP AFRICOM TO403 confirmed Liberia in scope — security and logistics support for US personnel and installations.","ceiling":"LOGCAP V AFRICOM TO","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"security","s":2,"kw":["security"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":2,"partial":1,"rank":15},{"id":"C69","locId":"afr-sudan","locName":"NEO Sudan — Humanitarian Evacuation","site":"Khartoum / Port Sudan, Sudan","gcc":"africom","locType":"wexmac","incumbent":"KVG / Bodwé-KVG","vehicle":"WEXMAC 1.0 (closed Jun 30, 2026) → 2.0","family":"WEXMAC","role":"NEO & humanitarian evacuation — rapid mobilization, personnel movement logistics, humanitarian aid delivery. Legacy WEXMAC 1.0 scope; follow-on activity migrates to WEXMAC 2.0.","ceiling":"Included in $37M WEXMAC 1.0","period":"Executed","status":"Executed — legacy","start":null,"end":null,"ongoing":false,"window":"legacy","own":false,"matches":[{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"hadr","s":1,"kw":["humanitarian"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":0,"partial":2,"rank":2},{"id":"C70","locId":"afr-rota","locName":"Op. Allies Refuge — Rota, Spain","site":"Naval Station Rota, Cádiz, Spain","gcc":"eucom","locType":"wexmac","incumbent":"KVG / Bodwé-KVG","vehicle":"WEXMAC 1.0 (ordering period closed Jun 30, 2026)","family":"WEXMAC","role":"NEO staging — reception, staging, onward movement; cargo handling; life support for Afghanistan evacuees transiting Rota","ceiling":"Included in $37M WEXMAC 1.0","period":"Executed 2021","status":"Executed — legacy (WEXMAC 1.0 closed)","start":"2021-01","end":null,"ongoing":false,"window":"legacy","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support"]},{"area":"air-terminal","s":1,"kw":["cargo"]}],"estEnd":null,"estBasis":null,"captureBy":null,"strong":1,"partial":1,"rank":3},{"id":"C71","locId":"afr-sigonella","locName":"Op. Allies Refuge — Sigonella, Italy","site":"Sigonella NAS, Sicily, Italy","gcc":"eucom","locType":"wexmac","incumbent":"KVG / Bodwé-KVG","vehicle":"WEXMAC 1.0 (ordering period closed Jun 30, 2026)","family":"WEXMAC","role":"NEO staging — lodging, catering, transportation, medical support for Afghanistan evacuees in transit through Italy","ceiling":"Included in $37M WEXMAC 1.0","period":"Executed 2021","status":"Executed — legacy (WEXMAC 1.0 closed)","start":"2021-01","end":null,"ongoing":false,"window":"legacy","own":false,"matches":[{"area":"base-ops","s":2,"kw":["lodging"]},{"area":"transport","s":1,"kw":["transportation"]}],"estEnd":null,"estBasis":null,"captureBy":null,"strong":1,"partial":1,"rank":3},{"id":"C72","locId":"afr-lemonnier","locName":"Camp Lemonnier, Djibouti","site":"Camp Lemonnier, Djibouti","gcc":"africom","locType":"wexmac","incumbent":"Amentum","vehicle":"WEXMAC 2.0","family":"WEXMAC","role":"CJTF-HOA contingency life support — billeting, dining, transportation; USASOC forward logistics; Somalia advisory supply","ceiling":"Included in $121M seat","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["life support","billeting"]},{"area":"supply-warehouse","s":2,"kw":["supply","logistics"]},{"area":"transport","s":1,"kw":["transportation"]},{"area":"food-service","s":1,"kw":["dining"]},{"area":"hadr","s":1,"kw":["contingency"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":2,"partial":3,"rank":17},{"id":"C73","locId":"afr-first-to","locName":"WEXMAC — First Task Order (Jan 2025)","site":"Undisclosed AFRICOM location","gcc":"africom","locType":"wexmac","incumbent":"KVG / Bodwé-KVG","vehicle":"WEXMAC 2.0","family":"WEXMAC","role":"First task order on WEXMAC 2.0 — January 2025; location undisclosed; logistics and expeditionary support per WEXMAC 2.0 PWS","ceiling":"First WEXMAC 2.0 TO","period":"Jan 2025","status":"Active","start":"2025-01","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"hadr","s":1,"kw":["expeditionary"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":0,"partial":2,"rank":12},{"id":"C74","locId":"southcom-honduras-logcap","locName":"Soto Cano AB — LOGCAP V Honduras","site":"Soto Cano Air Base, Honduras","gcc":"southcom","locType":"logcap","incumbent":"Amentum (LOGCAP V)","vehicle":"LOGCAP V (SOUTHCOM)","family":"LOGCAP","role":"LOGCAP V theater-setting, contingency planning, and exercise support at Soto Cano. Note: the JTF-Bravo base operating support (BOS) scope Amentum previously executed transitioned to the RMGS-Versar MPJV under WEXMAC 2.0 (2026); Amentum-Parsons retains the standing LOGCAP V theater-setting role.","ceiling":"LOGCAP V SOUTHCOM TO","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":2,"kw":["bos","base operating"]},{"area":"hadr","s":1,"kw":["contingency"]}],"estEnd":"2030-03","estBasis":"LOGCAP V vehicle PoP end (Apr 12, 2019 - Mar 2, 2030)","captureBy":"2028-09","strong":1,"partial":1,"rank":13},{"id":"C75","locId":"south-0","locName":"Soto Cano AB — JTF-Bravo BOS (RMGS-Versar MPJV)","site":"Soto Cano Air Base, Honduras","gcc":"southcom","locType":"rmgsawd","incumbent":"RMGS-Versar MPJV","vehicle":"WEXMAC 2.0 (first task order)","family":"WEXMAC","role":"Base operating support and life support at Soto Cano AB / JTF-Bravo — the BOS scope previously executed by Amentum, awarded to the RMGS-Versar MPJV under the first WEXMAC 2.0 task order. JTF-Bravo is SOUTHCOM’s only enduring forward hub — the physical center of gravity for the STINGRAI operational footprint. Expeditionary logistics, facilities O&M, exercise support, counter-narcotics enablement, HA/DR.","ceiling":"WEXMAC 2.0 TO","period":"2026 – ongoing","status":"Active","start":"2026-01","end":null,"ongoing":true,"window":"own","own":true,"matches":[{"area":"base-ops","s":2,"kw":["bos","base operating","life support"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]},{"area":"facilities","s":2,"kw":["facilities","o&m"]},{"area":"hadr","s":1,"kw":["ha/dr","expeditionary"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":null,"strong":2,"partial":2,"rank":6},{"id":"C76","locId":"south-1","locName":"Continuing Promise 2025 — Puerto Plata, DR","site":"Puerto Plata, Dominican Republic","gcc":"southcom","locType":"wexmac","incumbent":"Trailer Bridge","vehicle":"WEXMAC 2.0","family":"WEXMAC","role":"HA/DR medical site — potable water, sanitation, expeditionary shelter, power generation, material handling, communications for USNS Comfort","ceiling":"Confirmed executed","period":"Aug 2025","status":"Active","start":"2025-08","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"engineering","s":2,"kw":["power "]},{"area":"hadr","s":1,"kw":["ha/dr","expeditionary"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":1,"partial":1,"rank":13},{"id":"C77","locId":"terr-1","locName":"Puno, Peru — USSOUTHCOM HA/DP","site":"Puno, Peru (high-altitude Andes)","gcc":"southcom","locType":"wexmac","incumbent":"Terrestris","vehicle":"WEXMAC 2.0 / USSOUTHCOM","family":"WEXMAC","role":"HA/DR logistics & training — EOC equipment (generators, forklifts, warehouse, UHF/VHF radio, videowall); 30+ INDECI personnel trained; Andes radio repeater deployment","ceiling":"Confirmed executed Nov 2025","period":"Nov 2025","status":"Active","start":"2025-11","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"supply-warehouse","s":2,"kw":["warehouse","logistics"]},{"area":"hadr","s":1,"kw":["ha/dr"]}],"estEnd":"2029-12","estBasis":"WEXMAC 2.0 base ordering period end (Dec 2024 award + 5-yr base; 5-yr option to 2034)","captureBy":"2028-06","strong":1,"partial":1,"rank":13},{"id":"C78","locId":"south-curacao","locName":"CSL Curaçao — Hato Intl","site":"Hato International Airport, Curaçao","gcc":"southcom","locType":"bos","incumbent":"PAE Applied Technologies (Amentum)","vehicle":"USAF BOS (FA4890-22-R-CN02)","family":"ADJACENT","role":"Base operations support for the Cooperative Security Location — JIATF-South detection and monitoring (P-8, MQ-9, AWACS) under 429th EOS oversight; supports ~$4.5B in joint assets. Southern Spear ISR surge; FOL treaty renewed to Nov 2026.","ceiling":"$45.6M (options to Oct 2027)","period":"2022–2027","status":"Active","start":"2022-01","end":"2027-12","ongoing":false,"window":"window-open","own":false,"matches":[{"area":"base-ops","s":2,"kw":["bos","base operations"]},{"area":"security","s":2,"kw":["security"]},{"area":"hadr","s":1,"kw":["surge"]}],"estEnd":null,"estBasis":null,"captureBy":"2026-06","strong":2,"partial":1,"rank":45},{"id":"C79","locId":"south-aruba","locName":"CSL Aruba — Reina Beatrix","site":"Reina Beatrix International Airport, Aruba","gcc":"southcom","locType":"bos","incumbent":"PAE Applied Technologies (Amentum)","vehicle":"USAF BOS — bundled with Curaçao","family":"ADJACENT","role":"Smaller CSL footprint (~15 personnel historically); same 2000 US–Netherlands treaty and 429th EOS management. ISR surge support and stepped-up exercises under Southern Spear. No separate contract award — support bundled under the Curaçao BOS.","ceiling":"Bundled","period":"2022–2027","status":"Active","start":"2022-01","end":"2027-12","ongoing":false,"window":"window-open","own":false,"matches":[{"area":"base-ops","s":2,"kw":["bos"]},{"area":"hadr","s":1,"kw":["surge"]}],"estEnd":null,"estBasis":null,"captureBy":"2026-06","strong":1,"partial":1,"rank":43},{"id":"C80","locId":"south-bonaire","locName":"Bonaire — Flamingo Intl","site":"Flamingo International Airport, Bonaire","gcc":"southcom","locType":"bos","incumbent":"No US contract — Dutch MoD","vehicle":"—","family":"ADJACENT","role":"No US military presence or FOL. The Dutch Ministry of Defence performs police and security tasks at Flamingo International Airport (built by US forces in 1945). Included for AOR completeness.","ceiling":"—","period":"—","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"security","s":2,"kw":["security"]}],"estEnd":null,"estBasis":null,"captureBy":null,"strong":1,"partial":0,"rank":12},{"id":"C81","locId":"south-rooseveltroads","locName":"Roosevelt Roads / Aponte de la Torre","site":"José Aponte de la Torre Airport, Ceiba, Puerto Rico","gcc":"southcom","locType":"bos","incumbent":"Avfuel Corp","vehicle":"DLA Energy (SPE607-25-D-0185)","family":"ADJACENT","role":"Sole-source fuel support for the reactivated Southern Spear logistics hub — former naval station reopened Nov 2025; taxiway clearing/repaving since Sep 17, 2025.","ceiling":"$40.8M","period":"Sep 2025 – Feb 2026","status":"Active","start":"2025-09","end":"2026-02","ongoing":false,"window":"lapsed","own":false,"matches":[{"area":"fuels-pol","s":2,"kw":["fuel","dla energy","energy"]},{"area":"supply-warehouse","s":1,"kw":["logistics"]}],"estEnd":null,"estBasis":null,"captureBy":"2024-08","strong":1,"partial":1,"rank":23},{"id":"C82","locId":"south-rooseveltroads","locName":"Roosevelt Roads / Aponte de la Torre","site":"José Aponte de la Torre Airport, Ceiba, Puerto Rico","gcc":"southcom","locType":"bos","incumbent":"NAVFAC Southeast (leases)","vehicle":"NAVFAC SE","family":"ADJACENT","role":"~$2.5M in fast-tracked hangar, pier, and logistics-laydown leases executed in under 30 days; follow-on leases projected to nearly double the footprint. ~$79M federal rehabilitation allocation — taxiway primes not publicly named.","ceiling":"~$79M allocation","period":"2025 – ongoing","status":"Active","start":"2025-01","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[],"estEnd":null,"estBasis":null,"captureBy":null,"strong":0,"partial":0,"rank":10},{"id":"C83","locId":"south-aguadilla","locName":"Rafael Hernández AB — Aguadilla","site":"Rafael Hernández Airport (former Ramey AFB), Aguadilla, Puerto Rico","gcc":"southcom","locType":"bos","incumbent":"Borinquen Airport Partners (Ferrovial + AECOM)","vehicle":"Civil — FAA $141M share (not DoD)","family":"ADJACENT","role":"$265M runway project underway (civilian award). Airfield hosts F-35Bs, MQ-9s, MV-22s, EA-18Gs, and LCACs under the Aug 31, 2025 Ports Authority–Navy use agreement. No public DoD ramp-construction award.","ceiling":"$265M (civil)","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"air-terminal","s":1,"kw":["airfield"]}],"estEnd":null,"estBasis":null,"captureBy":null,"strong":0,"partial":1,"rank":11},{"id":"C84","locId":"south-buchanan","locName":"Fort Buchanan","site":"Fort Buchanan, San Juan, Puerto Rico","gcc":"southcom","locType":"eagle","incumbent":"EAGLE II BOA holder (not public)","vehicle":"EAGLE II BOA (ACC-Rock Island)","family":"EAGLE","role":"Army LRC supply, maintenance and transportation — specific task-order holder not in public reporting. Conti Federal holds a $29.6M USACE Army Reserve Center construction award (pre-buildup). Muñiz ANGB (San Juan) serves as the theater air bridge; Camp Santiago hosted 22nd MEU live-fire (Oct 2025).","ceiling":"Not disclosed","period":"Ongoing","status":"Active","start":null,"end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"base-ops","s":1,"kw":["camp"]},{"area":"supply-warehouse","s":2,"kw":["supply"]},{"area":"maintenance","s":2,"kw":["maintenance"]},{"area":"engineering","s":2,"kw":["construction","usace"]},{"area":"transport","s":1,"kw":["transportation"]}],"estEnd":null,"estBasis":null,"captureBy":null,"strong":3,"partial":2,"rank":18},{"id":"C85","locId":"south-stcroix","locName":"Rohlsen Airport — St. Croix","site":"Henry E. Rohlsen Airport, St. Croix, USVI","gcc":"southcom","locType":"bos","incumbent":"Undisclosed — 6th EARS","vehicle":"USAF expeditionary","family":"ADJACENT","role":"KC-46A tanker hub — 5–6 tankers on the ramp since mid-Sep 2025 (6th Expeditionary Air Refueling Squadron) supporting Southern Spear air operations. No public contract awards identified.","ceiling":"Undisclosed","period":"Sep 2025 – ongoing","status":"Active","start":"2025-09","end":null,"ongoing":true,"window":"ongoing-unknown","own":false,"matches":[{"area":"fuels-pol","s":2,"kw":["tanker"]},{"area":"hadr","s":1,"kw":["expeditionary"]}],"estEnd":null,"estBasis":null,"captureBy":null,"strong":1,"partial":1,"rank":13}],"pivot":{"base-ops":{"WEXMAC":{"strong":["C26","C27","C28","C31","C32","C33","C34","C35","C38","C48","C49","C50","C52","C53","C59","C60","C61","C62","C70","C71","C72","C75"],"partial":[]},"LOGCAP":{"strong":["C04","C05","C09","C16","C19","C21","C24","C25","C39","C40","C41","C42","C43","C45","C54","C55","C56","C64","C65","C66","C68","C74"],"partial":[]},"EAGLE":{"strong":[],"partial":["C84"]},"ADJACENT":{"strong":["C46","C78","C79"],"partial":[]}},"fuels-pol":{"WEXMAC":{"strong":["C36","C51","C53"],"partial":[]},"LOGCAP":{"strong":["C45"],"partial":[]},"EAGLE":{"strong":[],"partial":[]},"ADJACENT":{"strong":["C46","C81","C85"],"partial":[]}},"air-terminal":{"WEXMAC":{"strong":[],"partial":["C34","C37","C51","C70"]},"LOGCAP":{"strong":["C45"],"partial":[]},"EAGLE":{"strong":[],"partial":[]},"ADJACENT":{"strong":[],"partial":["C83"]}},"supply-warehouse":{"WEXMAC":{"strong":["C29","C30","C32","C35","C36","C47","C51","C72","C77"],"partial":["C28","C34","C37","C38","C48","C49","C50","C53","C58","C59","C61","C69","C73","C75"]},"LOGCAP":{"strong":["C39","C45","C54","C56","C57"],"partial":["C21","C41","C42","C43","C44","C66","C67","C68"]},"EAGLE":{"strong":["C03","C06","C08","C10","C11","C12","C13","C14","C15","C17","C18","C84"],"partial":["C22"]},"ADJACENT":{"strong":[],"partial":["C46","C81"]}},"property":{"WEXMAC":{"strong":[],"partial":[]},"LOGCAP":{"strong":["C67"],"partial":[]},"EAGLE":{"strong":[],"partial":[]},"ADJACENT":{"strong":[],"partial":[]}},"maintenance":{"WEXMAC":{"strong":["C26","C31","C38"],"partial":[]},"LOGCAP":{"strong":["C39","C40","C41","C44"],"partial":[]},"EAGLE":{"strong":["C03","C06","C08","C10","C11","C14","C17","C18","C22","C23","C84"],"partial":[]},"ADJACENT":{"strong":[],"partial":[]}},"facilities":{"WEXMAC":{"strong":["C28","C29","C30","C32","C33","C49","C59","C60","C75"],"partial":[]},"LOGCAP":{"strong":["C19","C39","C43","C45","C54"],"partial":[]},"EAGLE":{"strong":[],"partial":[]},"ADJACENT":{"strong":["C46"],"partial":[]}},"engineering":{"WEXMAC":{"strong":["C29","C36","C76"],"partial":[]},"LOGCAP":{"strong":["C42","C43"],"partial":[]},"EAGLE":{"strong":["C84"],"partial":[]},"ADJACENT":{"strong":[],"partial":[]}},"environmental":{"WEXMAC":{"strong":["C29","C30"],"partial":[]},"LOGCAP":{"strong":[],"partial":[]},"EAGLE":{"strong":[],"partial":[]},"ADJACENT":{"strong":["C63"],"partial":[]}},"security":{"WEXMAC":{"strong":["C47","C61","C62"],"partial":[]},"LOGCAP":{"strong":["C65","C68"],"partial":[]},"EAGLE":{"strong":[],"partial":[]},"ADJACENT":{"strong":["C02","C63","C78","C80"],"partial":[]}},"maritime":{"WEXMAC":{"strong":["C27","C37","C51"],"partial":[]},"LOGCAP":{"strong":["C55"],"partial":[]},"EAGLE":{"strong":[],"partial":[]},"ADJACENT":{"strong":[],"partial":[]}},"transport":{"WEXMAC":{"strong":[],"partial":["C26","C28","C32","C35","C53","C58","C62","C71","C72"]},"LOGCAP":{"strong":[],"partial":[]},"EAGLE":{"strong":[],"partial":["C03","C06","C08","C10","C11","C14","C15","C17","C18","C23","C84"]},"ADJACENT":{"strong":[],"partial":[]}},"staffing":{"WEXMAC":{"strong":[],"partial":[]},"LOGCAP":{"strong":["C40"],"partial":[]},"EAGLE":{"strong":[],"partial":[]},"ADJACENT":{"strong":[],"partial":[]}},"food-service":{"WEXMAC":{"strong":[],"partial":["C26","C32","C33","C35","C49","C50","C60","C62","C72"]},"LOGCAP":{"strong":[],"partial":["C20","C39","C43","C54"]},"EAGLE":{"strong":[],"partial":[]},"ADJACENT":{"strong":[],"partial":[]}},"hadr":{"WEXMAC":{"strong":[],"partial":["C32","C33","C35","C48","C49","C50","C59","C60","C69","C72","C73","C75","C76","C77"]},"LOGCAP":{"strong":[],"partial":["C04","C05","C16","C19","C74"]},"EAGLE":{"strong":[],"partial":[]},"ADJACENT":{"strong":[],"partial":["C78","C79","C85"]}}}}</script>
+<script>
+
+const D=JSON.parse(document.getElementById('data').textContent);
+const AREA={};D.areas.forEach(a=>AREA[a.id]=a);
+const FAMCOL={WEXMAC:'var(--wex)',LOGCAP:'var(--log)',EAGLE:'var(--eag)',ADJACENT:'var(--adj)'};
+const WINLBL={'window-open':['w-open','Window open'],'awarded-tbd':['w-tbd','Awarded — protest fallout'],'disrupted':['w-dis','Disrupted'],'pipeline':['w-pipe','Pipeline'],'lapsed':['w-dis','Past end — verify'],'ongoing-unknown':['w-unk','End date unknown'],'active-long':['w-long','Active (long)'],'legacy':['w-long','Legacy'],'own':['w-own','Own position']};
+const NEXT={'window-open':'Recon now: site visit + customer sentiment before RFP','awarded-tbd':'Awarded — engage the customer during transition; position for the NEXT cycle','disrupted':'Monitor the disruption; be the ready alternative','pipeline':'Shape it: RFI response + industry day presence','lapsed':'End date has passed — verify current status (extension, bridge, or recompete already run) before any spend; set up for the next cycle','ongoing-unknown':'Collect the end date; low-cost relationship building','active-long':'Watch','legacy':'—','own':'Execute — every CPARS entry builds the MPJV record that anchors the next bid'};
+const TODAYM='2026-07';
+const DOOR={WEXMAC:'Door OPEN — MPJV holds WEXMAC 2.0',LOGCAP:'Door CLOSED as prime — no LOGCAP V position; sub role now, LOGCAP VI SB MATOC (~2027) entry lane',EAGLE:'Door CLOSED — no EAGLE II BOA; sub to a holder or wait for on-ramp',ADJACENT:'Door VARIES — check the vehicle on this record'};
+const GAPS=new Set(D.areas.filter(a=>a.owner==='Gap').map(a=>a.id));
+const SRCCLS={RMGS:'src-r',Versar:'src-v',MPJV:'src-m'};
+const evLine=e=>'<div class="ev"><span class="'+(SRCCLS[e.src]||'src-r')+'">['+(e.src||'RMGS').toUpperCase()+']</span> <b>'+esc(e.ref)+'</b> '+esc(e.name)+(e.value?' · '+e.value:'')+(e.end?' · to '+e.end:'')+'</div>';
+document.getElementById('mSrcC').textContent=D.meta.sources.contracts.match(/\((.*)\)/)[1];
+document.getElementById('mSrcR').textContent='94 records (v1.0, 2026-06-18)';
+document.getElementById('mSrcV').textContent='44 active (GovWin, 2026-07-08)';
+document.getElementById('mBuilt').textContent=D.meta.built;
+document.getElementById('prov').textContent='Sources — '+Object.values(D.meta.sources).join(' · ');
+
+let F={fam:'ALL',win:'ALL',q:''},open=null;
+
+/* ---------- method framework ---------- */
+const FRAME=[
+{k:'Stage 1 · Timing',q:'When does the incumbent’s contract end — and is a window opening earlier?',
+why:'Capture value decays with time: 18 months out you can shape the requirement; 6 months out you can only respond to it. Windows also open early — protests, injunctions, bridges, and unhappy customers move work before the official end date.',
+soto:'The JTF-Bravo BOS scope moved under a WEXMAC 2.0 task order instead of waiting for a conventional recompete. Watching the task-order window, not the contract end date, was the entry.',
+collect:['Real task-order PoP dates (FPDS / GovWin) — vehicle-ceiling estimates are a worst case','GAO protest dockets and injunctions on incumbent awards','Bridge, extension, and re-scope signals from the KO shop','Draft RFPs, sources-sought, and on-ramp notices on SAM.gov'],
+where:[['#forecast','Forecast timeline'],['#calendar','Capture activation calendar']]},
+{k:'Stage 2 · Access',q:'Is there a contract path we can transact on?',
+why:'No vehicle, no bid — fit is irrelevant if the government can’t reach us. And speed favors held vehicles: a customer who wants to move can move in weeks on a vehicle we already hold.',
+soto:'The MPJV held WEXMAC 2.0. When the customer wanted out, the JV was reachable in a task-order cycle; competitors without the vehicle were not in the room.',
+collect:['Which vehicle carries this work today, and who holds it','On-ramp windows (EAGLE II BOA) and next-generation lanes (LOGCAP VI SB MATOC ~2027)','Set-aside pathway the KO would entertain (SDVOSB / SB / MPJV)','Sub routes: which primes hold the paper and need SB credit'],
+where:[['#targets','Door line on every target card']]},
+{k:'Stage 3 · Fit',q:'Can the combined corpus do this work — and prove it with named records?',
+why:'Evaluators buy records, not claims. The combined case — RMGS records, Versar records, and now the MPJV’s own — covers scopes neither partner could prove alone. Gaps found here become teammates, not surprises.',
+soto:'RMGS held no BOS past performance. Versar’s BOS bench (Comalapa, decades of facility and fuels operations) made the offer credible — and the win put life-support past performance on the MPJV’s own record, now the JV’s most valuable capture asset.',
+collect:['Map each scope line to a named contract number in the combined corpus','Tag every unproven claim UNVERIFIED — it does not go in the offer','Name the gap areas early (transportation, food service, HA/DR surge) and the teammate that closes each'],
+where:[['#pivot','Match pivot'],['#register','Capability register']]},
+{k:'Stage 4 · Priorities',q:'Does this contract advance the Administration’s defense objectives — at home or abroad?',
+why:'Funding and urgency follow the Administration’s priorities. A requirement tied to a named objective gets funded, expanded, and accelerated; one that isn’t risks descope, delay, or quiet death at the POM. Alignment breaks ties and drives sequencing — but it never rescues a pursuit that failed timing, access, or fit.',
+soto:'Soto Cano sits inside a stated priority: the Western-Hemisphere buildout, with the base as SOUTHCOM’s forward hub for counter-TCO operations and regional posture. The customer’s urgency was real in part because the mission is a named priority — the win put the JV inside the priority theater, not just on a contract.',
+collect:['Domestic: does the work touch homeland missions — border support under NORTHCOM, territorial posture (Puerto Rico / Caribbean), installation readiness, prepositioned-stock reset, Golden Dome ground-segment sustainment?','International: does it support named theater priorities — the SOUTHCOM buildout, Indo-Pacific logistics posture, European deterrence sustainment?','Documented signals only: executive actions, posture statements, budget lines. Every judgment is tagged [SIGNAL] with its as-of date — posture shifts fast and these answers expire at each gate','The kill test: would this pursuit still make sense if the priority wind died? If not, it is a WATCH, not a PURSUE.'],
+where:[['#targets','Target detail — scope vs. theater'],['#flags','SIGNAL discipline in standing flags']]},
+{k:'Stage 5 · Ground truth',q:'What does the customer actually think of the incumbent?',
+why:'The decisive intelligence is never in the RFP. Awards turn on pain the paperwork doesn’t state — staffing churn, empty seats, slow surge, a KO tired of excuses. Whoever knows the pain first designs the winning offer around it.',
+soto:'Someone went to Soto Cano and learned the customer was unhappy with the incumbent’s staffing approach. The offer was built around exactly that complaint. This step cannot be done from a desk.',
+collect:['Site visit with a named owner and date','Incumbent staffing model: vacancies, rotation churn, LN/US mix, key-person turnover','CPARS and award-fee signals, if reachable','Who at the customer owns the requirement, and when we last spoke to them'],
+where:[['#targets','Ground-truth checklist on every target card']]},
+{k:'Stage 6 · Price',q:'What price wins — and can we live at it?',
+why:'Incumbents on long contracts price fat. A JV pricing off combined corporate capability can undercut a heavy prime wrap — but only if we actually know the incumbent’s rates and our own floor. Guessing is how B&P dies.',
+soto:'Soto Cano was won on price: combined corporate capabilities instead of a bloated prime wrap. That advantage is structural, but it must be verified per pursuit — no rate data exists in the corpus today.',
+collect:['Incumbent rate intel: CALC / awarded-rate data, FOIA’d task orders, teaming-partner knowledge','Our combined wrap math, JV work-share compliant','A price-to-win before any gate — standing UNVERIFIED flag until done'],
+where:[['#flags','Standing flags — PTW requirement']]},
+{k:'Stage 7 · Call',q:'Pursue, pursue-if, watch, or pass — and who owns what by when?',
+why:'Research that doesn’t end in a decision is a hobby. The call converts the five answers into committed action — a named capture lead, a condition with an owner and a date, or a written pass that stops the question being relitigated every quarter.',
+soto:'At Soto Cano the answers converged: window open, vehicle held, combined fit provable, customer pain known, price beatable. The call was pursue — and it won.',
+collect:['The call in writing: PURSUE / PURSUE-IF (condition · owner · date) / WATCH (tripwire · watcher) / PASS (rationale)','B&P and bandwidth check against the two-concurrent-pursuit cap'],
+where:[['#targets','Target board ranking'],['#calendar','Activation dates']]},
+];
+let fOpen=0;
+function renderFrame(){
+document.getElementById('flow').innerHTML=FRAME.map((f,i)=>
+'<div class="fnode'+(fOpen===i?' on':'')+'" onclick="frameClick('+i+')"><span class="fx">'+(fOpen===i?'−':'+')+'</span>'+
+'<div class="fn">'+f.k+'</div><div class="fq">'+f.q+'</div></div>').join('');
+const d=document.getElementById('fdetail');
+if(fOpen===null){d.classList.remove('show');return;}
+const f=FRAME[fOpen];
+d.innerHTML='<h3><span class="fn2">'+f.k+'</span>'+f.q+'</h3><div class="fgrid">'+
+'<div><h4>Why it matters to the capture</h4><p>'+f.why+'</p></div>'+
+'<div><h4>How it played at Soto Cano</h4><p class="fsoto">'+f.soto+'</p></div>'+
+'<div><h4>What to collect</h4><ul>'+f.collect.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>'+
+'<div><h4>Where this tool answers it</h4><p>'+f.where.map(w=>'<a class="jlink" href="'+w[0]+'">'+w[1]+' ↓</a>').join('<br>')+'</p></div>'+
+'</div>';
+d.classList.add('show');
+}
+function frameClick(i){fOpen=(fOpen===i)?null:i;renderFrame();}
+const esc=s=>(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+function fitChips(c,max){
+const s=c.matches.filter(m=>m.s===2&&!GAPS.has(m.area)),p=c.matches.filter(m=>m.s===1&&!GAPS.has(m.area)),g=c.matches.filter(m=>GAPS.has(m.area));
+let h=s.slice(0,max).map(m=>'<span class="acap">'+AREA[m.area].name.split(' ')[0].replace(',','')+'</span>').join('');
+if(s.length>max)h+='<span class="acap">+'+(s.length-max)+'</span>';
+if(p.length)h+='<span class="acap p">'+p.length+' partial</span>';
+if(g.length)h+='<span class="acap g">'+g.length+' gap</span>';
+return h||'<span class="acap p">no match</span>';
+}
+function rowMatch(c){
+if(F.fam!=='ALL'&&c.family!==F.fam)return false;
+if(F.win==='OPENING'&&!['window-open','awarded-tbd','disrupted','pipeline'].includes(c.window))return false;
+if(F.q){const t=(c.locName+' '+(c.site||'')+' '+(c.incumbent||'')+' '+(c.role||'')+' '+(c.vehicle||'')).toLowerCase();if(!t.includes(F.q))return false;}
+return true;
+}
+function detailHTML(c){
+const evs=[];c.matches.forEach(m=>{const a=AREA[m.area];
+(a.rmgs||[]).forEach(e=>evs.push(evLine(e)));
+(a.versar||[]).forEach(e=>evs.push(evLine(e)));});
+const uniq=[...new Set(evs)];
+const mlist=c.matches.map(m=>{const a=AREA[m.area];const cls=GAPS.has(m.area)?'g':(m.s===2?'':'p');
+return '<span class="acap '+cls+'" title="matched: '+esc(m.kw.join(', '))+'">'+esc(a.name)+(GAPS.has(m.area)?' — GAP':(m.s===2?'':' — partial'))+'</span>';}).join(' ');
+return '<div class="det"><div class="det-grid"><div>'+
+'<h4>Scope (from map record)</h4><p>'+esc(c.role||'—')+'</p>'+
+'<h4>Record</h4><p style="font-family:var(--mono);font-size:11.5px">'+esc(c.vehicle||'')+' · '+esc(c.ceiling||'')+' · '+esc(c.period||'')+' · '+esc(c.status||'')+'</p>'+
+'<h4>Door</h4><p>'+DOOR[c.family]+'</p>'+
+'<h4>Matched areas</h4><p>'+(mlist||'none')+'</p>'+
+(uniq.length?'<h4>Evidence behind the matches</h4>'+uniq.slice(0,12).join(''):'')+
+'</div><div>'+
+'<h4>Ground-truth checklist (Test 3)</h4><ul>'+
+'<li>Who at the customer owns this requirement, and when did we last talk to them?</li>'+
+'<li>Incumbent staffing model: vacancies, rotation churn, LN vs US mix — what does the customer complain about?</li>'+
+'<li>CPARS / award-fee signals on the incumbent, if reachable</li>'+
+'<li>Price posture: is the incumbent priced fat enough to undercut on combined wrap? <span style="color:var(--orange)">[PTW required]</span></li>'+
+'<li>Set-aside pathway: any SB/SDVOSB angle the KO would entertain?</li>'+
+'<li>Site visit owner + date: ______</li></ul>'+
+'<h4>Suggested posture</h4><p>'+NEXT[c.window]+'</p>'+
+'</div></div></div>';
+}
+function renderBoard(){
+const rows=D.contracts.filter(c=>!c.own&&rowMatch(c)).sort((a,b)=>b.rank-a.rank||((a.end||'9999')<(b.end||'9999')?-1:1));
+document.getElementById('count').textContent=rows.length+' of '+D.contracts.filter(c=>!c.own).length+' records';
+document.getElementById('board').innerHTML=rows.map((c,i)=>{
+const w=WINLBL[c.window];
+let h='<tr class="trow" onclick="toggle(\''+c.id+'\')"><td class="rank">'+(i+1)+'</td>'+
+'<td class="opp">'+esc(c.locName)+'<span class="site">'+esc(c.site||'')+' · '+c.gcc.toUpperCase()+'</span></td>'+
+'<td><span class="fam '+c.family+'">'+c.family+'</span></td>'+
+'<td style="font-size:12px">'+esc(c.incumbent||'—')+'</td>'+
+'<td class="endcell">'+(c.end||(c.estEnd?'≤'+c.estEnd+' <span style="color:var(--dim)">EST</span>':(c.ongoing?'ongoing':'—')))+
+(c.end&&c.end<TODAYM?'<span class="site" style="color:var(--red-soft)">window passed</span>':(c.captureBy?'<span class="site" style="color:var(--gold)">cap '+(c.captureBy<=TODAYM?'NOW':c.captureBy)+'</span>':''))+'</td>'+
+'<td><span class="win '+w[0]+'">'+w[1]+'</span></td>'+
+'<td>'+fitChips(c,3)+'</td>'+
+'<td class="gt">'+NEXT[c.window]+'</td></tr>';
+if(open===c.id)h+='<tr class="det"><td colspan="8">'+detailHTML(c)+'</td></tr>';
+return h;}).join('');
+document.getElementById('ownBoard').innerHTML=D.contracts.filter(c=>c.own).map(c=>{
+let h='<tr class="trow" onclick="toggle(\''+c.id+'\')"><td>★</td>'+
+'<td class="opp">'+esc(c.locName)+'<span class="site">'+esc(c.site||'')+'</span></td>'+
+'<td><span class="fam '+c.family+'">'+c.family+'</span></td>'+
+'<td style="font-size:12px">'+esc(c.incumbent||'')+'</td>'+
+'<td class="endcell">'+(c.end||(c.ongoing?'ongoing':'—'))+'</td>'+
+'<td><span class="win w-own">'+esc((c.status||'').split('—')[0])+'</span></td>'+
+'<td>'+fitChips(c,3)+'</td><td></td></tr>';
+if(open===c.id)h+='<tr class="det"><td colspan="8">'+detailHTML(c)+'</td></tr>';
+return h;}).join('');
+}
+function toggle(id){open=(open===id)?null:id;renderBoard();}
+
+/* ---------- timeline ---------- */
+const Y0=2016,Y1=2032.5;
+function frac(ym){if(!ym)return null;const y=+ym.slice(0,4),m=+ym.slice(5,7);return Math.min(Math.max((y+(m-.5)/12-Y0)/(Y1-Y0),0),1);}
+const TODAYF=frac('2026-07'),WINF=frac('2028-12');
+function renderTimeline(){
+const fams=['WEXMAC','LOGCAP','EAGLE','ADJACENT'];
+document.getElementById('miles').innerHTML='<b>Vehicle-level milestones:</b>'+
+'<div class="mi">· <b>WEXMAC 1.0</b> ordering period closed Jun 30, 2026 — legacy references only.</div>'+
+'<div class="mi">· <b>WEXMAC 2.0</b> active since Dec 2024 — the MPJV&rsquo;s held prime lane; task orders turn in 10–30 days, so answers stay pre-positioned.</div>'+
+'<div class="mi">· <b>EAGLE II BOA</b> ordering ongoing (ACC-Rock Island) — the JV holds no BOA; SAM.gov on-ramp watch is a standing tripwire.</div>'+
+'<div class="mi">· <b>LOGCAP V</b> vehicle period of performance: Apr 12, 2019 – <b>Mar 2, 2030</b> (5-yr base + five 1-yr ordering options). Task orders with no published end are bounded by that date. <b>LOGCAP VI SB MATOC</b> RFP expected ~2027: the build-toward entry lane — and the recompete of everything LOGCAP V holds.</div>'+
+'<div class="mi">· <b>Read the diamonds:</b> capture starts 18 months before contract end. A diamond at or left of the gold today-line means the recon window is open <b>now</b>.</div>';
+let axis='<div class="tl-axis">';for(let y=Y0;y<=2032;y+=2)axis+='<span style="left:'+(100*(y-Y0)/(Y1-Y0))+'%">'+y+'</span>';axis+='</div>';
+let h=axis;
+fams.forEach(f=>{
+const rows=D.contracts.filter(c=>c.family===f&&(c.end||c.estEnd)).sort((a,b)=>(a.end||a.estEnd)<(b.end||b.estEnd)?-1:1);
+h+='<div class="tl-group"><b>'+f+'</b> · '+rows.length+' records</div>';
+rows.forEach(c=>{
+const s=frac(c.start)??Math.max(0,(frac(c.end||c.estEnd)??.5)-.04);
+const eff=c.end||c.estEnd;
+const e=eff?frac(eff):1;
+const col=c.own?'var(--gold)':FAMCOL[f];
+const capF=c.captureBy?frac(c.captureBy):null;
+const past=c.end&&c.end<TODAYM;
+let endTxt;
+if(past)endTxt='<span style="color:var(--red-soft)">ended <b>'+c.end+'</b> · window passed</span>';
+else if(c.end)endTxt='ends <b>'+c.end+'</b>';
+else if(c.estEnd)endTxt='<span class="est-t">est ≤'+c.estEnd+' (vehicle)</span>';
+else endTxt='<span class="est-t">no date signal</span>';
+if(c.captureBy&&!c.own&&!past)endTxt+=' <span class="cap-t">· cap '+(c.captureBy<=TODAYM?'NOW':c.captureBy)+'</span>';
+const solid=c.end?'':' est';
+h+='<div class="tl-row"><div class="tl-lbl" onclick="toggle(\''+c.id+'\');document.querySelector(\'.tbl\').scrollIntoView({behavior:\'smooth\'})" title="'+esc(c.locName)+' — '+esc(c.incumbent||'')+'">'+(c.own?'★ ':'')+esc(c.locName)+' <span style="color:var(--dim)">· '+esc((c.incumbent||'').split('(')[0].trim())+'</span></div>'+
+'<div class="tl-track"><div class="tl-win" style="left:'+(TODAYF*100)+'%;width:'+((WINF-TODAYF)*100)+'%"></div>'+
+'<div class="tl-bar'+solid+((!eff&&c.ongoing)?' ong':'')+'" style="left:'+(s*100)+'%;width:'+(Math.max((e-s)*100,.8))+'%;background:'+col+';color:'+col+'"></div>'+
+(capF!==null&&!c.own&&!past?'<div class="tl-cap" style="left:calc('+(capF*100)+'% - 4px)" title="begin capture: '+c.captureBy+'"></div>':'')+
+'<div class="tl-today" style="left:'+(TODAYF*100)+'%"></div></div>'+
+'<div class="tl-end">'+endTxt+'</div></div>';
+});
+});
+document.getElementById('timeline').innerHTML=h;
+}
+
+/* ---------- capture activation calendar ---------- */
+function q(ym){return ym.slice(0,4)+' Q'+Math.ceil(+ym.slice(5,7)/3);}
+function renderCal(){
+const all=D.contracts.filter(c=>!c.own&&c.captureBy&&c.window!=='legacy');
+const lapsed=all.filter(c=>c.end&&c.end<TODAYM).sort((a,b)=>a.end<b.end?1:-1);
+const rows=all.filter(c=>!(c.end&&c.end<TODAYM)).sort((a,b)=>a.captureBy<b.captureBy?-1:1);
+let h='',lastQ=null;
+rows.forEach(c=>{
+const now=c.captureBy<=TODAYM;
+const grp=now?'NOW — recon window already open':q(c.captureBy);
+if(grp!==lastQ){h+='<tr class="qhead"><td colspan="7">'+grp+'</td></tr>';lastQ=grp;}
+const w=WINLBL[c.window];
+h+='<tr class="trow" onclick="toggle(\''+c.id+'\');document.querySelector(\'.tbl\').scrollIntoView({behavior:\'smooth\'})">'+
+'<td class="endcell'+(now?' now-t':'')+'">'+(now?'NOW':c.captureBy)+'</td>'+
+'<td class="opp">'+esc(c.locName)+'<span class="site">'+esc(c.site||'')+'</span></td>'+
+'<td><span class="fam '+c.family+'">'+c.family+'</span></td>'+
+'<td style="font-size:12px">'+esc(c.incumbent||'—')+'</td>'+
+'<td class="endcell">'+(c.end||('≤'+c.estEnd+' EST'))+'</td>'+
+'<td style="font-size:11px;color:var(--dim)">'+(c.end?'published end date':esc(c.estBasis||''))+'</td>'+
+'<td><span class="win '+w[0]+'">'+w[1]+'</span></td></tr>';
+});
+if(lapsed.length){
+h+='<tr class="qhead"><td colspan="7" style="color:var(--red-soft)">WINDOW PASSED — end date behind us; verify current status (extension, bridge, or recompete already run), then position for the next cycle</td></tr>';
+lapsed.forEach(c=>{
+const w=WINLBL[c.window];
+h+='<tr class="trow" onclick="toggle(\''+c.id+'\');document.querySelector(\'.tbl\').scrollIntoView({behavior:\'smooth\'})">'+
+'<td class="endcell" style="color:var(--red-soft)">PASSED</td>'+
+'<td class="opp">'+esc(c.locName)+'<span class="site">'+esc(c.site||'')+'</span></td>'+
+'<td><span class="fam '+c.family+'">'+c.family+'</span></td>'+
+'<td style="font-size:12px">'+esc(c.incumbent||'—')+'</td>'+
+'<td class="endcell">'+c.end+'</td>'+
+'<td style="font-size:11px;color:var(--dim)">'+esc(c.status||'')+'</td>'+
+'<td><span class="win '+w[0]+'">'+w[1]+'</span></td></tr>';
+});
+}
+document.getElementById('calBody').innerHTML=h;
+}
+
+/* ---------- pivot ---------- */
+const FAMS=['WEXMAC','LOGCAP','EAGLE','ADJACENT'];
+function renderPivot(){
+document.getElementById('pvBody').innerHTML=D.areas.map(a=>{
+const r=D.pivot[a.id];let tot=0;
+const cells=FAMS.map(f=>{const s=r[f].strong.length,p=r[f].partial.length;tot+=s+p;
+const cls=s>=8?'c-hi':s>=3?'c-md':(s+p)>0?'c-lo':'c-z';
+return '<td class="cell '+cls+'" onclick="drill(\''+a.id+'\',\''+f+'\')">'+(s+p?s+' / '+p:'·')+'</td>';}).join('');
+return '<tr><td class="aname" onclick="drillArea(\''+a.id+'\')">'+esc(a.name)+'</td>'+
+'<td><span class="own-chip '+a.owner+'">'+a.owner+'</span></td>'+cells+
+'<td class="cell c-lo">'+tot+'</td></tr>';}).join('');
+}
+function drill(aid,f){
+const a=AREA[aid],r=D.pivot[aid][f];
+const li=ids=>ids.map(id=>{const c=D.contracts.find(x=>x.id===id);
+return '<div class="di" onclick="toggle(\''+id+'\');document.querySelector(\'.tbl\').scrollIntoView({behavior:\'smooth\'})">'+esc(c.locName)+' <span style="color:var(--dim)">· '+esc(c.incumbent||'')+' · '+(c.end||(c.ongoing?'ongoing':'—'))+'</span></div>';}).join('');
+const d=document.getElementById('drill');
+d.innerHTML='<h4>'+esc(a.name)+' × '+f+'</h4>'+
+(r.strong.length?'<p style="font-family:var(--mono);font-size:10px;color:var(--green);margin:6px 0 2px">STRONG ('+r.strong.length+')</p>'+li(r.strong):'')+
+(r.partial.length?'<p style="font-family:var(--mono);font-size:10px;color:var(--amber);margin:6px 0 2px">PARTIAL ('+r.partial.length+')</p>'+li(r.partial):'')+
+(!r.strong.length&&!r.partial.length?'<p style="color:var(--dim);font-size:12px">No matches in this cell.</p>':'');
+d.classList.add('show');if(d.scrollIntoView)d.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function drillArea(aid){
+const a=AREA[aid],d=document.getElementById('drill');
+const ev=(a.rmgs||[]).map(evLine).join('')+(a.versar||[]).map(evLine).join('');
+d.innerHTML='<h4>'+esc(a.name)+' <span class="own-chip '+a.owner+'">'+a.owner+'</span></h4><p style="font-size:12.5px;color:var(--mist);margin:4px 0 8px">'+esc(a.note)+'</p>'+(ev||'<div class="ev gapb" style="color:var(--red-soft)">No performance records — claim-level or gap.</div>');
+d.classList.add('show');
+}
+function renderReg(){
+document.getElementById('reg').innerHTML=D.areas.map(a=>{
+const n=(a.rmgs||[]).length+(a.versar||[]).length;
+return '<div class="rcard'+(a.owner==='Gap'?' gap':'')+'"><div class="rt">'+esc(a.name)+' <span class="own-chip '+a.owner+'">'+a.owner+'</span></div>'+
+'<p>'+esc(a.note)+'</p>'+
+'<p style="font-family:var(--mono);font-size:10.5px;color:'+(n?'var(--slate)':'var(--red-soft)')+'">'+(n? n+' record(s) — click the area in the pivot for the list':'NO RECORDS — teaming requirement')+'</p></div>';}).join('');
+}
+document.querySelectorAll('.ctl').forEach(b=>b.addEventListener('click',()=>{
+const f=b.dataset.f;F[f]=b.dataset.v;
+document.querySelectorAll('.ctl[data-f="'+f+'"]').forEach(x=>x.classList.toggle('on',x===b));
+renderBoard();
+}));
+document.getElementById('q').addEventListener('input',e=>{
+const was=F.q;F.q=e.target.value.toLowerCase();renderBoard();
+if(F.q&&!was){const t=document.getElementById('targets');if(t&&t.scrollIntoView)t.scrollIntoView({behavior:'smooth'});}
+});
+renderFrame();renderBoard();renderTimeline();renderCal();renderPivot();renderReg();
+
+</script>
+<script>
+/* Unified RMGS site search (self-contained) — indexes this page + every other page. */
+(function(){
+  if(document.querySelector('.site-search'))return;
+  var SELF=(location.pathname.split('/').pop()||'index.html'); if(!SELF)SELF='index.html';
+  var ALL=[{f:'index.html',l:'RMGS Home'},{f:'stingrai.html',l:'STINGRAI'},{f:'soto-cano.html',l:'Soto Cano'},{f:'southcom-navigator.html',l:'SOUTHCOM Acquisition Tool'},{f:'csuas-framework.html',l:'Counter-UAS'},{f:'logistics-capture-tool.html',l:'Logistics Capture Tool'},{f:'wexmac-maps-rmgs.html',l:'Opportunity Map'}];
+  var EXT=ALL.filter(function(p){return p.f!==SELF;});
+  var CSS='.nav-search-btn{background:none;border:none;color:#9fb2c4;cursor:pointer;padding:8px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;transition:color .2s,background .2s;flex:none}.nav-search-btn:hover{color:#2fd0c7;background:rgba(255,255,255,.06)}'
+   +'.site-search[hidden]{display:none}.site-search{position:fixed;inset:0;z-index:4000;display:flex;align-items:flex-start;justify-content:center;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}'
+   +'.site-search__backdrop{position:absolute;inset:0;background:rgba(3,10,20,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}'
+   +'.site-search__panel{position:relative;margin-top:11vh;width:min(620px,92vw);background:#0a2342;border:1px solid rgba(255,255,255,.14);border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.55);overflow:hidden}'
+   +'.site-search__bar{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.14);color:#9fb2c4}'
+   +'.site-search__input{flex:1;background:none;border:none;outline:none;color:#fff;font-size:16px;font-family:inherit}.site-search__input::placeholder{color:#7f93a8}'
+   +'.site-search__close{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#9fb2c4;font-size:11px;font-family:monospace;padding:4px 8px;border-radius:6px;cursor:pointer;letter-spacing:.08em}.site-search__close:hover{color:#fff}'
+   +'.site-search__results{max-height:56vh;overflow-y:auto;padding:6px}.site-search__empty{padding:18px 16px;color:#7f93a8;font-size:14px}'
+   +'.site-search__hit{display:flex;flex-direction:column;gap:2px;width:100%;text-align:left;background:none;border:none;color:#fff;padding:10px 14px;border-radius:9px;cursor:pointer}.site-search__hit:hover,.site-search__hit.is-active{background:rgba(47,208,199,.12)}'
+   +'.ssh-label{font-size:15px;font-weight:600;line-height:1.25}.ssh-sub{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#2fd0c7}'
+   +'mark.rmgs-hl{background:rgba(47,208,199,.34);color:#fff;border-radius:3px;padding:0 1px;box-shadow:0 0 0 2px rgba(47,208,199,.34);animation:rmgsHl 4.2s ease forwards}@keyframes rmgsHl{0%,72%{background:rgba(47,208,199,.4)}100%{background:transparent;box-shadow:none}}';
+  var st=document.createElement('style');st.textContent=CSS;document.head.appendChild(st);
+  var ic='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>';
+  function esc(s){return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function scopeOf(node){return (node.closest&&node.closest('section,article,.page,.blk,main'))||node.parentElement||document.body;}
+  function secText(node){var s=scopeOf(node);return s?(s.textContent||''):'';}
+  var pidx=null;
+  function buildPage(){var out=[],seen={};document.querySelectorAll('h1,h2,h3,h4').forEach(function(hd){if(hd.closest('header,nav,.nav,.rmgs-nav,.site-search'))return;var label=(hd.textContent||'').replace(/\s+/g,' ').trim();if(!label||label.length<3||label.length>96)return;var k=label.toLowerCase();if(seen[k])return;seen[k]=1;out.push({label:label,el:hd,text:(label+' '+secText(hd)).replace(/\s+/g,' ').toLowerCase().slice(0,1600)});});return out;}
+  function ensureP(){if(!pidx)pidx=buildPage();return pidx;}
+  function searchPage(q){q=q.toLowerCase().trim();if(!q)return[];var t=q.split(/\s+/),o=[];ensureP().forEach(function(e){if(!t.every(function(x){return e.text.indexOf(x)>=0;}))return;var sc=0,l=e.label.toLowerCase();t.forEach(function(x){if(l.indexOf(x)>=0)sc+=5;});if(l.indexOf(q)>=0)sc+=8;o.push({e:e,sc:sc});});o.sort(function(a,b){return b.sc-a.sc;});return o.slice(0,6).map(function(r){return r.e;});}
+  var extIdx=null,extTried=false;
+  function anchorFor(el){var n=el;while(n&&n.tagName!=='BODY'){if(n.id)return n.id;n=n.parentElement;}return '';}
+  function loadExt(){if(extTried)return;extTried=true;var acc=[],pend=EXT.length;function fin(){if(--pend<=0){extIdx=acc;if(!ov.hidden&&input.value.trim())render(build(input.value));}}EXT.forEach(function(p){fetch(p.f).then(function(r){return r.text();}).then(function(tx){try{var doc=new DOMParser().parseFromString(tx,'text/html'),seen={};doc.querySelectorAll('h1,h2,h3,h4').forEach(function(hd){var label=(hd.textContent||'').replace(/\s+/g,' ').trim();if(!label||label.length<3||label.length>96)return;var k=label.toLowerCase();if(seen[k])return;seen[k]=1;var id=anchorFor(hd),sc2=(hd.closest&&hd.closest('section,article,.page,.blk,main'))||hd.parentElement,tt=(label+' '+((sc2&&sc2.textContent)||'')).replace(/\s+/g,' ');acc.push({label:label,sub:p.l,url:p.f+(id?('#'+id):''),text:tt.toLowerCase().slice(0,1600)});});}catch(_){}}).catch(function(){}).then(fin);});}
+  function searchExt(q){if(!extIdx)return[];q=q.toLowerCase().trim();if(!q)return[];var t=q.split(/\s+/),o=[];extIdx.forEach(function(e){if(!t.every(function(x){return e.text.indexOf(x)>=0;}))return;var sc=0,l=e.label.toLowerCase();t.forEach(function(x){if(l.indexOf(x)>=0)sc+=5;});if(l.indexOf(q)>=0)sc+=8;o.push({e:e,sc:sc});});o.sort(function(a,b){return b.sc-a.sc;});return o.slice(0,8).map(function(r){return r.e;});}
+  function build(q){var out=[];searchPage(q).forEach(function(e){out.push({type:'el',label:e.label,sub:'On this page',el:e.el});});searchExt(q).forEach(function(e){out.push({type:'ext',label:e.label,sub:e.sub,url:e.url});});return out;}
+  function unmark(){document.querySelectorAll('mark.rmgs-hl').forEach(function(m){var p=m.parentNode;if(!p)return;while(m.firstChild)p.insertBefore(m.firstChild,m);p.removeChild(m);if(p.normalize)p.normalize();});}
+  function markPhrase(scope,q){unmark();if(!scope||!q)return null;q=q.trim().toLowerCase();if(!q)return null;var cands=[q];q.split(/\s+/).sort(function(a,b){return b.length-a.length;}).forEach(function(t){if(t.length>2&&cands.indexOf(t)<0)cands.push(t);});for(var c=0;c<cands.length;c++){var ph=cands[c],w=document.createTreeWalker(scope,NodeFilter.SHOW_TEXT,null),node;while(node=w.nextNode()){var pn=node.parentNode;if(!pn||/^(script|style|mark)$/i.test(pn.nodeName)||!pn.offsetParent)continue;var i=node.nodeValue.toLowerCase().indexOf(ph);if(i<0)continue;try{var r=document.createRange();r.setStart(node,i);r.setEnd(node,i+ph.length);var mk=document.createElement('mark');mk.className='rmgs-hl';r.surroundContents(mk);return mk;}catch(e){continue;}}}return null;}
+  var ov=document.createElement('div');ov.className='site-search';ov.hidden=true;
+  ov.innerHTML='<div class="site-search__backdrop"></div><div class="site-search__panel" role="dialog" aria-label="Search"><div class="site-search__bar">'+ic+'<input class="site-search__input" type="text" placeholder="Search the whole site…" aria-label="Search"><button class="site-search__close" type="button" aria-label="Close">Esc</button></div><div class="site-search__results"></div></div>';
+  document.body.appendChild(ov);
+  var input=ov.querySelector('.site-search__input'),res=ov.querySelector('.site-search__results'),cur=[],act=-1;
+  function render(list){cur=list;act=list.length?0:-1;if(!input.value.trim()){res.innerHTML='<div class="site-search__empty">Search every RMGS page…</div>';return;}if(!list.length){res.innerHTML='<div class="site-search__empty">No matches.</div>';return;}res.innerHTML=list.map(function(e,i){return '<button class="site-search__hit'+(i===0?' is-active':'')+'" type="button" data-i="'+i+'"><span class="ssh-label">'+esc(e.label)+'</span><span class="ssh-sub">'+esc(e.sub)+'</span></button>';}).join('');}
+  function open(){ov.hidden=false;document.documentElement.style.overflow='hidden';input.value='';render([]);loadExt();setTimeout(function(){input.focus();},30);}
+  function close(){ov.hidden=true;document.documentElement.style.overflow='';}
+  function goEl(el,q){close();setTimeout(function(){var sec=scopeOf(el);var m=markPhrase(sec,q),tgt=m||el;try{tgt.scrollIntoView({behavior:'smooth',block:'center'});}catch(_){}if(m)setTimeout(unmark,4200);},110);}
+  function go(it){var q=input.value;if(it.type==='el'){goEl(it.el,q);return;}if(it.type==='ext'){var base=it.url,qq=(q||'').trim();if(qq){base+=(base.indexOf('#')>=0?'':'#')+':~:text='+encodeURIComponent(qq.replace(/,+/g,' ').trim());}window.location.href=base;return;}}
+  input.addEventListener('input',function(){render(build(input.value));});
+  ov.addEventListener('click',function(e){if(e.target.classList.contains('site-search__backdrop')||e.target.classList.contains('site-search__close')){close();return;}var hit=e.target.closest&&e.target.closest('.site-search__hit');if(hit)go(cur[+hit.dataset.i]);});
+  input.addEventListener('keydown',function(e){if(e.key==='Escape'){close();return;}if(e.key==='Enter'){if(cur[act])go(cur[act]);return;}if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if(!cur.length)return;act=(act+(e.key==='ArrowDown'?1:-1)+cur.length)%cur.length;var hs=res.querySelectorAll('.site-search__hit');for(var i=0;i<hs.length;i++)hs[i].classList.toggle('is-active',i===act);if(hs[act])hs[act].scrollIntoView({block:'nearest'});}});
+  document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();open();}else if(e.key==='/'&&ov.hidden&&!/^(input|textarea|select)$/i.test((e.target&&e.target.tagName)||'')){e.preventDefault();open();}});
+  var hostSel=document.querySelector('.nav-r')||document.querySelector('.rmgs-nav__right')||document.querySelector('.nav-inner')||document.querySelector('.rmgs-nav__inner')||document.querySelector('header')||document.querySelector('.nav');
+  if(hostSel){var b=document.createElement('button');b.className='nav-search-btn';b.type='button';b.setAttribute('aria-label','Search');b.innerHTML=ic;b.addEventListener('click',open);hostSel.appendChild(b);}
+  try{var ss=new URLSearchParams(location.search).get('ss');if(ss){open();input.value=ss;render(build(ss));}}catch(e){}
+})();
+</script>
+
+</body>
+</html>
