@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en" class="lang-en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#06182e">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%2306182e'/><path d='M14 30 A18 18 0 0 1 50 30' fill='none' stroke='%231f86c9' stroke-width='5' stroke-linecap='round'/><path d='M50 34 A18 18 0 0 1 14 34' fill='none' stroke='%238b9298' stroke-width='5' stroke-linecap='round'/></svg>">
+<title>C-sUAS Decision Framework | RMGS, Inc.</title>
+<style>
+:root{
+  --blue:#ef4444;--bl:rgba(239,68,68,.13);--red:#ff6b6b;--rl:rgba(255,107,107,.12);
+  --amber:#f5b445;--green:#4ade80;
+  --dark:#f2f6fb;--body:#cdd9e8;--muted:#8da4bf;
+  --border:rgba(255,255,255,.12);--off:#0b2338;--white:#0e2540;
+  --navy:#06182e;
+  --font:"Helvetica Neue",Arial,system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--white);color:var(--body);font-family:var(--font);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;padding-bottom:80px}
+
+/* BILINGUAL */
+html.lang-en .es{display:none!important}
+html.lang-es .en{display:none!important}
+
+/* ── TOP NAV ── */
+.nav{position:sticky;top:0;z-index:200;background:var(--white);border-bottom:1px solid var(--border);height:52px;display:flex;align-items:center;padding:0 16px;gap:12px}
+.nmark{width:28px;height:28px;background:var(--blue);display:grid;place-items:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
+.ntitle{font-size:12px;font-weight:700;color:var(--dark);text-transform:uppercase;letter-spacing:-.01em;flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.ncls{font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--red);border:1px solid var(--red);padding:2px 6px;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+.ltog{display:flex;border:1.5px solid var(--blue);overflow:hidden;flex-shrink:0}
+.lbtn{padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--blue);-webkit-tap-highlight-color:transparent}
+.lbtn.active{background:var(--blue);color:#fff}
+
+/* ── HERO ── */
+.hero{padding:28px 16px 24px;border-bottom:1px solid var(--border)}
+.hey{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.hey::before{content:'';width:18px;height:2px;background:var(--blue);display:block}
+.hh{font-size:28px;font-weight:800;line-height:1.08;letter-spacing:-.02em;color:var(--dark);margin-bottom:20px}
+.hh em{font-style:normal;color:var(--blue)}
+.hstats{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid var(--border);border-left:1px solid var(--border)}
+.stat{padding:14px 12px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.sn{font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--dark);line-height:1;margin-bottom:2px}
+.sn.b{color:var(--blue)}.sn.r{color:var(--red)}
+.sl{font-size:9px;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;line-height:1.3}
+
+/* ── ROLE PILLS ── */
+.roles{padding:12px 16px;border-bottom:1px solid var(--border);background:var(--off);display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.roles::-webkit-scrollbar{display:none}
+.rpill{padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--white);color:var(--muted);white-space:nowrap;border-radius:0;-webkit-tap-highlight-color:transparent;flex-shrink:0;transition:.15s}
+.rpill.active{border-color:var(--blue);color:var(--blue);background:var(--bl)}
+
+/* ── LAYER NAV ── */
+.lnav{padding:8px 16px 4px;border-bottom:1px solid var(--border);background:var(--white)}
+.lnav-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.lnav-pills{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch}
+.lnav-pills::-webkit-scrollbar{display:none}
+.lpill{padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--muted);white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.lpill.active{border-color:var(--blue);color:var(--blue);background:var(--bl)}
+
+/* ── PANELS ── */
+.panel{display:none}
+.panel.active{display:block}
+
+/* ── CONTENT ── */
+.cnt{padding:20px 16px 40px}
+
+/* ── SECTION BLOCK ── */
+.layer{margin-bottom:40px;scroll-margin-top:60px}
+.lhdr{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.lnum-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.lnum{width:32px;height:32px;border:1.5px solid var(--blue);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--blue);flex-shrink:0}
+.lcat{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);padding:2px 6px}
+.ltit{font-size:18px;font-weight:800;letter-spacing:-.02em;color:var(--dark);line-height:1.2;margin-bottom:4px}
+.lsub{font-size:12px;color:var(--muted);font-style:italic;margin-bottom:8px}
+.ldesc{font-size:13px;color:var(--body);line-height:1.7}
+
+/* ── GROUP DIV ── */
+.gdiv{padding:20px 0 12px;margin-bottom:20px;border-bottom:2px solid var(--dark)}
+.gtag{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+.gtit{font-size:17px;font-weight:800;letter-spacing:-.02em;color:var(--dark)}
+
+/* ── TAGS ── */
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.tag{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border:1.5px solid currentColor}
+.tr{color:var(--red)}.ta{color:var(--amber)}.tg{color:var(--muted)}.tb{color:var(--blue)}.tv{color:var(--green)}
+
+/* ── SECTION LABEL ── */
+.slbl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+
+/* ── CALLOUT ── */
+.co{border-left:4px solid var(--blue);background:var(--bl);padding:14px 16px;margin-bottom:16px}
+.co.r{border-left-color:var(--red);background:var(--rl)}
+.co.a{border-left-color:var(--amber);background:#fffbeb}
+.co.g{border-left-color:var(--green);background:#f0fdf4}
+.col{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:5px}
+.co.r .col{color:var(--red)}.co.a .col{color:var(--amber)}.co.g .col{color:var(--green)}
+.cot{font-size:13px;color:var(--dark);line-height:1.6;font-weight:500}
+
+/* ── CARDS ── */
+.cards{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.card{border:1px solid var(--border);padding:16px}
+.clab{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
+.clab.r{color:var(--red)}.clab.a{color:var(--amber)}.clab.gr{color:var(--muted)}.clab.gn{color:var(--green)}
+.ctit{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:5px}
+.cbod{font-size:12px;color:var(--body);line-height:1.6}
+
+/* ── TABLE (scroll on mobile) ── */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:16px}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;min-width:480px}
+.tbl th{background:var(--off);border:1px solid var(--border);padding:8px 12px;text-align:left;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.tbl td{border:1px solid var(--border);padding:9px 12px;color:var(--body);vertical-align:top;line-height:1.5}
+.tbl tr:hover td{background:var(--off)}
+.ts{font-weight:700;color:var(--dark)}.tr2{color:var(--red);font-weight:600}.ta2{color:var(--amber);font-weight:600}.tgn{color:var(--green);font-weight:600}.tm{color:var(--muted);font-style:italic}.tb2{color:var(--blue);font-weight:600}
+.ph{color:var(--green);font-weight:700}.pm{color:var(--amber);font-weight:700}.pl{color:var(--red);font-weight:700}
+
+/* ── FLOW ── */
+.flow{display:flex;flex-direction:column;gap:0;margin-bottom:16px}
+.fn{display:flex;align-items:flex-start;gap:12px;border:1px solid var(--border);padding:12px 14px;background:var(--white)}
+.fn.hi{border-color:var(--blue);background:var(--bl)}
+.fn.wa{border-color:var(--red);background:var(--rl)}
+.fnum{font-size:10px;font-weight:700;color:var(--blue);flex-shrink:0;min-width:24px}
+.ftxt{font-size:12px;color:var(--body);line-height:1.5}
+.ftxt strong{color:var(--dark)}
+.farr{padding:0 0 0 38px;color:#d0d0d0;font-size:16px;line-height:1.4}
+
+/* ── SPECTRUM ── */
+.spec{display:flex;flex-direction:column;gap:2px;margin-bottom:16px}
+.srow{border:1px solid var(--border)}
+.srow-top{display:flex;align-items:stretch}
+.slv{padding:10px 8px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-align:center;border-right:1px solid var(--border);min-width:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.3}
+.sl1{background:#f0fdf4;color:#16a34a}.sl2{background:#ecfdf5;color:#059669}.sl3{background:#fffbeb;color:#b45309}
+.sl4{background:#fff7ed;color:#c2410c}.sl5{background:#fef2f2;color:#dc2626}.sl6{background:#fee2e2;color:#ef4444}.sl7{background:#fecaca;color:#991b1b}
+.scon{padding:10px 12px;flex:1}
+.stit{font-size:12px;font-weight:700;color:var(--dark);margin-bottom:2px}
+.sdesc{font-size:11px;color:var(--body);line-height:1.5}
+.sauth{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;padding:6px 12px;border-top:1px solid var(--border);background:var(--off)}
+
+/* ── OPERATOR PANE ── */
+.opane{border:2px solid var(--border);margin-bottom:24px}
+.oph{background:var(--dark);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center}
+.opt{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.olive{font-size:10px;font-weight:700;color:#4ade80;display:flex;align-items:center;gap:5px}
+.ldot{width:6px;height:6px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.otrk{background:var(--off);border-bottom:1px solid var(--border);padding:14px}
+.tid{font-size:12px;font-weight:800;color:var(--blue);margin-bottom:3px}
+.tass{font-size:11px;font-weight:700;color:var(--red);margin-bottom:8px}
+.tmet{font-size:11px;color:var(--body);line-height:1.7}
+.oaut{background:#fffbeb;border-bottom:1px solid #fde68a;padding:10px 14px;font-size:11px;font-weight:600;color:var(--amber)}
+.oopts{display:flex;flex-direction:column;border-bottom:1px solid var(--border)}
+.oopt{padding:14px;text-align:center;cursor:pointer;border-bottom:1px solid var(--border);-webkit-tap-highlight-color:transparent}
+.oopt:last-child{border-bottom:none}
+.oopt.pri{background:var(--blue)}
+.onam{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--dark)}
+.oopt.pri .onam{color:#fff}
+.osub{font-size:11px;color:var(--muted);margin-top:2px}
+.oopt.pri .osub{color:rgba(255,255,255,.7)}
+.osta{padding:10px 14px;background:var(--off);display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.osta span{display:flex;align-items:center;gap:4px}
+.sg{color:var(--green)}.sa{color:var(--amber)}.sr{color:var(--red)}
+
+/* ── PHASES ── */
+.plist{display:flex;flex-direction:column;gap:2px;margin-bottom:16px}
+.phase{display:grid;grid-template-columns:44px 1fr;border:1px solid var(--border)}
+.pn{background:var(--off);display:grid;place-items:center;font-size:15px;font-weight:800;color:var(--blue);border-right:1px solid var(--border)}
+.pc{padding:12px 14px}
+.ptit{font-size:12px;font-weight:700;color:var(--dark);margin-bottom:2px}
+.pdesc{font-size:11px;color:var(--body);line-height:1.5}
+
+/* ── ACQ GRID ── */
+.acqg{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:16px}
+.acqc{background:var(--white);padding:14px}
+.ap{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:4px}
+.an{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:3px}
+.ad{font-size:11px;color:var(--body);line-height:1.5}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:16px;font-size:10px;color:var(--muted);text-align:center;line-height:1.8}
+
+/* ── DESKTOP ENHANCEMENTS ── */
+@media(min-width:768px){
+  body{padding-bottom:0}
+  .nav{padding:0 32px;height:60px}
+  .ntitle{font-size:13px}
+  .hero{padding:60px 40px 48px}
+  .hh{font-size:48px}
+  .hstats{grid-template-columns:repeat(6,1fr)}
+  .stat{padding:20px 24px}
+  .sn{font-size:30px}
+  .roles{padding:0 40px}
+  .lnav{padding:8px 40px 0}
+  .cnt{padding:40px 40px 60px;max-width:880px}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .cards.three{grid-template-columns:1fr 1fr 1fr}
+  .tbl{min-width:auto}
+  .oopts{flex-direction:row}
+  .oopt{border-bottom:none;border-right:1px solid var(--border)}
+  .oopt:last-child{border-right:none}
+  footer{text-align:left;display:flex;justify-content:space-between;padding:20px 40px}
+}
+  .nback{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
+  .nback b{color:var(--dark);font-size:14px;font-weight:800;letter-spacing:.03em}
+  .hey::before{background:#ef4444}
+
+/* ============================================================
+   RMGS STYLE CONVENTIONS (light theme) — layout, type, radii
+   ============================================================ */
+body{font-size:16px;line-height:1.65}
+
+/* Hero typography — larger, RMGS-scale */
+.hh{font-size:clamp(30px,5.5vw,60px);letter-spacing:-.025em;line-height:1.05;margin-bottom:26px}
+.hey{font-size:12px;letter-spacing:.24em;margin-bottom:16px}
+.hey::before{width:24px}
+
+/* Eyebrows / labels — RMGS letter-spacing */
+.gtag,.slbl,.clab,.col,.ap,.lcat,.lnav-label,.hey,.opt,.osta{letter-spacing:.18em}
+
+/* Stats — rounded cards instead of grid lines */
+.hstats{border:0;gap:12px}
+.stat{border:1px solid var(--border);border-radius:14px;background:var(--off);padding:16px 14px}
+.sn{font-size:26px}
+
+/* Section headings — bigger, rounded number chips, more air */
+.ltit{font-size:23px;letter-spacing:-.02em}
+.gtit{font-size:21px}
+.lnum{width:40px;height:40px;border-radius:11px;font-size:13px}
+.lhdr{padding-bottom:20px;margin-bottom:20px}
+.layer{margin-bottom:52px;scroll-margin-top:120px}
+.gdiv{border-bottom:1px solid var(--border);padding:26px 0 14px}
+
+/* Role + layer pills — rounded RMGS pills */
+.rpill{border-radius:30px;padding:9px 18px;font-size:13px;transition:.2s}
+.lpill{border-radius:30px;padding:6px 14px}
+.roles{gap:10px;padding-top:14px;padding-bottom:14px}
+.ltog{border-radius:30px;overflow:hidden}
+.lbtn{padding:5px 14px}
+
+/* Cards — rounded, subtle hover lift */
+.cards{gap:14px}
+.card{border-radius:14px;padding:22px;background:var(--white);transition:transform .2s,border-color .2s,box-shadow .2s}
+.card:hover{transform:translateY(-3px);border-color:rgba(37,99,235,.4);box-shadow:0 12px 30px rgba(6,24,46,.07)}
+.ctit{font-size:15px;margin-bottom:6px}
+.cbod{font-size:13.5px}
+
+/* Callouts / flow / phases / acq / spectrum / panes / tables — rounded */
+.co{border-radius:0 12px 12px 0;padding:16px 18px}
+.cot{font-size:14px}
+.flow{gap:8px}
+.fn{border-radius:10px;padding:14px 16px}
+.plist{gap:8px}
+.phase{border-radius:10px}
+.acqg{border-radius:12px;overflow:hidden}
+.acqc{padding:16px}
+.spec{gap:8px}
+.srow{border-radius:10px;overflow:hidden}
+.tbl-wrap{border:1px solid var(--border);border-radius:12px;overflow:auto}
+.tbl th,.tbl td{border-left:0;border-right:0}
+.opane{border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.tag{border-radius:20px;padding:3px 11px}
+
+/* Primary operator action — RMGS gradient */
+.oopt.pri{background:linear-gradient(120deg,#ef4444,#2563eb)}
+.oopt.pri .onam,.oopt.pri .osub{color:#fff}
+
+/* Nav */
+.nav{border-bottom:1px solid var(--border)}
+.ntitle{letter-spacing:.02em}
+
+/* ---- Center content in a wide container (RMGS) ---- */
+@media(min-width:768px){
+  .nav{height:72px;padding:0 40px}
+  .hero{padding:76px 40px 58px}
+  .hero>.hey,.hero>.hh,.hero>.hstats{max-width:1080px;margin-left:auto;margin-right:auto}
+  .hstats{grid-template-columns:repeat(6,1fr)}
+  .roles,.lnav{padding-left:calc((100% - 1080px)/2 + 40px);padding-right:calc((100% - 1080px)/2 + 40px)}
+  .cnt{max-width:1080px;margin:0 auto;padding:58px 40px 84px}
+  .hh{font-size:clamp(40px,5vw,60px)}
+  .sn{font-size:30px}
+  footer{max-width:1080px;margin:0 auto;padding:28px 40px}
+}
+
+
+/* ── RMGS SITE HEADER (light theme) ── */
+.rmgs-nav{position:sticky;top:0;z-index:300;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.rmgs-nav__inner{display:flex;align-items:center;justify-content:space-between;gap:22px;height:74px;max-width:1180px;margin:0 auto;padding:0 40px}
+.rmgs-logo{display:flex;align-items:center;text-decoration:none;flex-shrink:0}
+.rmgs-logo__mark{width:52px;height:52px;flex:none;display:block;transition:transform .35s cubic-bezier(.34,1.45,.4,1)}
+.rmgs-logo:hover .rmgs-logo__mark{transform:scale(1.06)}
+.rmgs-logo__svg{width:100%;height:100%;display:block;overflow:visible}
+.rmgs-logo__svg .arc{fill:none;stroke-width:9;stroke-linecap:round;stroke-dasharray:120;stroke-dashoffset:120;animation:rmgsDraw 1.1s ease forwards}
+.rmgs-logo__svg .arc-blue{stroke:var(--blue)}
+.rmgs-logo__svg .arc-gray{stroke:#8b9298;animation-delay:.22s}
+.rmgs-logo__svg .ring{transform-origin:50px 50px;transition:transform 1.05s cubic-bezier(.34,1.4,.4,1)}
+.rmgs-logo:hover .rmgs-logo__svg .ring{transform:rotate(360deg)}
+.rmgs-logo__svg .orbit{fill:none;stroke:#ef4444;stroke-width:9;stroke-linecap:round;stroke-dasharray:5 246;animation:rmgsOrbit 3.6s linear infinite;filter:drop-shadow(0 0 3px rgba(239,68,68,.6))}
+.rmgs-logo__svg .logo-word{fill:var(--dark);font:800 30px/1 "Helvetica Neue",Arial,sans-serif;letter-spacing:-1px}
+@keyframes rmgsDraw{to{stroke-dashoffset:0}}
+@keyframes rmgsOrbit{to{stroke-dashoffset:-251.3}}
+.rmgs-logo__tag{display:block;font-size:9px;line-height:1.3;letter-spacing:.18em;color:var(--muted);font-weight:600;text-transform:uppercase;max-width:10ch;margin-left:12px;padding-left:12px;border-left:1px solid var(--border)}
+.rmgs-nav__links{display:flex;gap:22px;align-items:center}
+.rmgs-nav__links a{font-size:14px;color:var(--dark);text-decoration:none;letter-spacing:.01em;font-weight:600;transition:color .2s;white-space:nowrap}
+.rmgs-nav__links a:hover{color:var(--blue)}
+.rmgs-nav__right{display:flex;align-items:center;gap:14px;flex-shrink:0}
+.rmgs-nav__cta{border:1px solid var(--blue);color:var(--blue);padding:8px 16px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .2s,color .2s}
+.rmgs-nav__cta:hover{background:var(--blue);color:#fff}
+@media(max-width:900px){.rmgs-nav__links{display:none}}
+@media(max-width:768px){.rmgs-nav__inner{padding:0 16px;height:62px}.rmgs-logo__mark{width:42px;height:42px}}
+
+
+/* ============================================================
+   RMGS DARK THEME
+   ============================================================ */
+body{background:var(--navy);color:var(--body)}
+
+/* Hero — RMGS radial glow */
+.hero{background:radial-gradient(900px 520px at 85% -12%,rgba(239,68,68,.14),transparent 60%),radial-gradient(720px 520px at 0% 110%,rgba(59,130,246,.12),transparent 55%);border-bottom:1px solid var(--border)}
+.hh em{color:var(--blue)}
+
+/* Header (dark, blur over navy) */
+.rmgs-nav{background:rgba(6,24,46,.72);border-bottom:1px solid var(--border)}
+.rmgs-nav.solid,.rmgs-nav{backdrop-filter:blur(10px)}
+.rmgs-logo__svg .logo-word{fill:#fff}
+.rmgs-nav__cta:hover{background:var(--blue);color:var(--navy)}
+
+/* Language toggle: readable on cyan */
+.lbtn.active{color:var(--navy)}
+
+/* Cards / surfaces */
+.card{background:var(--white)}
+.card:hover{border-color:rgba(239,68,68,.5);box-shadow:0 14px 34px rgba(0,0,0,.35)}
+
+/* Operator pane header stays dark */
+.oph{background:#03101f;color:#fff}
+.oopt.pri{background:linear-gradient(120deg,#ef4444,#3b82f6)}
+.oopt.pri .onam{color:#fff}
+.oopt.pri .osub{color:rgba(255,255,255,.72)}
+
+/* Callout hardcoded fills -> dark tints */
+.co.a{background:rgba(245,180,69,.1)}
+.co.g{background:rgba(74,222,128,.1)}
+.oaut{background:rgba(245,180,69,.1);border-bottom-color:rgba(245,180,69,.28);color:var(--amber)}
+.farr{color:rgba(255,255,255,.22)}
+
+/* Severity spectrum -> dark tints with bright text */
+.sl1{background:rgba(74,222,128,.15);color:#5ee38c}
+.sl2{background:rgba(52,211,153,.15);color:#34d399}
+.sl3{background:rgba(245,180,69,.15);color:#f5b445}
+.sl4{background:rgba(251,146,60,.16);color:#fb923c}
+.sl5{background:rgba(248,113,113,.16);color:#f87171}
+.sl6{background:rgba(239,68,68,.2);color:#fca5a5}
+.sl7{background:rgba(220,38,38,.28);color:#fecaca}
+
+/* Table header/hover on dark */
+.tbl th{background:var(--off)}
+.tbl tr:hover td{background:rgba(255,255,255,.03)}
+
+/* Footer */
+footer{border-top:1px solid var(--border);color:var(--muted)}
+
+</style>
+</head>
+<body>
+
+<!-- NAV (RMGS site header) -->
+<header class="rmgs-nav">
+  <div class="rmgs-nav__inner">
+    <a class="rmgs-logo" href="index.html" aria-label="RMGS home">
+      <span class="rmgs-logo__mark"><svg class="rmgs-logo__svg" viewBox="0 0 100 100" role="img" aria-label="RMGS"><g class="ring"><path class="arc arc-blue" d="M10.15 46.5 A40 40 0 0 1 89.85 46.5"/><path class="arc arc-gray" d="M89.85 53.5 A40 40 0 0 1 10.15 53.5"/></g><circle class="orbit" cx="50" cy="50" r="40"/><text class="logo-word" x="50" y="59" text-anchor="middle" textLength="70" lengthAdjust="spacingAndGlyphs">RMGS</text></svg></span>
+      <small class="rmgs-logo__tag">Counter-UAS Framework</small>
+    </a>
+    <nav class="rmgs-nav__links" aria-label="RMGS">
+      <a href="index.html">Home</a>
+      <a href="index.html#overview">Overview</a>
+      <a href="index.html#rmx">RMX</a>
+      <a href="index.html#redteam">Red Team</a>
+      <a href="index.html#careers">Careers</a>
+    </nav>
+    <div class="rmgs-nav__right">
+      <div class="ltog">
+        <button class="lbtn active" onclick="setLang('en')">EN</button>
+        <button class="lbtn" onclick="setLang('es')">ES</button>
+      </div>
+      <a class="rmgs-nav__cta" href="mailto:griggsn@rmgsinc.com?subject=C-sUAS%20framework">Contact</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hey">
+    <span class="en">Counter-Small UAS · 27 Layers</span>
+    <span class="es">C-sUAS · 27 Capas</span>
+  </div>
+  <h1 class="hh">
+    <span class="en">Investing in the <em>Decision</em><br>Not Just the Technology</span>
+    <span class="es">Invirtiendo en la <em>decisión</em><br>no solo en la tecnología</span>
+  </h1>
+  <div class="hstats">
+    <div class="stat"><div class="sn b">27</div><div class="sl"><span class="en">Layers</span><span class="es">Capas</span></div></div>
+    <div class="stat"><div class="sn">3</div><div class="sl"><span class="en">Jurisdictions</span><span class="es">Jurisdicciones</span></div></div>
+    <div class="stat"><div class="sn r">$1.1B+</div><div class="sl"><span class="en">Deployed</span><span class="es">Desplegado</span></div></div>
+    <div class="stat"><div class="sn">3K+</div><div class="sl"><span class="en">Incursions/yr</span><span class="es">Incursiones/año</span></div></div>
+    <div class="stat"><div class="sn">7</div><div class="sl"><span class="en">Response Levels</span><span class="es">Niveles Respuesta</span></div></div>
+    <div class="stat"><div class="sn">36</div><div class="sl"><span class="en">Mo. Window</span><span class="es">Mes Ventana</span></div></div>
+  </div>
+</section>
+
+<!-- ROLE PILLS -->
+<div class="roles">
+  <button class="rpill active" onclick="setRole('sco')">
+    <span class="en">SCO Chief · COCOM</span><span class="es">Jefe SCO · COCOM</span>
+  </button>
+  <button class="rpill" onclick="setRole('op')">
+    <span class="en">Operator · Tactical</span><span class="es">Operador · Táctico</span>
+  </button>
+  <button class="rpill" onclick="setRole('str')">
+    <span class="en">Decision Maker · Strategic</span><span class="es">Decisor · Estratégico</span>
+  </button>
+</div>
+
+<!-- LAYER NAV (SCO default) -->
+<div class="lnav" id="lnav-sco">
+  <div class="lnav-label"><span class="en">Jump to Layer</span><span class="es">Ir a Capa</span></div>
+  <div class="lnav-pills">
+    <button class="lpill active" onclick="jumpTo('l1',this)">01</button>
+    <button class="lpill" onclick="jumpTo('l2',this)">02</button>
+    <button class="lpill" onclick="jumpTo('l3',this)">03</button>
+    <button class="lpill" onclick="jumpTo('l4',this)">04</button>
+    <button class="lpill" onclick="jumpTo('l5',this)">05</button>
+    <button class="lpill" onclick="jumpTo('l6',this)">06</button>
+    <button class="lpill" onclick="jumpTo('l7',this)">07</button>
+    <button class="lpill" onclick="jumpTo('l8',this)">08</button>
+    <button class="lpill" onclick="jumpTo('l9',this)">09–12</button>
+    <button class="lpill" onclick="jumpTo('l13',this)">13</button>
+    <button class="lpill" onclick="jumpTo('l14',this)">14</button>
+    <button class="lpill" onclick="jumpTo('l15',this)">15–16</button>
+    <button class="lpill" onclick="jumpTo('l16',this)">17–18</button>
+    <button class="lpill" onclick="jumpTo('l19',this)">19–20</button>
+    <button class="lpill" onclick="jumpTo('l21',this)">21–23</button>
+    <button class="lpill" onclick="jumpTo('l24',this)">24–26</button>
+    <button class="lpill" onclick="jumpTo('l27',this)">27</button>
+  </div>
+</div>
+
+<!-- ═══════════════ SCO PANEL ═══════════════ -->
+<div class="panel active" id="panel-sco">
+<div class="cnt">
+
+<div class="gdiv"><span class="gtag"><span class="en">Layers 01–05</span><span class="es">Capas 01–05</span></span><span class="gtit"><span class="en">Threat &amp; Legal Foundation</span><span class="es">Fundamento Legal y de Amenaza</span></span></div>
+
+<!-- L1 -->
+<section class="layer" id="l1">
+  <div class="lhdr">
+    <div class="lnum-row"><div class="lnum">01</div><div class="lcat"><span class="en">Tactical</span><span class="es">Táctico</span></div></div>
+    <div class="ltit"><span class="en">Tactical Employment</span><span class="es">Empleo Táctico</span></div>
+    <div class="lsub"><span class="en">cUAS Deployment · Airspace Deconfliction · Spectrum Management</span><span class="es">Despliegue cUAS · desconflicto espacio aéreo · gestión del espectro</span></div>
+    <div class="ldesc"><span class="en">The foundational incident: a cUAS system at the southern border shut down airspace. Not a technology failure — a governance and coordination failure. No single entity owns the seam between FAA, DHS, DoD, FCC, and Mexican sovereign airspace.</span><span class="es">El incidente fundacional: un sistema cUAS en la frontera sur cerró el espacio aéreo. No fue un fallo tecnológico — fue un fallo de gobernanza. Ninguna entidad posee la brecha entre la FAA, DHS, DoD, FCC y el espacio aéreo soberano mexicano.</span></div>
+  </div>
+  <div class="tags"><span class="tag tr"><span class="en">Active Gap</span><span class="es">Brecha Activa</span></span><span class="tag ta"><span class="en">Spectrum Risk</span><span class="es">Riesgo Espectro</span></span><span class="tag tg"><span class="en">FAA Coordination Required</span><span class="es">Coordinación FAA Requerida</span></span></div>
+  <div class="slbl"><span class="en">Jurisdictional Authority Map</span><span class="es">Mapa de Autoridad Jurisdiccional</span></div>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th><span class="en">Domain</span><span class="es">Dominio</span></th><th><span class="en">Authority</span><span class="es">Autoridad</span></th><th><span class="en">C-sUAS Equity</span><span class="es">Interés C-sUAS</span></th><th><span class="en">Risk</span><span class="es">Riesgo</span></th></tr></thead>
+    <tbody>
+      <tr><td class="ts"><span class="en">National Airspace</span><span class="es">Espacio Aéreo Nacional</span></td><td>FAA</td><td><span class="en">Any RF/GPS effect = liability</span><span class="es">Efecto RF/GPS = responsabilidad</span></td><td class="tr2"><span class="en">High</span><span class="es">Alto</span></td></tr>
+      <tr><td class="ts"><span class="en">Border Security</span><span class="es">Seguridad Fronteriza</span></td><td>DHS/CBP</td><td><span class="en">Threat response authority</span><span class="es">Autoridad de respuesta</span></td><td class="ta2"><span class="en">Med</span><span class="es">Medio</span></td></tr>
+      <tr><td class="ts"><span class="en">Cross-Border Effects</span><span class="es">Efectos Transfronterizos</span></td><td>State/ICAO</td><td><span class="en">Diplomatic obligations</span><span class="es">Obligaciones diplomáticas</span></td><td class="tr2"><span class="en">High</span><span class="es">Alto</span></td></tr>
+      <tr><td class="ts"><span class="en">Below 400 ft</span><span class="es">Menos de 400 pies</span></td><td><span class="en">Ungoverned seam</span><span class="es">Sin gobernanza</span></td><td><span class="en">Primary TCO domain</span><span class="es">Dominio primario TCO</span></td><td class="tr2"><span class="en">Critical</span><span class="es">Crítico</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="co r"><div class="col"><span class="en">Core Finding</span><span class="es">Hallazgo Principal</span></div><div class="cot"><span class="en">"The authorization to deploy and the authority to operate are held by different agencies with no unified deconfliction framework at the tactical level."</span><span class="es">"La autorización para desplegar y la autoridad para operar están en manos de diferentes agencias sin un marco unificado de desconflicto a nivel táctico."</span></div></div>
+</section>
+
+<!-- L2 -->
+<section class="layer" id="l2">
+  <div class="lhdr">
+    <div class="lnum-row"><div class="lnum">02</div><div class="lcat"><span class="en">Network</span><span class="es">Red</span></div></div>
+    <div class="ltit"><span class="en">Network Disruption</span><span class="es">Disrupción de Red</span></div>
+    <div class="lsub"><span class="en">Left of Launch · Supply Chain Mapping · Financial Interdiction</span><span class="es">Antes del lanzamiento · cadena de suministro · interdicción financiera</span></div>
+    <div class="ldesc"><span class="en">Border crossing is the least efficient intervention point. The drone is already at the end of the logistics thread. Effective interdiction requires working upstream.</span><span class="es">El cruce fronterizo es el punto de intervención menos eficiente. El dron ya está al final del hilo logístico. La interdicción efectiva requiere trabajar aguas arriba.</span></div>
+  </div>
+  <div class="slbl"><span class="en">Kill Chain — Highest to Lowest Leverage</span><span class="es">Cadena de Eliminación — Mayor a Menor Influencia</span></div>
+  <div class="flow">
+    <div class="fn hi"><span class="fnum">01</span><span class="ftxt"><strong><span class="en">Prison C2 Node</span><span class="es">Nodo C2 en Prisión</span></strong> — <span class="en">Highest leverage. Hardest to access legally.</span><span class="es">Mayor influencia. Más difícil de acceder legalmente.</span></span></div>
+    <div class="farr">↓</div>
+    <div class="fn"><span class="fnum">02</span><span class="ftxt"><strong><span class="en">Operator Network</span><span class="es">Red de Operadores</span></strong> — <span class="en">Left of launch. Requires host nation cooperation.</span><span class="es">Antes del lanzamiento. Requiere cooperación de la nación anfitriona.</span></span></div>
+    <div class="farr">↓</div>
+    <div class="fn"><span class="fnum">03</span><span class="ftxt"><strong><span class="en">Supply Chain</span><span class="es">Cadena de Suministro</span></strong> — <span class="en">Procurement, modification shops, comms equipment.</span><span class="es">Adquisición, talleres de modificación, equipo de comunicaciones.</span></span></div>
+    <div class="farr">↓</div>
+    <div class="fn"><span class="fnum">04</span><span class="ftxt"><strong><span class="en">Launch Point</span><span class="es">Punto de Lanzamiento</span></strong> — <span class="en">Known via back-track history and pattern of life.</span><span class="es">Conocido mediante historial de retroceso y patrón de vida.</span></span></div>
+    <div class="farr">↓</div>
+    <div class="fn wa"><span class="fnum" style="color:var(--red)">05</span><span class="ftxt" style="color:var(--muted)"><strong><span class="en">Border Crossing</span><span class="es">Cruce Fronterizo</span></strong> — <span class="en">Most constrained, least efficient. Current primary focus.</span><span class="es">Más restringido, menos eficiente. Enfoque primario actual.</span></span></div>
+  </div>
+</section>
+
+<!-- L3 -->
+<section class="layer" id="l3">
+  <div class="lhdr">
+    <div class="lnum-row"><div class="lnum">03</div><div class="lcat"><span class="en">Adversary</span><span class="es">Adversario</span></div></div>
+    <div class="ltit"><span class="en">Adversary Adaptation &amp; Technology Adoption</span><span class="es">Adaptación del Adversario y Adopción Tecnológica</span></div>
+    <div class="lsub"><span class="en">TCO Drone Programs · Ukraine Diffusion · Adaptation Cycle</span><span class="es">Programas de drones TCO · difusión Ucrania · ciclo de adaptación</span></div>
+    <div class="ldesc"><span class="en">TCOs have mature, multi-mission drone programs operating now. They buy commercially and iterate faster than any government acquisition cycle. The Ukraine conflict has accelerated global diffusion of FPV tactics and autonomous swarm coordination directly into criminal networks.</span><span class="es">Las TCO tienen programas de drones maduros y multimisión que operan ahora. Compran comercialmente e iteran más rápido que cualquier ciclo de adquisición gubernamental. El conflicto de Ucrania ha acelerado la difusión de tácticas FPV y coordinación de enjambres autónomos directamente a redes criminales.</span></div>
+  </div>
+  <div class="cards">
+    <div class="card"><div class="clab"><span class="en">TCO Mission Set — Now</span><span class="es">Misiones TCO — Ahora</span></div><div class="cbod"><span class="en">ISR over U.S. installations · Over-fence drug delivery · Cartel overwatch · Probing response patterns · Prison C2 communications delivery</span><span class="es">ISR sobre instalaciones EE.UU. · Entrega de drogas sobre la valla · Vigilancia cartelera · Sondeo de patrones de respuesta · Entrega de comunicaciones C2 en prisiones</span></div></div>
+    <div class="card"><div class="clab a"><span class="en">Technology Trajectory</span><span class="es">Trayectoria Tecnológica</span></div><div class="cbod"><span class="en">RF-silent autonomous flight · AI-guided obstacle avoidance · Swarm saturation · Counter-cUAS awareness on platform · Multi-payload precision delivery</span><span class="es">Vuelo autónomo silencioso RF · Evasión de obstáculos por IA · Saturación en enjambre · Conciencia anti-cUAS en plataforma · Entrega de precisión multicarga</span></div></div>
+  </div>
+  <div class="co r"><div class="col"><span class="en">Asymmetry</span><span class="es">Asimetría</span></div><div class="cot"><span class="en">U.S. acquisition: 18–24 months. TCO adoption: days to weeks. JIATF-401 mandate is to outpace this gap. The southern border sandbox is visible to TCOs — they observe every U.S. capability development in real time.</span><span class="es">Adquisición EE.UU.: 18–24 meses. Adopción TCO: días a semanas. El mandato de JIATF-401 es superar esta brecha. El laboratorio fronterizo sur es visible para los TCO — observan cada desarrollo de capacidad en tiempo real.</span></div></div>
+</section>
+
+<!-- L4 -->
+<section class="layer" id="l4">
+  <div class="lhdr">
+    <div class="lnum-row"><div class="lnum">04</div><div class="lcat"><span class="en">Coalition</span><span class="es">Coalición</span></div></div>
+    <div class="ltit"><span class="en">Coalition &amp; Host Nation Legal Frameworks</span><span class="es">Marcos Legales de Coalición y Naciones Anfitrionas</span></div>
+    <div class="lsub"><span class="en">Colombia · Ecuador · Perú — Tri-Border Sovereign Legal Mapping</span><span class="es">Colombia · Ecuador · Perú — mapeo legal soberano tri-fronterizo</span></div>
+    <div class="ldesc"><span class="en">Three sovereign legal frameworks govern the source zone. No bilateral agreement covers cross-border cUAS employment. The tool must map constitutional foundations, statutes, bilateral agreements, and ICAO obligations for all three nations.</span><span class="es">Tres marcos legales soberanos gobiernan la zona fuente. Ningún acuerdo bilateral cubre el empleo cUAS transfronterizo. La herramienta debe mapear las bases constitucionales, estatutos, acuerdos bilaterales y obligaciones ICAO para las tres naciones.</span></div>
+  </div>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th><span class="en">Country</span><span class="es">País</span></th><th><span class="en">Constitutional Basis</span><span class="es">Base Constitucional</span></th><th><span class="en">U.S. Bilateral</span><span class="es">Bilateral EE.UU.</span></th><th><span class="en">Penetration Risk</span><span class="es">Riesgo Penetración</span></th></tr></thead>
+    <tbody>
+      <tr><td class="ts">Colombia</td><td><span class="en">Strong — decades of doctrine</span><span class="es">Sólida — décadas de doctrina</span></td><td><span class="en">Robust — Plan Colombia</span><span class="es">Robusto — Plan Colombia</span></td><td class="ta2"><span class="en">High in border units</span><span class="es">Alto en unidades fronterizas</span></td></tr>
+      <tr><td class="ts">Ecuador</td><td><span class="en">Expanded 2024 — armed conflict declared</span><span class="es">Ampliada 2024 — conflicto armado</span></td><td><span class="en">Limited but growing</span><span class="es">Limitado pero creciente</span></td><td class="tr2"><span class="en">Very high — institutional crisis</span><span class="es">Muy alto — crisis institucional</span></td></tr>
+      <tr><td class="ts">Peru</td><td><span class="en">Moderate — VRAEM-specific</span><span class="es">Moderada — específica VRAEM</span></td><td><span class="en">Moderate — limited footprint</span><span class="es">Moderado — presencia limitada</span></td><td class="ta2"><span class="en">Moderate to high</span><span class="es">Moderado a alto</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="co"><div class="col"><span class="en">Tri-Border Gap</span><span class="es">Brecha Tri-Fronteriza</span></div><div class="cot"><span class="en">Where Colombia, Ecuador, and Peru converge in the Putumayo headwaters — effectively ungoverned space claimed by three sovereigns. The network exploits the tri-border gap where no bilateral agreement reaches.</span><span class="es">Donde Colombia, Ecuador y Perú convergen en las cabeceras del Putumayo — espacio sin gobernanza reclamado por tres soberanos. La red explota la brecha tri-fronteriza donde ningún acuerdo bilateral llega.</span></div></div>
+</section>
+
+<!-- L5 -->
+<section class="layer" id="l5">
+  <div class="lhdr">
+    <div class="lnum-row"><div class="lnum">05</div><div class="lcat"><span class="en">Legal</span><span class="es">Legal</span></div></div>
+    <div class="ltit"><span class="en">Legal Foundation — Safer Skies Act</span><span class="es">Fundamento Legal — Ley Safer Skies</span></div>
+    <div class="lsub"><span class="en">FY2026 NDAA · Credible Threat Standard · Coalition Authority Gap</span><span class="es">NDAA FY2026 · estándar de amenaza creíble · brecha de autoridad de coalición</span></div>
+    <div class="ldesc"><span class="en">Signed December 18, 2025 in the FY2026 NDAA. SLTT agencies may detect, track, and mitigate after NCUTC certification at Redstone Arsenal. The operative legal standard is "credible threat" — requiring attribution and intent determination before any defeat action. Coalition authority gap remains entirely unaddressed.</span><span class="es">Firmada el 18 de diciembre de 2025 en la NDAA FY2026. Las agencias SLTT pueden detectar, rastrear y mitigar después de la certificación NCUTC en Redstone Arsenal. El estándar legal operativo es "amenaza creíble" — requiere atribución y determinación de intención antes de cualquier acción de derrota. La brecha de autoridad de coalición permanece sin abordar.</span></div>
+  </div>
+  <div class="cards three">
+    <div class="card"><div class="clab"><span class="en">Safer Skies Act</span><span class="es">Ley Safer Skies</span></div><div class="ctit"><span class="en">SLTT Authority Expanded</span><span class="es">Autoridad SLTT Ampliada</span></div><div class="cbod"><span class="en">First time SLTT law enforcement can detect, track, and mitigate. 48-hour reporting mandatory after every serious intervention.</span><span class="es">Primera vez que las fuerzas del orden SLTT pueden detectar, rastrear y mitigar. Informe de 48 horas obligatorio tras cada intervención grave.</span></div></div>
+    <div class="card"><div class="clab a"><span class="en">Credible Threat Standard</span><span class="es">Estándar Amenaza Creíble</span></div><div class="ctit"><span class="en">The Legal Threshold</span><span class="es">El Umbral Legal</span></div><div class="cbod"><span class="en">Attribution + intent required before action. Spectrum deconfliction is a legal prerequisite. FAA deconfliction protocols mandatory.</span><span class="es">Atribución + intención requeridas antes de actuar. El desconflicto de espectro es requisito legal previo. Protocolos FAA obligatorios.</span></div></div>
+    <div class="card"><div class="clab gr"><span class="en">Coalition Gap</span><span class="es">Brecha de Coalición</span></div><div class="ctit"><span class="en">No Bilateral cUAS Framework</span><span class="es">Sin Marco Bilateral cUAS</span></div><div class="cbod"><span class="en">Safer Skies reaches only domestic U.S. No equivalent framework governs cross-border spectrum effects with Colombia, Ecuador, or Peru.</span><span class="es">Safer Skies alcanza solo EE.UU. doméstico. Ningún marco equivalente rige los efectos de espectro transfronterizos con Colombia, Ecuador o Perú.</span></div></div>
+  </div>
+</section>
+
+<div class="gdiv"><span class="gtag"><span class="en">Layers 06–12</span><span class="es">Capas 06–12</span></span><span class="gtit"><span class="en">Detection, Attribution &amp; Intelligence</span><span class="es">Detección, Atribución e Inteligencia</span></span></div>
+
+<!-- L6 -->
+<section class="layer" id="l6">
+  <div class="lhdr">
+    <div class="lnum-row"><div class="lnum">06</div><div class="lcat"><span class="en">Detection</span><span class="es">Detección</span></div></div>
+    <div class="ltit"><span class="en">Shared Airspace Awareness — Below 400 Feet</span><span class="es">Conciencia Compartida del Espacio Aéreo — Por Debajo de 400 Pies</span></div>
+    <div class="lsub"><span class="en">Sensor Fusion · Tri-Border Deployment · Trilateral Governance</span><span class="es">Fusión de sensores · despliegue tri-fronterizo · gobernanza trilateral</span></div>
+    <div class="ldesc"><span class="en">Below 400 feet is a surveillance dead zone almost completely unmapped in the tri-border region. This is exactly where cartel sUAS operates. Deliberately. Shared airspace awareness requires trilateral cooperation — making it the coalition integration mechanism.</span><span class="es">Por debajo de 400 pies es una zona muerta de vigilancia casi completamente sin mapear en la región tri-fronteriza. Aquí es exactamente donde opera el sUAS cartelero. Deliberadamente. La conciencia compartida requiere cooperación trilateral.</span></div>
+  </div>
+  <div class="slbl"><span class="en">Sensor Performance by Environment</span><span class="es">Rendimiento del Sensor por Entorno</span></div>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th><span class="en">Environment</span><span class="es">Entorno</span></th><th>RF</th><th><span class="en">Radar</span><span class="es">Radar</span></th><th><span class="en">Acoustic</span><span class="es">Acústico</span></th><th>EO/IR</th><th><span class="en">GPS Spoof</span><span class="es">Suplant. GPS</span></th></tr></thead>
+    <tbody>
+      <tr><td class="ts"><span class="en">Open/Desert</span><span class="es">Abierto/Desierto</span></td><td class="ph">H</td><td class="ph">H</td><td class="pm">M</td><td class="ph">H</td><td class="ph">H</td></tr>
+      <tr><td class="ts"><span class="en">Urban Border</span><span class="es">Frontera Urbana</span></td><td class="pm">M</td><td class="pm">M</td><td class="pl">L</td><td class="pm">M</td><td class="ph">H</td></tr>
+      <tr><td class="ts"><span class="en">Dense Jungle</span><span class="es">Selva Densa</span></td><td class="pl">L</td><td class="pl">L</td><td class="pl">L</td><td class="pl">L</td><td class="ph">H</td></tr>
+      <tr><td class="ts"><span class="en">Mountainous</span><span class="es">Montañoso</span></td><td class="pl">L</td><td class="pl">L</td><td class="pm">M</td><td class="pm">M</td><td class="ph">H</td></tr>
+      <tr><td class="ts"><span class="en">River Corridor</span><span class="es">Corredor Fluvial</span></td><td class="pm">M</td><td class="pl">L</td><td class="pm">M</td><td class="pm">M</td><td class="ph">H</td></tr>
+      <tr><td class="ts"><span class="en">Night/Precip.</span><span class="es">Noche/Precip.</span></td><td class="pm">M</td><td class="pl">L</td><td class="pl">L</td><td class="ph">H</td><td class="ph">H</td></tr>
+    </tbody>
+  </table></div>
+  <div class="co a"><div class="col"><span class="en">Fusion Principle</span><span class="es">Principio de Fusión</span></div><div class="cot"><span class="en">No single sensor solves the tri-border environment. GPS spoof detection is the only sensor with uniformly HIGH performance across all terrain types — and it covers only one TCO technique. Sensor fusion across all modalities is the minimum viable architecture.</span><span class="es">Ningún sensor único resuelve el entorno tri-fronterizo. La detección de suplantación GPS es el único sensor con rendimiento uniformemente ALTO en todos los tipos de terreno — y solo cubre una técnica TCO. La fusión de sensores en todas las modalidades es la arquitectura mínima viable.</span></div></div>
+</section>
+
+<!-- L7 -->
+<section class="layer" id="l7">
+  <div class="lhdr">
+    <div class="lnum-row"><div class="lnum">07</div><div class="lcat"><span class="en">Attribution</span><span class="es">Atribución</span></div></div>
+    <div class="ltit"><span class="en">Attribution &amp; Intent Determination</span><span class="es">Atribución y Determinación de Intención</span></div>
+    <div class="lsub"><span class="en">What Is It · Where Did It Come From · What Is It Doing</span><span class="es">Qué es · de dónde vino · qué está haciendo</span></div>
+    <div class="ldesc"><span class="en">All three questions must be answered to meet the credible threat standard. Attribution to a launch point is not attribution to an operator — cartel operators launch and relocate before the drone returns. Pre-programmed autonomous flight eliminates the RF link entirely.</span><span class="es">Las tres preguntas deben responderse para cumplir el estándar de amenaza creíble. La atribución a un punto de lanzamiento no es atribución a un operador — los operadores de cárteles lanzan y se reubican antes de que el dron regrese. El vuelo autónomo preprogramado elimina el enlace RF por completo.</span></div>
+  </div>
+  <div class="cards">
+    <div class="card"><div class="clab"><span class="en">The Three Questions</span><span class="es">Las Tres Preguntas</span></div><div class="cbod" style="line-height:2.2;font-size:13px;"><strong><span class="en">1. WHAT IS IT?</span><span class="es">1. ¿QUÉ ES?</span></strong> → <span class="en">Classification</span><span class="es">Clasificación</span><br><strong><span class="en">2. WHERE DID IT COME FROM?</span><span class="es">2. ¿DE DÓNDE VINO?</span></strong> → <span class="en">Attribution</span><span class="es">Atribución</span><br><strong><span class="en">3. WHAT IS IT DOING?</span><span class="es">3. ¿QUÉ ESTÁ HACIENDO?</span></strong> → <span class="en">Intent</span><span class="es">Intención</span></div></div>
+    <div class="card"><div class="clab a"><span class="en">Operator Mobility Problem</span><span class="es">Problema de Movilidad del Operador</span></div><div class="cbod"><span class="en">Launch point ≠ operator location. Cartel operators use pre-programmed autonomous routes — no active RF signal exists to detect or jam. The tool must surface this distinction for every decision maker.</span><span class="es">Punto de lanzamiento ≠ ubicación del operador. Los operadores usan rutas autónomas preprogramadas — no existe señal RF activa para detectar o interferir. La herramienta debe mostrar esta distinción para cada decisor.</span></div></div>
+  </div>
+</section>
+
+<!-- L8 -->
+<section class="layer" id="l8">
+  <div class="lhdr">
+    <div class="lnum-row"><div class="lnum">08</div><div class="lcat">C2</div></div>
+    <div class="ltit"><span class="en">Decision Architecture — Three Levels</span><span class="es">Arquitectura de Decisión — Tres Niveles</span></div>
+    <div class="lsub"><span class="en">Strategic / Operational / Tactical — One System, Role-Appropriate Views</span><span class="es">Estratégico / Operacional / Táctico — un sistema, vistas por rol</span></div>
+    <div class="ldesc"><span class="en">Three distinct decision levels with different authorities, different risk calculus, and different outputs. The architecture serves all three simultaneously — not three separate systems.</span><span class="es">Tres niveles de decisión distintos con diferentes autoridades, diferente cálculo de riesgo y diferentes resultados. La arquitectura sirve a los tres simultáneamente — no tres sistemas separados.</span></div>
+  </div>
+  <div class="cards three">
+    <div class="card"><div class="clab"><span class="en">Strategic — COCOM</span><span class="es">Estratégico — COCOM</span></div><div class="cbod"><span class="en">Approves capability packages · Sets ROE · Manages bilateral agreements · Owns political-military risk</span><span class="es">Aprueba paquetes · Establece ROE · Gestiona acuerdos bilaterales · Asume riesgo político-militar</span></div></div>
+    <div class="card"><div class="clab"><span class="en">Operational — SCO Chiefs</span><span class="es">Operacional — Jefes SCO</span></div><div class="cbod"><span class="en">Packages capabilities for COCOM · Manages host nation relationships · Deconflicts trilateral operations</span><span class="es">Empaqueta capacidades · Gestiona relaciones nación anfitriona · Desconflicta operaciones trilaterales</span></div></div>
+    <div class="card"><div class="clab"><span class="en">Tactical — Border Units</span><span class="es">Táctico — Unidades Fronterizas</span></div><div class="cbod"><span class="en">Detects, tracks, attributes · Applies legal authority matrix in real time · Reports within 48hr Safer Skies window</span><span class="es">Detecta, rastrea, atribuye · Aplica la matriz de autoridad legal en tiempo real · Informa dentro de la ventana de 48 hr</span></div></div>
+  </div>
+</section>
+
+<!-- L9-12 -->
+<section class="layer" id="l9">
+  <div class="lhdr">
+    <div class="lnum-row"><div class="lnum">09–12</div><div class="lcat"><span class="en">Intel</span><span class="es">Intel.</span></div></div>
+    <div class="ltit"><span class="en">Information, Industry, Sensor Mapping &amp; Threat Intelligence</span><span class="es">Información, Industria, Mapeo de Sensores e Inteligencia de Amenazas</span></div>
+    <div class="lsub"><span class="en">Four Interconnected Intelligence Layers</span><span class="es">Cuatro capas de inteligencia interconectadas</span></div>
+    <div class="ldesc"><span class="en">Data must flow vertically and horizontally across the coalition seam — today this happens by phone call or not at all. Industry has ground truth government sensors don't. The threat library must update faster than TCO adaptation cycles.</span><span class="es">Los datos deben fluir verticalmente y horizontalmente a través de la brecha de coalición — hoy esto ocurre por llamada telefónica o no ocurre en absoluto. La industria tiene información de campo que los sensores gubernamentales no tienen. La biblioteca de amenazas debe actualizarse más rápido que los ciclos de adaptación de los TCO.</span></div>
+  </div>
+  <div class="cards">
+    <div class="card"><div class="clab"><span class="en">09 — Information Flow</span><span class="es">09 — Flujo de Información</span></div><div class="cbod"><span class="en">Colombian sensor detects track crossing into Ecuador. Releasable data pushed to Ecuadorian unit simultaneously. Deconfliction at the data layer — not through phone calls.</span><span class="es">Sensor colombiano detecta pista que cruza a Ecuador. Datos enviados a unidad ecuatoriana simultáneamente. Desconflicto a nivel de datos — no por llamadas telefónicas.</span></div></div>
+    <div class="card"><div class="clab"><span class="en">10 — Industry Integration</span><span class="es">10 — Integración Industrial</span></div><div class="cbod"><span class="en">Telecoms, ports, commercial aviation, private security see things government sensors don't. Bidirectional. Safe harbor required. Bilingual portal. Anonymization before aggregation.</span><span class="es">Telecomunicaciones, puertos, aviación comercial, seguridad privada ven lo que los sensores gubernamentales no ven. Bidireccional. Puerto seguro requerido. Portal bilingüe.</span></div></div>
+    <div class="card"><div class="clab a"><span class="en">11 — Sensor Environment</span><span class="es">11 — Entorno del Sensor</span></div><div class="cbod"><span class="en">Tool's sensor recommendation module filters the JIATF-401 marketplace by environment, threat profile, and mission type. T&amp;E-validated performance data — not spec sheets.</span><span class="es">Módulo de recomendación de sensores filtra el mercado JIATF-401 por entorno, perfil de amenaza y tipo de misión. Datos de rendimiento validados en T&amp;E — no hojas de especificaciones.</span></div></div>
+    <div class="card"><div class="clab r"><span class="en">12 — Live Threat Intelligence</span><span class="es">12 — Inteligencia de Amenaza en Vivo</span></div><div class="cbod"><span class="en">New TCO capability observed → alert pushed immediately to all operators in similar environments. Ukraine FPV diffusion, autonomous swarm, counter-detection techniques tracked in real time.</span><span class="es">Nueva capacidad TCO observada → alerta enviada inmediatamente a todos los operadores en entornos similares. Difusión FPV de Ucrania, enjambre autónomo, técnicas de contra-detección rastreadas en tiempo real.</span></div></div>
+  </div>
+</section>
+
+<div class="gdiv"><span class="gtag"><span class="en">Layers 13–18</span><span class="es">Capas 13–18</span></span><span class="gtit"><span class="en">Institutional &amp; Organizational Architecture</span><span class="es">Arquitectura Institucional y Organizacional</span></span></div>
+
+<!-- L13 -->
+<section class="layer" id="l13">
+  <div class="lhdr">
+    <div class="lnum-row"><div class="lnum">13</div><div class="lcat"><span class="en">Embassy</span><span class="es">Embajada</span></div></div>
+    <div class="ltit"><span class="en">Embassy Integration — By and Through</span><span class="es">Integración de Embajada — Por y A Través</span></div>
+    <div class="lsub"><span class="en">Country Team Coordination · Trilateral Alignment · Reliability Assessment</span><span class="es">Coordinación del Equipo País · alineación trilateral · evaluación de confiabilidad</span></div>
+    <div class="ldesc"><span class="en">Every operational decision runs through the Country Team. The SCO chief lives at the intersection of DoD, State, DEA, CIA Station, FBI Legat, INL/NAS, and the Ambassador's political risk calculus. The tool maps all embassy section equities and surfaces conflicts before they become diplomatic incidents.</span><span class="es">Cada decisión operacional pasa por el Equipo País. El jefe SCO vive en la intersección de DoD, State, DEA, Estación CIA, FBI Legat, INL/NAS y el cálculo de riesgo político del Embajador. La herramienta mapea todas las participaciones de secciones de embajada y saca a la luz los conflictos antes de que se conviertan en incidentes diplomáticos.</span></div>
+  </div>
+  <div class="tbl-wrap"><table class="tbl">
+    <thead><tr><th><span class="en">Actor</span><span class="es">Actor</span></th><th><span class="en">Role</span><span class="es">Rol</span></th><th><span class="en">Conflict Risk</span><span class="es">Riesgo Conflicto</span></th></tr></thead>
+    <tbody>
+      <tr><td class="ts"><span class="en">Ambassador / DCM</span><span class="es">Embajador / DCM</span></td><td><span class="en">Political risk owner. All capability employment requires awareness.</span><span class="es">Propietario del riesgo político. Todo empleo de capacidades requiere conciencia.</span></td><td class="tr2"><span class="en">High</span><span class="es">Alto</span></td></tr>
+      <tr><td class="ts">DEA</td><td><span class="en">TCO network intelligence. Source protection may conflict with military timelines.</span><span class="es">Inteligencia de red TCO. La protección de fuentes puede entrar en conflicto con plazos militares.</span></td><td class="tr2"><span class="en">High</span><span class="es">Alto</span></td></tr>
+      <tr><td class="ts"><span class="en">CIA Station</span><span class="es">Estación CIA</span></td><td><span class="en">Host nation reliability assessment. Penetration risk data. Classified layer only.</span><span class="es">Evaluación de confiabilidad. Datos de riesgo de penetración. Solo capa clasificada.</span></td><td class="tr2"><span class="en">High</span><span class="es">Alto</span></td></tr>
+      <tr><td class="ts">INL / NAS</td><td><span class="en">Primary counter-narcotics funding authority. FMF and security assistance owner.</span><span class="es">Autoridad principal de financiamiento contra narcóticos. Propietario FMF y asistencia en seguridad.</span></td><td class="ta2"><span class="en">Med</span><span class="es">Medio</span></td></tr>
+
+    </tbody>
+  </table></div>
+</section>
+
+<!-- L14 -->
+<section class="layer" id="l14">
+  <div class="lhdr">
+    <div class="lnum-row"><div class="lnum">14</div><div class="lcat"><span class="en">C2 Nodes</span><span class="es">Nodos C2</span></div></div>
+    <div class="ltit"><span class="en">Prison-Based C2 Networks</span><span class="es">Redes C2 Basadas en Prisiones</span></div>
+    <div class="lsub"><span class="en">Domestic and SOUTHCOM AOR · Drone-Prison Operational Loop</span><span class="es">Doméstico y AOR SOUTHCOM · bucle operacional dron-prisión</span></div>
+    <div class="ldesc"><span class="en">Incarceration is not removal from the network. TCO leadership operates from prison as a protected command position — with contraband phones, corrupt corrections officers, and drone delivery of communications equipment closing the loop. Ecuador's prison system has been effectively captured by cartel networks.</span><span class="es">El encarcelamiento no es la eliminación de la red. El liderazgo TCO opera desde la prisión como posición de mando protegida — con teléfonos de contrabando, oficiales penitenciarios corruptos y entrega de equipos de comunicaciones por drones cerrando el bucle.</span></div>
+  </div>
+  <div class="co r"><div class="col"><span class="en">Operational Reality</span><span class="es">Realidad Operacional</span></div><div class="cot"><span class="en">Prison leadership orders the launch. The drone completes the ISR run. Confirmation flows back via contraband phone. The border is one synapse in a prison-directed network. Interdicting the drone without addressing the prison C2 node is cutting a wire without disconnecting the power source.</span><span class="es">El liderazgo en prisión ordena el lanzamiento. El dron completa la misión ISR. La confirmación regresa por teléfono de contrabando. La frontera es una sinapsis en una red dirigida desde la prisión. Interceptar el dron sin abordar el nodo C2 en prisión es cortar un cable sin desconectar la fuente de alimentación.</span></div></div>
+</section>
+
+<!-- L15-16 -->
+<section class="layer" id="l15">
+  <div class="lhdr">
+    <div class="lnum-row"><div class="lnum">15–16</div><div class="lcat"><span class="en">Org</span><span class="es">Org.</span></div></div>
+    <div class="ltit"><span class="en">JIATF-South, New JTF &amp; JIATF-401</span><span class="es">JIATF-Sur, Nuevo JTF y JIATF-401</span></div>
+    <div class="lsub"><span class="en">Three Task Force Structures · One COCOM · Different Authorities</span><span class="es">Tres estructuras de fuerza de tarea · un COCOM · diferentes autoridades</span></div>
+    <div class="ldesc"><span class="en">JIATF-South handles detection and monitoring with 35 years of partner nation relationships. The new JTF under II MEF handles network disruption. JIATF-401 — Army Executive Agent reporting to Deputy SecDef — owns C-sUAS rapid acquisition for the entire DoD.</span><span class="es">JIATF-Sur maneja detección y monitoreo con 35 años de relaciones con naciones socias. El nuevo JTF bajo II MEF maneja la disrupción de redes. JIATF-401 — Agente Ejecutivo del Ejército que reporta al Subsecretario de Defensa — posee la adquisición rápida C-sUAS para todo el DoD.</span></div>
+  </div>
+  <div class="cards">
+    <div class="card"><div class="clab"><span class="en">JIATF-South</span><span class="es">JIATF-Sur</span></div><div class="ctit"><span class="en">35-Year Institutional Network</span><span class="es">Red Institucional de 35 Años</span></div><div class="cbod"><span class="en">Detection and monitoring. Coast Guard led. 20 partner nation liaison officers. Acknowledged water balloon effect. Below-400-ft sUAS outside current mission set.</span><span class="es">Detección y monitoreo. Liderado por la Guardia Costera. 20 oficiales de enlace de naciones socias. Reconoció el efecto globo de agua. sUAS por debajo de 400 pies fuera del conjunto de misiones actual.</span></div></div>
+    <div class="card"><div class="clab r">JIATF-401</div><div class="ctit"><span class="en">Army EA — Speed Over Process</span><span class="es">Agente Ejecutivo — Velocidad sobre Proceso</span></div><div class="cbod"><span class="en">Rapid C-sUAS delivery mandate. Marketplace at IOC Feb 2026. 1,600+ items. 36-month sunset review. CSO AoI 26-003 — C2 interoperability — is the direct RMX lane. Allied access: UK, Australia, Poland, South Korea confirmed.</span><span class="es">Mandato de entrega rápida C-sUAS. Mercado en IOC feb 2026. Más de 1,600 artículos. Revisión de cierre 36 meses. CSO AoI 26-003 — interoperabilidad C2 — es el canal directo de RMX.</span></div></div>
+  </div>
+</section>
+
+<!-- L17-18 -->
+<section class="layer" id="l16">
+  <div class="lhdr">
+    <div class="lnum-row"><div class="lnum">17–18</div><div class="lcat"><span class="en">Effects</span><span class="es">Efectos</span></div></div>
+    <div class="ltit"><span class="en">Policy Effects &amp; NORTHCOM Dedicated Capability</span><span class="es">Efectos de Política y Capacidad Dedicada de NORTHCOM</span></div>
+    <div class="lsub"><span class="en">2nd and 3rd Order Effects · Dismounted Patrol Gap · Source-to-Border Picture</span><span class="es">Efectos de 2do y 3er orden · brecha de patrulla desmontada · imagen fuente-frontera</span></div>
+    <div class="ldesc"><span class="en">Every capability employment generates second and third order effects that must be surfaced before the decision. NORTHCOM Commander Gen. Guillot confirmed May 2026: "Cartel drones fly over Marines and soldiers all the time. We have nothing that follows a patrolling soldier."</span><span class="es">Cada empleo de capacidad genera efectos de segundo y tercer orden que deben salir a la luz antes de la decisión. El Comandante de NORTHCOM Gen. Guillot confirmó en mayo 2026: "Los drones del cártel sobrevuelan a los Marines y soldados todo el tiempo. No tenemos nada que siga a un soldado en patrulla."</span></div>
+  </div>
+  <div class="cards">
+    <div class="card"><div class="clab r"><span class="en">2nd Order — U.S.</span><span class="es">2do Orden — EE.UU.</span></div><div class="cbod"><span class="en">Sovereignty protests · Congressional exposure · Partner nation trust degradation · TCOs map U.S. response patterns in real time from the border sandbox</span><span class="es">Protestas de soberanía · Exposición al Congreso · Degradación de la confianza de naciones socias · Los TCO mapean los patrones de respuesta de EE.UU. en tiempo real</span></div></div>
+    <div class="card"><div class="clab a"><span class="en">2nd Order — Host Nations</span><span class="es">2do Orden — Naciones Anfitrionas</span></div><div class="cbod"><span class="en">Colombia: domestic narrative of U.S. interference · Ecuador: cooperation window time-limited by transition risk · Peru: sovereignty sensitivity acute</span><span class="es">Colombia: narrativa doméstica de interferencia · Ecuador: ventana de cooperación limitada por riesgo de transición · Perú: sensibilidad soberana aguda</span></div></div>
+    <div class="card"><div class="clab gr"><span class="en">3rd Order — Regional</span><span class="es">3er Orden — Regional</span></div><div class="cbod"><span class="en">Water balloon at regional scale · Chinese strategic positioning accelerates · Precedent set for hemisphere-wide cUAS legal framework</span><span class="es">Globo de agua a escala regional · Posicionamiento estratégico chino se acelera · Precedente para marco legal cUAS hemisférico</span></div></div>
+    <div class="card"><div class="clab"><span class="en">NORTHCOM Gap</span><span class="es">Brecha NORTHCOM</span></div><div class="cbod"><span class="en">No man-portable system for dismounted patrol confirmed · Source-to-border integrated picture does not exist · Tool bridges NORTHCOM and SOUTHCOM operational pictures</span><span class="es">Sin sistema portátil para patrulla desmontada confirmado · La imagen integrada fuente-frontera no existe · La herramienta une las imágenes operacionales de NORTHCOM y SOUTHCOM</span></div></div>
+  </div>
+</section>
+
+<div class="gdiv"><span class="gtag"><span class="en">Layers 19–27</span><span class="es">Capas 19–27</span></span><span class="gtit"><span class="en">Acquisition, Deployment &amp; Architecture</span><span class="es">Adquisición, Despliegue y Arquitectura</span></span></div>
+
+<!-- L19-20 -->
+<section class="layer" id="l19">
+  <div class="lhdr">
+    <div class="lnum-row"><div class="lnum">19–20</div><div class="lcat"><span class="en">Acquisition</span><span class="es">Adquisición</span></div></div>
+    <div class="ltit"><span class="en">JIATF-401 Marketplace &amp; Full Acquisition Landscape</span><span class="es">Mercado JIATF-401 y Panorama Completo de Adquisiciones</span></div>
+    <div class="lsub"><span class="en">Browse · Compare · Buy · No New Contract Required</span><span class="es">Explorar · comparar · comprar · sin nuevo contrato requerido</span></div>
+    <div class="ldesc"><span class="en">The JIATF-401 marketplace reached IOC February 2026 — 1,600+ items, IDIQ contract vehicle. Vendors must bring data, spectrum proof, and platform integration evidence. CSO AoI 26-003 is the RMX lane: platform-agnostic integration, universal data models, decision support, sensor fusion.</span><span class="es">El mercado de JIATF-401 alcanzó IOC en febrero 2026 — más de 1,600 artículos, vehículo de contrato IDIQ. Los proveedores deben aportar datos, prueba de espectro y evidencia de integración de plataforma. CSO AoI 26-003 es el canal de RMX: integración agnóstica, modelos de datos universales, apoyo a decisiones, fusión de sensores.</span></div>
+  </div>
+  <div class="slbl"><span class="en">Government Acquisition Pathways</span><span class="es">Rutas de Adquisición Gubernamental</span></div>
+  <div class="acqg">
+    <div class="acqc"><div class="ap">JIATF-401</div><div class="an"><span class="en">Marketplace — IDIQ</span><span class="es">Mercado — IDIQ</span></div><div class="ad"><span class="en">1,600+ items. T&amp;E performance data. Immediate ordering. Allied access: UK, Australia, Poland, South Korea.</span><span class="es">Más de 1,600 artículos. Datos T&amp;E. Pedido inmediato. Acceso aliado: UK, Australia, Polonia, Corea del Sur.</span></div></div>
+    <div class="acqc"><div class="ap">JIATF-401</div><div class="an">CSO — AoI 26-003</div><div class="ad"><span class="en">Platform-agnostic integration, universal data models, decision support, sensor fusion. Primary RMX lane.</span><span class="es">Integración agnóstica, modelos de datos universales, apoyo a decisiones, fusión de sensores. Canal principal de RMX.</span></div></div>
+    <div class="acqc"><div class="ap">DIU</div><div class="an"><span class="en">Other Transaction Authority</span><span class="es">Autoridad de Transacción Alternativa</span></div><div class="ad"><span class="en">Non-traditional vendors. Commercial-to-defense bridge. Rapid fielding for dual-use technology.</span><span class="es">Proveedores no tradicionales. Puente comercial-defensa. Despliegue rápido para tecnología de doble uso.</span></div></div>
+    <div class="acqc"><div class="ap">DHS / FEMA</div><div class="an"><span class="en">C-sUAS Grant Program</span><span class="es">Programa de Subvenciones C-sUAS</span></div><div class="ad"><span class="en">$500M total. $250M deployed FY2026. $250M autumn 2026 for all 56 SAAs. Nationwide rollout — implementation gap opportunity.</span><span class="es">$500M total. $250M desplegado FY2026. $250M otoño 2026 para las 56 SAA. Despliegue nacional — oportunidad de brecha de implementación.</span></div></div>
+    <div class="acqc"><div class="ap">State / DoD</div><div class="an">FMF / IMET / 333</div><div class="ad"><span class="en">Security cooperation funding for partner nation capability delivery. Coalition marketplace access pathway.</span><span class="es">Financiamiento de cooperación en seguridad para entrega de capacidades a naciones socias.</span></div></div>
+    <div class="acqc"><div class="ap">DoD</div><div class="an">Domestic Shield</div><div class="ad"><span class="en">Sensitive site protection. Scalable delivery. Executes through JIATF-401 acquisition machinery.</span><span class="es">Protección de sitios sensibles. Entrega escalable. Se ejecuta a través de la maquinaria de adquisición de JIATF-401.</span></div></div>
+  </div>
+</section>
+
+<!-- L21-23 -->
+<section class="layer" id="l21">
+  <div class="lhdr">
+    <div class="lnum-row"><div class="lnum">21–23</div><div class="lcat"><span class="en">Interop / FIFA</span><span class="es">Interop / FIFA</span></div></div>
+    <div class="ltit"><span class="en">Interoperability, FIFA 2026 &amp; FEMA Implementation Gap</span><span class="es">Interoperabilidad, FIFA 2026 y Brecha de Implementación FEMA</span></div>
+    <div class="lsub"><span class="en">Does It Work · Can I Share · Can Tech Talk · $1.1B With No Doctrine</span><span class="es">¿Funciona · puedo compartir · la tecnología se comunica · $1.1B sin doctrina</span></div>
+    <div class="ldesc"><span class="en">The $20B Anduril contract is the DoD's public admission that systems don't talk to each other. FIFA 2026 is live now: 16 cities, $1.1B+ deployed, and a tabletop exercise that revealed "limited authorities, gaps in resources, and barriers in policy that continue to hinder unified response." Money without doctrine produces expensive confusion.</span><span class="es">El contrato de $20B de Anduril es la admisión pública del DoD de que los sistemas no se comunican entre sí. FIFA 2026 está en vivo ahora: 16 ciudades, más de $1.1B desplegados, y un ejercicio de escritorio que reveló "autoridades limitadas, brechas en recursos y barreras en políticas que continúan obstaculizando la respuesta unificada." El dinero sin doctrina produce confusión costosa.</span></div>
+  </div>
+  <div class="cards three">
+    <div class="card"><div class="clab r"><span class="en">Does It Work?</span><span class="es">¿Funciona?</span></div><div class="cbod"><span class="en">Fixed-site open environment: mature. Dismounted patrol: confirmed gap. RF-silent autonomous flight: current systems largely defeated. Jungle/mountain below 400ft: severely degraded.</span><span class="es">Sitio fijo entorno abierto: maduro. Patrulla desmontada: brecha confirmada. Vuelo autónomo silencioso RF: sistemas actuales en gran parte derrotados. Selva/montaña &lt;400 pies: gravemente degradado.</span></div></div>
+    <div class="card"><div class="clab a"><span class="en">Can I Share the Data?</span><span class="es">¿Puedo Compartir los Datos?</span></div><div class="cbod"><span class="en">Classification boundary friction. Legal authority varies by data type and recipient. Technical architecture often prevents sharing even where legal authority exists. Governance too slow for tactical tempo.</span><span class="es">Fricción en los límites de clasificación. La autoridad legal varía según el tipo de datos y el receptor. La arquitectura técnica a menudo impide el intercambio incluso donde existe autoridad legal.</span></div></div>
+    <div class="card"><div class="clab"><span class="en">Can Tech Talk?</span><span class="es">¿La Tecnología Se Comunica?</span></div><div class="cbod"><span class="en">Not without deliberate architecture. Proprietary formats. API incompatibility. SAPIENT is the NATO standard. JIATF-401 marketplace compliance requirements being updated now to align with U.S.-UK data standard agreement.</span><span class="es">No sin arquitectura deliberada. Formatos propietarios. Incompatibilidad de API. SAPIENT es el estándar OTAN. Los requisitos de cumplimiento del mercado JIATF-401 se están actualizando ahora.</span></div></div>
+  </div>
+  <div class="co r"><div class="col"><span class="en">The Implementation Gap</span><span class="es">La Brecha de Implementación</span></div><div class="cot"><span class="en">Agencies received $250 million and are scrambling to purchase counter-UAS systems. The problem is a complete lack of understanding of how to deploy the resources provided. The $250M autumn 2026 tranche is the window to embed decision architecture in implementation guidance before the nationwide rollout to all 56 SAAs.</span><span class="es">Las agencias recibieron $250 millones y están improvisando para comprar sistemas anti-UAS. El problema es una falta total de comprensión de cómo desplegar los recursos proporcionados. El tramo de $250M del otoño 2026 es la ventana para incorporar la arquitectura de decisión en las guías de implementación antes del despliegue nacional a las 56 SAA.</span></div></div>
+</section>
+
+<!-- L24-26 -->
+<section class="layer" id="l24">
+  <div class="lhdr">
+    <div class="lnum-row"><div class="lnum">24–26</div><div class="lcat"><span class="en">Training / COP</span><span class="es">Entrena. / COP</span></div></div>
+    <div class="ltit"><span class="en">Huntsville, COP Development &amp; 8-Phase Architecture</span><span class="es">Huntsville, Desarrollo del COP y Arquitectura de 8 Fases</span></div>
+    <div class="lsub"><span class="en">NCUTC Pipeline · Common Operating Picture · SAPIENT Standard</span><span class="es">Tubería NCUTC · cuadro operativo común · estándar SAPIENT</span></div>
+    <div class="ldesc"><span class="en">Redstone Arsenal is the institutional anchor of U.S. C-sUAS enterprise. The demand funnel: Train → Authority → Buy → Deploy. The tool completes the pipeline at the Deploy step. A COP is not a screen — it is an agreement. Governance and data standards are the critical path.</span><span class="es">El Arsenal Redstone es el ancla institucional de la empresa C-sUAS de EE.UU. El embudo de demanda: Entrenar → Autoridad → Comprar → Desplegar. La herramienta completa la tubería en el paso de Despliegue. Un COP no es una pantalla — es un acuerdo. La gobernanza y los estándares de datos son la ruta crítica.</span></div>
+  </div>
+  <div class="slbl"><span class="en">COP Development — 8 Phases</span><span class="es">Desarrollo del COP — 8 Fases</span></div>
+  <div class="plist">
+    <div class="phase"><div class="pn" style="background:var(--blue);color:#fff;">1</div><div class="pc"><div class="ptit"><span class="en">Governance Agreement — Critical Path (6–12 months)</span><span class="es">Acuerdo de Gobernanza — Ruta Crítica (6–12 meses)</span></div><div class="pdesc"><span class="en">Ownership model. Data sharing agreements signed. Classification handling. Role and access matrix. Cannot be skipped.</span><span class="es">Modelo de propiedad. Acuerdos de intercambio de datos firmados. Manejo de clasificación. Matriz de roles y acceso. No se puede omitir.</span></div></div></div>
+    <div class="phase"><div class="pn">2</div><div class="pc"><div class="ptit"><span class="en">Data Standards — SAPIENT + JIATF-401</span><span class="es">Estándares de Datos — SAPIENT + JIATF-401</span></div><div class="pdesc"><span class="en">SAPIENT compliance mandated for all network sensors. U.S.-UK common data standard alignment. Coalition standard agreed with Colombia, Ecuador, Peru.</span><span class="es">Cumplimiento SAPIENT obligatorio para todos los sensores de red. Alineación del estándar de datos EE.UU.-UK. Estándar de coalición acordado con Colombia, Ecuador, Perú.</span></div></div></div>
+    <div class="phase"><div class="pn">3</div><div class="pc"><div class="ptit"><span class="en">Sensor Network Deployment (12–18 months)</span><span class="es">Despliegue de Red de Sensores (12–18 meses)</span></div><div class="pdesc"><span class="en">Coverage mapping. Terrain-driven node placement. Domestic first, then coalition. GPS time synchronization.</span><span class="es">Mapeo de cobertura. Colocación de nodos impulsada por terreno. Doméstico primero, luego coalición. Sincronización de tiempo GPS.</span></div></div></div>
+    <div class="phase"><div class="pn">4</div><div class="pc"><div class="ptit"><span class="en">Fusion Engine Deployment</span><span class="es">Despliegue del Motor de Fusión</span></div><div class="pdesc"><span class="en">Track correlation. Back-track algorithm. Behavior classification engine trained on TCO threat library. Pattern-of-life database populated.</span><span class="es">Correlación de pistas. Algoritmo de retroceso. Motor de clasificación de comportamiento entrenado en la biblioteca de amenazas TCO.</span></div></div></div>
+    <div class="phase"><div class="pn">5</div><div class="pc"><div class="ptit"><span class="en">Legal Layer Integration</span><span class="es">Integración de la Capa Legal</span></div><div class="pdesc"><span class="en">NDAA regulations finalized. Role-based access configured. Jurisdictional overlay mapped — authority matrix updates automatically when track crosses a boundary.</span><span class="es">Regulaciones NDAA finalizadas. Acceso basado en roles configurado. La matriz de autoridad se actualiza automáticamente cuando una pista cruza un límite.</span></div></div></div>
+    <div class="phase"><div class="pn">6</div><div class="pc"><div class="ptit"><span class="en">Coalition Integration (18–24 months)</span><span class="es">Integración de Coalición (18–24 meses)</span></div><div class="pdesc"><span class="en">Bilateral data sharing agreements. Colombia / Ecuador / Peru sensor contributions. Trilateral fusion layer. Reliability assessment gates what each partner receives.</span><span class="es">Acuerdos bilaterales de intercambio de datos. Contribuciones de sensores de Colombia / Ecuador / Perú. Capa de fusión trilateral.</span></div></div></div>
+    <div class="phase"><div class="pn">7</div><div class="pc"><div class="ptit"><span class="en">Display and Interface</span><span class="es">Pantalla e Interfaz</span></div><div class="pdesc"><span class="en">Role-appropriate views. Full English / Spanish parity — not translation. Mobile, fixed, and vehicle-mounted. Voice-enabled for field operations. No dropdown menus.</span><span class="es">Vistas apropiadas por rol. Paridad completa inglés / español — no traducción. Móvil, fijo y montado en vehículo. Habilitado por voz. Sin menús desplegables.</span></div></div></div>
+    <div class="phase"><div class="pn">8</div><div class="pc"><div class="ptit"><span class="en">Operational Validation — Continuous</span><span class="es">Validación Operacional — Continua</span></div><div class="pdesc"><span class="en">FIFA live test now. Autumn 2026 second grant tranche. 2028 Olympics next forcing function. System never complete — improvement loop is permanent.</span><span class="es">Prueba en vivo FIFA ahora. Otoño 2026 segundo tramo de subvención. Olimpiadas 2028 próxima función de forzamiento. El sistema nunca está completo.</span></div></div></div>
+  </div>
+</section>
+
+<!-- L27 -->
+<section class="layer" id="l27">
+  <div class="lhdr">
+    <div class="lnum-row"><div class="lnum">27</div><div class="lcat"><span class="en">Architecture</span><span class="es">Arquitectura</span></div></div>
+    <div class="ltit"><span class="en">Single Pane of Glass — Software-Defined Hardware</span><span class="es">Panel Único de Control — Hardware Definido por Software</span></div>
+    <div class="lsub"><span class="en">All 27 Layers Fused · Three Integration Pathways · No Dropdown Menus</span><span class="es">Las 27 capas fusionadas · tres rutas de integración · sin menús desplegables</span></div>
+    <div class="ldesc"><span class="en">All 27 layers fused into one view. Context-appropriate decisions — not catalogs. Software layer makes existing hardware work together. The government does not need to buy more hardware. SAPIENT-compliant open architecture. Voice-enabled for field operations. English and Spanish throughout.</span><span class="es">Las 27 capas fusionadas en una vista. Decisiones apropiadas al contexto — no catálogos. La capa de software hace que el hardware existente funcione en conjunto. El gobierno no necesita comprar más hardware. Arquitectura abierta compatible con SAPIENT. Habilitado por voz. Inglés y español en todo.</span></div>
+  </div>
+  <div class="cards three">
+    <div class="card"><div class="clab gn"><span class="en">Pathway 1 — Native API</span><span class="es">Ruta 1 — API Nativa</span></div><div class="ctit"><span class="en">Days to Weeks</span><span class="es">Días a Semanas</span></div><div class="cbod"><span class="en">Hardware with existing API. SAPIENT-compliant or translatable. Direct connection to fusion engine. Minimal cost.</span><span class="es">Hardware con API existente. Compatible con SAPIENT o traducible. Conexión directa al motor de fusión. Costo mínimo.</span></div></div>
+    <div class="card"><div class="clab a"><span class="en">Pathway 2 — Adapter Layer</span><span class="es">Ruta 2 — Capa Adaptadora</span></div><div class="ctit"><span class="en">Weeks to Months</span><span class="es">Semanas a Meses</span></div><div class="cbod"><span class="en">Proprietary output. Adapter translates to common format. Covers legacy CBP networks, older military systems, partner nation equipment.</span><span class="es">Salida propietaria. El adaptador traduce al formato común. Cubre redes CBP heredadas, sistemas militares más antiguos, equipos de naciones socias.</span></div></div>
+    <div class="card"><div class="clab"><span class="en">Pathway 3 — Edge Node</span><span class="es">Ruta 3 — Nodo de Borde</span></div><div class="ctit"><span class="en">Months</span><span class="es">Meses</span></div><div class="cbod"><span class="en">No API — raw data only. Edge compute node at sensor. Converts legacy cameras, older radars, and CCTV networks into SAPIENT-compliant detection platforms.</span><span class="es">Sin API — solo datos brutos. Nodo de cómputo de borde en el sensor. Convierte cámaras heredadas, radares más antiguos y redes CCTV en plataformas de detección compatibles con SAPIENT.</span></div></div>
+  </div>
+  <div class="co"><div class="col"><span class="en">Economic Principle</span><span class="es">Principio Económico</span></div><div class="cot"><span class="en">"The government doesn't need to buy more hardware. It needs a software layer that makes existing hardware work together. One purchase. Every sensor already in the field starts contributing to the common operating picture."</span><span class="es">"El gobierno no necesita comprar más hardware. Necesita una capa de software que haga que el hardware existente funcione en conjunto. Una compra. Cada sensor ya en el campo comienza a contribuir al cuadro operativo común."</span></div></div>
+</section>
+
+</div>
+</div><!-- /panel-sco -->
+
+<!-- ═══════════════ OPERATOR PANEL ═══════════════ -->
+<div class="panel" id="panel-op">
+<div class="cnt">
+
+<div class="gdiv"><span class="gtag"><span class="en">Operator View</span><span class="es">Vista del Operador</span></span><span class="gtit"><span class="en">Single Pane — Track to Action</span><span class="es">Panel Único — De Pista a Acción</span></span></div>
+
+<p style="font-size:13px;color:var(--muted);margin-bottom:20px;">
+  <span class="en">No research required. No dropdown menus. Three context-appropriate options surfaced for every track. Legal authority pre-loaded for this operator, this location, this moment.</span>
+  <span class="es">No se requiere investigación. Sin menús desplegables. Tres opciones apropiadas al contexto para cada pista. Autoridad legal precargada para este operador, esta ubicación, este momento.</span>
+</p>
+
+<!-- MOCK COP -->
+<div class="opane">
+  <div class="oph">
+    <div class="opt"><span class="en">C-sUAS COP · Sector 4 / Putumayo</span><span class="es">COP C-sUAS · Sector 4 / Putumayo</span></div>
+    <div class="olive"><div class="ldot"></div><span class="en">LIVE</span><span class="es">EN VIVO</span></div>
+  </div>
+  <div class="otrk">
+    <div class="tid"><span class="en">TRACK 047 — ACTIVE · 0:42 elapsed · Colombian airspace</span><span class="es">PISTA 047 — ACTIVA · 0:42 transcurridos · Espacio aéreo colombiano</span></div>
+    <div class="tass"><span class="en">⬥ ISR BEHAVIOR — HIGH CONFIDENCE (0.87) · Autonomous — RF silent</span><span class="es">⬥ COMPORTAMIENTO ISR — ALTA CONFIANZA (0.87) · Autónomo — silencioso RF</span></div>
+    <div class="tmet">
+      <span class="en">Launch point: 2.3km SE — confirmed (3-sensor triangulation) · Operator: estimated 400m from launch — mobile vehicle · Behavior: loiter over installation perimeter — matches known TCO ISR profile · Affiliation: FARC-EP assessed (0.74)</span>
+      <span class="es">Punto de lanzamiento: 2.3km SE — confirmado (triangulación 3 sensores) · Operador: estimado 400m del lanzamiento — vehículo móvil · Comportamiento: merodeo sobre perímetro de instalación — coincide con perfil ISR TCO conocido · Afiliación: FARC-EP evaluado (0.74)</span>
+    </div>
+  </div>
+  <div class="oaut">
+    <span class="en">▸ YOUR AUTHORITY: Colombian coordination required · Credible threat: MET · 48hr report auto-generates on action</span>
+    <span class="es">▸ SU AUTORIDAD: Coordinación colombiana requerida · Amenaza creíble: CUMPLIDA · Informe 48 hrs se genera automáticamente al actuar</span>
+  </div>
+  <div class="oopts">
+    <div class="oopt pri">
+      <div class="onam"><span class="en">Soft Defeat</span><span class="es">Derrota Suave</span></div>
+      <div class="osub"><span class="en">RF Jam — pending coord.</span><span class="es">Interferencia RF — coord. pendiente</span></div>
+    </div>
+    <div class="oopt">
+      <div class="onam"><span class="en">Observe + Track</span><span class="es">Observar + Rastrear</span></div>
+      <div class="osub"><span class="en">Intel collection mode</span><span class="es">Modo recolección intel.</span></div>
+    </div>
+    <div class="oopt">
+      <div class="onam"><span class="en">Contact Operator</span><span class="es">Contactar Operador</span></div>
+      <div class="osub"><span class="en">Remote ID — not available</span><span class="es">ID Remota — no disponible</span></div>
+    </div>
+  </div>
+  <div class="osta">
+    <span><span class="sg">●</span> <span class="en">FAA CLEAR</span><span class="es">FAA LIBRE</span></span>
+    <span><span class="sa">◐</span> <span class="en">FBI NOTIFIED</span><span class="es">FBI NOTIFICADO</span></span>
+    <span><span class="sg">●</span> <span class="en">SPECTRUM CLEAR</span><span class="es">ESPECTRO LIBRE</span></span>
+    <span><span class="sa">◐</span> <span class="en">COLOMBIAN COORD PENDING</span><span class="es">COORD. COLOMBIANA PENDIENTE</span></span>
+    <span><span class="sg">●</span> <span class="en">COVERAGE FULL</span><span class="es">COBERTURA COMPLETA</span></span>
+    <span><span class="sg">●</span> <span class="en">VOICE ACTIVE</span><span class="es">VOZ ACTIVA</span></span>
+  </div>
+</div>
+
+<!-- RESPONSE SPECTRUM -->
+<div class="slbl"><span class="en">Full Response Spectrum — Level 1 to Level 7</span><span class="es">Espectro Completo de Respuesta — Nivel 1 al Nivel 7</span></div>
+<div class="spec">
+  <div class="srow">
+    <div class="srow-top">
+      <div class="slv sl1"><span class="en">Level 1<br>Awareness</span><span class="es">Nivel 1<br>Conciencia</span></div>
+      <div class="scon"><div class="stit"><span class="en">Observation</span><span class="es">Observación</span></div><div class="sdesc"><span class="en">Track logged, compliant drone, no threat indicators. Remote ID broadcasting — operator contactable. No decision required.</span><span class="es">Pista registrada, dron compatible, sin indicadores de amenaza. Transmisión de ID remota — operador contactable. No se requiere decisión.</span></div></div>
+    </div>
+    <div class="sauth"><span class="en">No cert required</span><span class="es">Sin certificación requerida</span></div>
+  </div>
+  <div class="srow">
+    <div class="srow-top">
+      <div class="slv sl2"><span class="en">Level 2<br>Contact</span><span class="es">Nivel 2<br>Contacto</span></div>
+      <div class="scon"><div class="stit"><span class="en">"Tell the kid to knock it off"</span><span class="es">"Dile al chico que lo deje"</span></div><div class="sdesc"><span class="en">Remote ID identified. Automated notification to registered operator. Public address at venue if co-located.</span><span class="es">ID remota identificada. Notificación automática al operador registrado. Anuncio público en el lugar si está co-ubicado.</span></div></div>
+    </div>
+    <div class="sauth"><span class="en">Awareness authority</span><span class="es">Autoridad de conciencia</span></div>
+  </div>
+  <div class="srow">
+    <div class="srow-top">
+      <div class="slv sl3"><span class="en">Level 3<br>Investigate</span><span class="es">Nivel 3<br>Investigar</span></div>
+      <div class="scon"><div class="stit"><span class="en">Investigation Mode</span><span class="es">Modo Investigación</span></div><div class="sdesc"><span class="en">Doesn't respond to contact. Behavior ambiguous. Launch point back-track initiated. Adjacent agency notified. Intelligence collection — no defeat action.</span><span class="es">No responde al contacto. Comportamiento ambiguo. Retroceso del punto de lanzamiento iniciado. Agencia adyacente notificada. Solo recolección de inteligencia.</span></div></div>
+    </div>
+    <div class="sauth"><span class="en">Intel only</span><span class="es">Solo inteligencia</span></div>
+  </div>
+  <div class="srow">
+    <div class="srow-top">
+      <div class="slv sl4"><span class="en">Level 4<br>Protect</span><span class="es">Nivel 4<br>Proteger</span></div>
+      <div class="scon"><div class="stit"><span class="en">Shelter in Place</span><span class="es">Refugio en el Lugar</span></div><div class="sdesc"><span class="en">Venue / installation shelter in place ordered. Airspace restriction activated. FAA TFR coordination triggered. Precautionary — no defeat action.</span><span class="es">Refugio en el lugar ordenado. Restricción del espacio aéreo activada. Coordinación TFR de la FAA activada. Precautorio — sin acción de derrota.</span></div></div>
+    </div>
+    <div class="sauth"><span class="en">Incident commander</span><span class="es">Comandante de incidente</span></div>
+  </div>
+  <div class="srow">
+    <div class="srow-top">
+      <div class="slv sl5"><span class="en">Level 5<br>Soft Defeat</span><span class="es">Nivel 5<br>Derrota Suave</span></div>
+      <div class="scon"><div class="stit"><span class="en">Non-Kinetic Defeat</span><span class="es">Derrota No Cinética</span></div><div class="sdesc"><span class="en">RF jamming, spoofing, geofencing. Credible threat determination required. Safer Skies certification mandatory. Spectrum deconfliction mandatory. 48-hour report auto-generated.</span><span class="es">Interferencia RF, suplantación, geocercado. Se requiere determinación de amenaza creíble. Certificación Safer Skies obligatoria. Desconflicto de espectro obligatorio. Informe de 48 horas generado automáticamente.</span></div></div>
+    </div>
+    <div class="sauth"><span class="en">Safer Skies certified</span><span class="es">Certificado Safer Skies</span></div>
+  </div>
+  <div class="srow">
+    <div class="srow-top">
+      <div class="slv sl6"><span class="en">Level 6<br>Hard Defeat</span><span class="es">Nivel 6<br>Derrota Dura</span></div>
+      <div class="scon"><div class="stit"><span class="en">Kinetic / Directed Energy</span><span class="es">Cinético / Energía Dirigida</span></div><div class="sdesc"><span class="en">Highest authority threshold. Federal law enforcement or military only. Imminent threat to life standard. Full documentation and chain of custody automatic.</span><span class="es">Umbral de autoridad más alto. Solo fuerzas del orden federales o militares. Estándar de amenaza inminente a la vida. Documentación completa y cadena de custodia automáticas.</span></div></div>
+    </div>
+    <div class="sauth"><span class="en">Federal LE or Military</span><span class="es">FF.OO. Fed. o Militar</span></div>
+  </div>
+  <div class="srow">
+    <div class="srow-top">
+      <div class="slv sl7"><span class="en">Level 7<br>Network</span><span class="es">Nivel 7<br>Red</span></div>
+      <div class="scon"><div class="stit"><span class="en">Left of Launch — Network Disruption</span><span class="es">Antes del Lanzamiento — Disrupción de Red</span></div><div class="sdesc"><span class="en">Operator interdiction. Ground team coordination. Attribution confirmed, jurisdiction verified, arrest authority established. DEA / FBI / host nation coordination. Highest leverage intervention point.</span><span class="es">Interdicción del operador. Coordinación del equipo terrestre. Atribución confirmada, jurisdicción verificada, autoridad de arresto establecida. Coordinación DEA / FBI / nación anfitriona. Punto de intervención de mayor influencia.</span></div></div>
+    </div>
+    <div class="sauth"><span class="en">DEA / FBI / Host Nation</span><span class="es">DEA / FBI / Nación Anfitriona</span></div>
+  </div>
+</div>
+
+<!-- EFFECTOR TABLE -->
+<div class="slbl" style="margin-top:24px;"><span class="en">Effector Selection — Any Sensor, Best Effector</span><span class="es">Selección de Efector — Cualquier Sensor, Mejor Efector</span></div>
+<div class="tbl-wrap"><table class="tbl">
+  <thead><tr><th><span class="en">Environment</span><span class="es">Entorno</span></th><th><span class="en">Threat Profile</span><span class="es">Perfil de Amenaza</span></th><th><span class="en">Recommended</span><span class="es">Recomendado</span></th><th><span class="en">Excluded / Why</span><span class="es">Excluido / Por Qué</span></th></tr></thead>
+  <tbody>
+    <tr><td class="ts"><span class="en">Urban Venue</span><span class="es">Lugar Urbano</span></td><td><span class="en">RF-controlled</span><span class="es">Controlado RF</span></td><td class="tb2"><span class="en">Cyber-over-RF</span><span class="es">Ciber sobre RF</span></td><td style="color:var(--muted);font-size:11px;"><span class="en">Kinetic — collateral</span><span class="es">Cinético — daño colateral</span></td></tr>
+    <tr><td class="ts"><span class="en">Rural Border</span><span class="es">Frontera Rural</span></td><td><span class="en">Autonomous — RF silent</span><span class="es">Autónomo — silencioso RF</span></td><td class="tb2"><span class="en">GPS spoof + acoustic</span><span class="es">Suplant. GPS + acústico</span></td><td style="color:var(--muted);font-size:11px;"><span class="en">RF jam — no signal</span><span class="es">Interferencia RF — sin señal</span></td></tr>
+    <tr><td class="ts"><span class="en">Dense Jungle</span><span class="es">Selva Densa</span></td><td><span class="en">Low + slow under canopy</span><span class="es">Bajo y lento bajo el dosel</span></td><td class="tb2"><span class="en">Elevated EO/IR + GPS spoof</span><span class="es">EO/IR elevado + suplant. GPS</span></td><td style="color:var(--muted);font-size:11px;"><span class="en">Radar — ground clutter</span><span class="es">Radar — desorden del suelo</span></td></tr>
+    <tr><td class="ts"><span class="en">Installation</span><span class="es">Instalación</span></td><td><span class="en">ISR loiter — TCO profile</span><span class="es">Merodeo ISR — perfil TCO</span></td><td class="tb2"><span class="en">Soft defeat + back-track L7</span><span class="es">Derrota suave + retroceso N7</span></td><td style="color:var(--muted);font-size:11px;"><span class="en">Hard defeat — precedent</span><span class="es">Derrota dura — precedente</span></td></tr>
+    <tr><td class="ts"><span class="en">Convoy — Urban</span><span class="es">Convoy — Urbano</span></td><td><span class="en">Unknown — surveillance?</span><span class="es">Desconocido — ¿vigilancia?</span></td><td class="tb2"><span class="en">Observe + notify adjacent</span><span class="es">Observar + notificar adyacente</span></td><td style="color:var(--muted);font-size:11px;"><span class="en">Any defeat — coordinate first</span><span class="es">Cualquier derrota — coordinar primero</span></td></tr>
+  </tbody>
+</table></div>
+
+</div>
+</div><!-- /panel-op -->
+
+<!-- ═══════════════ STRATEGIC PANEL ═══════════════ -->
+<div class="panel" id="panel-str">
+<div class="cnt">
+
+<div class="gdiv"><span class="gtag"><span class="en">Strategic View</span><span class="es">Vista Estratégica</span></span><span class="gtit"><span class="en">Decision Maker Synthesis</span><span class="es">Síntesis del Decisor</span></span></div>
+
+<p style="font-size:13px;color:var(--muted);margin-bottom:20px;"><span class="en">Twenty-seven layers assembled from first principles across the Colombia-Ecuador-Peru source zone, the U.S. southern border, JIATF-401, FIFA 2026, and the Huntsville training pipeline.</span><span class="es">Veintisiete capas ensambladas desde principios básicos a través de la zona fuente Colombia-Ecuador-Perú, la frontera sur de EE.UU., JIATF-401, FIFA 2026 y la tubería de entrenamiento de Huntsville.</span></p>
+
+<div class="co r"><div class="col"><span class="en">The Core Problem</span><span class="es">El Problema Central</span></div><div class="cot"><span class="en">The U.S. government has $1.1 billion in deployed C-sUAS funding, 1,600+ validated systems, a new legal authority framework, and a dedicated training center. What it does not have is a decision architecture that makes all of it coherent at the point of operational employment. The coordination burden falls entirely on the operator. This tool changes that.</span><span class="es">El gobierno de EE.UU. tiene $1.1 mil millones en fondos C-sUAS desplegados, más de 1,600 sistemas validados, un nuevo marco de autoridad legal y un centro de entrenamiento dedicado. Lo que no tiene es una arquitectura de decisión que haga todo coherente en el punto de empleo operacional. La carga de coordinación recae totalmente sobre el operador. Esta herramienta cambia eso.</span></div></div>
+
+<div class="slbl" style="margin-top:20px;"><span class="en">The Asymmetric Paradox</span><span class="es">La Paradoja Asimétrica</span></div>
+<div class="tbl-wrap"><table class="tbl">
+  <thead><tr><th><span class="en">Dimension</span><span class="es">Dimensión</span></th><th><span class="en">TCO / Cartel</span><span class="es">TCO / Cártel</span></th><th><span class="en">U.S. Federal Forces</span><span class="es">Fuerzas Federales EE.UU.</span></th></tr></thead>
+  <tbody>
+    <tr><td class="ts"><span class="en">Rules of Engagement</span><span class="es">Reglas de Enfrentamiento</span></td><td class="ta2"><span class="en">None</span><span class="es">Ninguna</span></td><td><span class="en">Heavily constrained</span><span class="es">Muy restringidas</span></td></tr>
+    <tr><td class="ts"><span class="en">Acquisition Timeline</span><span class="es">Cronograma Adquisición</span></td><td class="ta2"><span class="en">Days to weeks</span><span class="es">Días a semanas</span></td><td><span class="en">18–24 months</span><span class="es">18–24 meses</span></td></tr>
+    <tr><td class="ts"><span class="en">Spectrum Use</span><span class="es">Uso del Espectro</span></td><td class="ta2"><span class="en">Unconstrained</span><span class="es">Sin restricciones</span></td><td><span class="en">FCC / DoD regulated</span><span class="es">Regulado FCC / DoD</span></td></tr>
+    <tr><td class="ts"><span class="en">Cross-Border Action</span><span class="es">Acción Transfronteriza</span></td><td class="ta2"><span class="en">Operates freely</span><span class="es">Opera libremente</span></td><td><span class="en">Sovereignty / treaty limited</span><span class="es">Limitado por soberanía / tratado</span></td></tr>
+    <tr><td class="ts"><span class="en">Adaptation Speed</span><span class="es">Velocidad de Adaptación</span></td><td class="ta2"><span class="en">Real-time — observes sandbox</span><span class="es">Tiempo real — observa el laboratorio</span></td><td><span class="en">Quarterly assessments minimum</span><span class="es">Evaluaciones trimestrales mínimo</span></td></tr>
+    <tr><td class="ts"><span class="en">Prison C2</span><span class="es">C2 en Prisión</span></td><td class="ta2"><span class="en">Active protected command</span><span class="es">Mando protegido activo</span></td><td><span class="en">Not systematically addressed</span><span class="es">No abordado sistemáticamente</span></td></tr>
+  </tbody>
+</table></div>
+
+<div class="co a" style="margin-top:16px;"><div class="col"><span class="en">The Water Balloon Effect</span><span class="es">El Efecto Globo de Agua</span></div><div class="cot"><span class="en">"When we focused operations in one area, TCOs were agile enough to shift to another geographic area. We haven't been as nimble as they have, nor had the resources to cover every threat vector." — JIATF-South Director. Every point solution produces temporary tactical success and permanent strategic stasis.</span><span class="es">"Cuando enfocamos las operaciones en un área, los TCO fueron lo suficientemente ágiles para trasladarse a otra área geográfica. No hemos sido tan ágiles como ellos." — Director JIATF-Sur. Cada solución puntual produce éxito táctico temporal y estasis estratégica permanente.</span></div></div>
+
+<div class="slbl" style="margin-top:20px;"><span class="en">The Intervention Window</span><span class="es">La Ventana de Intervención</span></div>
+<div class="flow">
+  <div class="fn"><span class="fnum"><span class="en">Dec 25</span><span class="es">Dic 25</span></span><span class="ftxt"><strong><span class="en">First $250M deployed</span><span class="es">Primeros $250M desplegados</span></strong> — <span class="en">11 host states. Agencies scrambling. Deficiencies unknown at time of purchase.</span><span class="es">11 estados anfitriones. Agencias improvisando. Deficiencias desconocidas al momento de la compra.</span></span></div>
+  <div class="farr">↓</div>
+  <div class="fn"><span class="fnum"><span class="en">Jun 26</span><span class="es">Jun 26</span></span><span class="ftxt"><strong><span class="en">FIFA underway now</span><span class="es">FIFA en curso ahora</span></strong> — <span class="en">Live operational environment. Deficiencies visible. Lessons generating.</span><span class="es">Entorno operacional en vivo. Deficiencias visibles. Lecciones generándose.</span></span></div>
+  <div class="farr">↓</div>
+  <div class="fn hi"><span class="fnum" style="color:var(--blue)"><span class="en">Aut 26</span><span class="es">Oto 26</span></span><span class="ftxt"><strong><span class="en">Intervention Window — Act Now</span><span class="es">Ventana de Intervención — Actuar Ahora</span></strong> — <span class="en">Second $250M not yet deployed. FIFA lessons available. Window to embed decision architecture before nationwide rollout to all 56 SAAs.</span><span class="es">Segundo $250M aún no desplegado. Lecciones de FIFA disponibles. Ventana para incorporar arquitectura de decisión antes del despliegue nacional a las 56 SAA.</span></span></div>
+  <div class="farr">↓</div>
+  <div class="fn"><span class="fnum">FY27</span><span class="ftxt"><strong><span class="en">$250M to all 56 SAAs</span><span class="es">$250M para las 56 SAA</span></strong> — <span class="en">Nationwide rollout. If deficiencies fixed: coherent architecture. If not: nationwide implementation gap at scale.</span><span class="es">Despliegue nacional. Si se corrigen las deficiencias: arquitectura coherente. Si no: brecha de implementación nacional a escala.</span></span></div>
+  <div class="farr">↓</div>
+  <div class="fn"><span class="fnum">2028</span><span class="ftxt"><strong><span class="en">Los Angeles Olympics</span><span class="es">Olimpiadas Los Ángeles</span></strong> — <span class="en">Larger, longer, more exposed. NCUTC mandate explicitly includes 2028. Architecture built for FIFA becomes the platform for every NSSE thereafter.</span><span class="es">Más grande, más largo, más expuesto. El mandato de NCUTC incluye explícitamente 2028. La arquitectura construida para FIFA se convierte en la plataforma para cada NSSE a partir de entonces.</span></span></div>
+</div>
+
+<div class="slbl" style="margin-top:20px;"><span class="en">Framework Summary — All 27 Layers</span><span class="es">Resumen del Marco — Las 27 Capas</span></div>
+<div class="tbl-wrap"><table class="tbl">
+  <thead><tr><th>#</th><th><span class="en">Layer</span><span class="es">Capa</span></th><th><span class="en">Status</span><span class="es">Estado</span></th></tr></thead>
+  <tbody>
+    <tr><td style="color:var(--muted);font-size:11px;">01</td><td class="ts"><span class="en">Tactical Employment</span><span class="es">Empleo Táctico</span></td><td class="tr2"><span class="en">Gap — no unified deconfliction</span><span class="es">Brecha — sin desconflicto unificado</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">02</td><td class="ts"><span class="en">Network Disruption</span><span class="es">Disrupción de Red</span></td><td class="ta2"><span class="en">Border is wrong intervention point</span><span class="es">La frontera es el punto equivocado</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">03</td><td class="ts"><span class="en">Adversary Adaptation</span><span class="es">Adaptación del Adversario</span></td><td class="tr2"><span class="en">TCO cycle faster than U.S. government</span><span class="es">Ciclo TCO más rápido que el gobierno EE.UU.</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">04</td><td class="ts"><span class="en">Coalition Legal Frameworks</span><span class="es">Marcos Legales de Coalición</span></td><td class="tr2"><span class="en">No bilateral cUAS framework</span><span class="es">Sin marco bilateral cUAS</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">05</td><td class="ts"><span class="en">Legal Foundation — Safer Skies</span><span class="es">Fundamento Legal — Safer Skies</span></td><td class="ta2"><span class="en">Domestic anchor; coalition gap remains</span><span class="es">Ancla doméstica; brecha de coalición persiste</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">06</td><td class="ts"><span class="en">Shared Airspace &lt;400ft</span><span class="es">Espacio Aéreo Compartido &lt;400 pies</span></td><td class="tr2"><span class="en">Dead zone — tri-border unmapped</span><span class="es">Zona muerta — tri-fronterizo sin mapear</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">07</td><td class="ts"><span class="en">Attribution &amp; Intent</span><span class="es">Atribución e Intención</span></td><td class="tr2"><span class="en">Almost entirely unsolved below 400ft</span><span class="es">Casi sin resolver por debajo de 400 pies</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">08</td><td class="ts"><span class="en">Decision Architecture</span><span class="es">Arquitectura de Decisión</span></td><td class="ta2"><span class="en">Three levels, no unified system</span><span class="es">Tres niveles, sin sistema unificado</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">09</td><td class="ts"><span class="en">Information Transmission</span><span class="es">Transmisión de Información</span></td><td class="tr2"><span class="en">Horizontal flow — phone calls today</span><span class="es">Flujo horizontal — llamadas telefónicas hoy</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">10</td><td class="ts"><span class="en">Industry Integration</span><span class="es">Integración Industrial</span></td><td class="tr2"><span class="en">Bidirectional sharing — does not exist</span><span class="es">Intercambio bidireccional — no existe</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">11</td><td class="ts"><span class="en">Sensor Environment Mapping</span><span class="es">Mapeo Entorno del Sensor</span></td><td class="ta2"><span class="en">T&amp;E data exists — not integrated</span><span class="es">Datos T&amp;E existen — no integrados</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">12</td><td class="ts"><span class="en">Adversary Tech Intelligence</span><span class="es">Intel. Tecnológica Adversario</span></td><td class="tr2"><span class="en">Not systematized — quarterly at best</span><span class="es">No sistematizada — trimestral en el mejor caso</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">13</td><td class="ts"><span class="en">Embassy Integration</span><span class="es">Integración de Embajada</span></td><td class="ta2"><span class="en">Coordination happens — not systematized</span><span class="es">La coordinación ocurre — no sistematizada</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">14</td><td class="ts"><span class="en">Prison C2 Networks</span><span class="es">Redes C2 en Prisiones</span></td><td class="tr2"><span class="en">Not integrated into C-sUAS architecture</span><span class="es">No integrado en la arquitectura C-sUAS</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">15</td><td class="ts"><span class="en">JIATF-South / New JTF</span><span class="es">JIATF-Sur / Nuevo JTF</span></td><td class="ta2"><span class="en">Dual structure — friction potential</span><span class="es">Estructura dual — potencial de fricción</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">16</td><td class="ts">JIATF-401</td><td class="tgn"><span class="en">Active — 36-month window open</span><span class="es">Activo — ventana de 36 meses abierta</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">17</td><td class="ts"><span class="en">Policy Effects 2nd / 3rd Order</span><span class="es">Efectos de Política 2do / 3er Orden</span></td><td class="tr2"><span class="en">Not embedded in decision tools</span><span class="es">No incorporado en herramientas de decisión</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">18</td><td class="ts"><span class="en">NORTHCOM Dedicated Capability</span><span class="es">Capacidad Dedicada NORTHCOM</span></td><td class="tr2"><span class="en">Dismounted patrol gap confirmed</span><span class="es">Brecha de patrulla desmontada confirmada</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">19</td><td class="ts"><span class="en">JIATF-401 Marketplace</span><span class="es">Mercado JIATF-401</span></td><td class="tgn"><span class="en">IOC Feb 2026 — operational</span><span class="es">IOC Feb 2026 — operativo</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">20</td><td class="ts"><span class="en">Full Acquisition Landscape</span><span class="es">Panorama Completo Adquisiciones</span></td><td class="ta2"><span class="en">Multiple pathways — not integrated</span><span class="es">Múltiples rutas — no integradas</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">21</td><td class="ts"><span class="en">Interoperability</span><span class="es">Interoperabilidad</span></td><td class="tr2"><span class="en">$20B contract = public admission of failure</span><span class="es">Contrato $20B = admisión pública de fallo</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">22</td><td class="ts"><span class="en">FIFA World Cup 2026</span><span class="es">Copa Mundial FIFA 2026</span></td><td class="tgn"><span class="en">Live now — lessons generating</span><span class="es">En vivo ahora — lecciones generándose</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">23</td><td class="ts"><span class="en">FEMA Grant Implementation Gap</span><span class="es">Brecha de Implementación FEMA</span></td><td class="tr2"><span class="en">$1.1B deployed, doctrine missing</span><span class="es">$1.1B desplegado, doctrina faltante</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">24</td><td class="ts"><span class="en">Huntsville / NCUTC Pipeline</span><span class="es">Tubería Huntsville / NCUTC</span></td><td class="ta2"><span class="en">Pipeline complete except deploy step</span><span class="es">Tubería completa excepto el paso de despliegue</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">25</td><td class="ts"><span class="en">COP Development — 8 Phases</span><span class="es">Desarrollo COP — 8 Fases</span></td><td class="tr2"><span class="en">Phase 1 governance not started</span><span class="es">Gobernanza Fase 1 no iniciada</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">26</td><td class="ts"><span class="en">Operator Workflow Design</span><span class="es">Diseño Flujo de Trabajo Operador</span></td><td class="tr2"><span class="en">Dropdown menus. Burden on operator.</span><span class="es">Menús desplegables. Carga sobre el operador.</span></td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;">27</td><td class="ts"><span class="en">Single Pane of Glass</span><span class="es">Panel Único de Control</span></td><td class="tb2"><span class="en">This tool — builds toward this</span><span class="es">Esta herramienta — construye hacia esto</span></td></tr>
+  </tbody>
+</table></div>
+
+</div>
+</div><!-- /panel-str -->
+
+<footer>
+  <div>
+    <span class="en">RMGS, Inc. · C-sUAS Decision Framework · v1.0 June 2026</span>
+    <span class="es">RMGS, Inc. · Marco de Decisión C-sUAS · v1.0 Junio 2026</span>
+  </div>
+  <div>
+    <span class="en">27 Layers · English / Español · NORTHCOM–SOUTHCOM–Coalition</span>
+    <span class="es">27 Capas · English / Español · NORTHCOM–SOUTHCOM–Coalición</span>
+  </div>
+</footer>
+
+<script>
+let lang='en';
+
+function setLang(l){
+  lang=l;
+  document.documentElement.className='lang-'+l;
+  document.querySelectorAll('.lbtn').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===l));
+}
+
+function setRole(role){
+  ['sco','op','str'].forEach(r=>{
+    const p=document.getElementById('panel-'+r);
+    const n=document.getElementById('lnav-'+r);
+    if(p) p.classList.toggle('active',r===role);
+    if(n) n.style.display=(r===role)?'block':'none';
+  });
+  document.querySelectorAll('.rpill').forEach(b=>{
+    b.classList.toggle('active',b.getAttribute('onclick').includes("'"+role+"'"));
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function jumpTo(id,btn){
+  const el=document.getElementById(id);
+  if(el){
+    el.scrollIntoView({behavior:'smooth',block:'start'});
+    document.querySelectorAll('.lpill').forEach(b=>b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+  }
+}
+
+// Init: hide non-SCO layer navs
+document.addEventListener('DOMContentLoaded',()=>{
+  document.documentElement.className='lang-en';
+  ['op','str'].forEach(r=>{
+    const n=document.getElementById('lnav-'+r);
+    if(n) n.style.display='none';
+  });
+  // Scroll spy for layer nav
+  if(window.IntersectionObserver){
+    const pills=document.querySelectorAll('#lnav-sco .lpill');
+    const ids=['l1','l2','l3','l4','l5','l6','l7','l8','l9','l13','l14','l15','l16','l19','l21','l24','l27'];
+    const obs=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          const idx=ids.indexOf(e.target.id);
+          if(idx>=0){
+            pills.forEach(p=>p.classList.remove('active'));
+            if(pills[idx]) pills[idx].classList.add('active');
+          }
+        }
+      });
+    },{rootMargin:'-20% 0px -70% 0px'});
+    ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+  }
+});
+</script>
+<script>
+/* Unified RMGS site search (self-contained) — indexes this page + every other page. */
+(function(){
+  if(document.querySelector('.site-search'))return;
+  var SELF=(location.pathname.split('/').pop()||'index.html'); if(!SELF)SELF='index.html';
+  var ALL=[{f:'index.html',l:'RMGS Home'},{f:'stingrai.html',l:'STINGRAI'},{f:'soto-cano.html',l:'Soto Cano'},{f:'southcom-navigator.html',l:'SOUTHCOM Acquisition Tool'},{f:'csuas-framework.html',l:'Counter-UAS'},{f:'logistics-capture-tool.html',l:'Logistics Capture Tool'},{f:'wexmac-maps-rmgs.html',l:'Opportunity Map'},{f:'sentinel-cop-prototype.html',l:'Sentinel COP'}];
+  var EXT=ALL.filter(function(p){return p.f!==SELF;});
+  var CSS='.nav-search-btn{background:none;border:none;color:#9fb2c4;cursor:pointer;padding:8px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;transition:color .2s,background .2s;flex:none}.nav-search-btn:hover{color:#2fd0c7;background:rgba(255,255,255,.06)}'
+   +'.site-search[hidden]{display:none}.site-search{position:fixed;inset:0;z-index:4000;display:flex;align-items:flex-start;justify-content:center;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}'
+   +'.site-search__backdrop{position:absolute;inset:0;background:rgba(3,10,20,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}'
+   +'.site-search__panel{position:relative;margin-top:11vh;width:min(620px,92vw);background:#0a2342;border:1px solid rgba(255,255,255,.14);border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.55);overflow:hidden}'
+   +'.site-search__bar{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.14);color:#9fb2c4}'
+   +'.site-search__input{flex:1;background:none;border:none;outline:none;color:#fff;font-size:16px;font-family:inherit}.site-search__input::placeholder{color:#7f93a8}'
+   +'.site-search__close{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#9fb2c4;font-size:11px;font-family:monospace;padding:4px 8px;border-radius:6px;cursor:pointer;letter-spacing:.08em}.site-search__close:hover{color:#fff}'
+   +'.site-search__results{max-height:56vh;overflow-y:auto;padding:6px}.site-search__empty{padding:18px 16px;color:#7f93a8;font-size:14px}'
+   +'.site-search__hit{display:flex;flex-direction:column;gap:2px;width:100%;text-align:left;background:none;border:none;color:#fff;padding:10px 14px;border-radius:9px;cursor:pointer}.site-search__hit:hover,.site-search__hit.is-active{background:rgba(47,208,199,.12)}'
+   +'.ssh-label{font-size:15px;font-weight:600;line-height:1.25}.ssh-sub{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#2fd0c7}'
+   +'mark.rmgs-hl{background:rgba(47,208,199,.34);color:#fff;border-radius:3px;padding:0 1px;box-shadow:0 0 0 2px rgba(47,208,199,.34);animation:rmgsHl 4.2s ease forwards}@keyframes rmgsHl{0%,72%{background:rgba(47,208,199,.4)}100%{background:transparent;box-shadow:none}}';
+  var st=document.createElement('style');st.textContent=CSS;document.head.appendChild(st);
+  var ic='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>';
+  function esc(s){return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function scopeOf(node){return (node.closest&&node.closest('section,article,.page,.blk,main'))||node.parentElement||document.body;}
+  function secText(node){var s=scopeOf(node);return s?(s.textContent||''):'';}
+  var pidx=null;
+  function buildPage(){var out=[],seen={};document.querySelectorAll('h1,h2,h3,h4').forEach(function(hd){if(hd.closest('header,nav,.nav,.rmgs-nav,.site-search'))return;var label=(hd.textContent||'').replace(/\s+/g,' ').trim();if(!label||label.length<3||label.length>96)return;var k=label.toLowerCase();if(seen[k])return;seen[k]=1;out.push({label:label,el:hd,text:(label+' '+secText(hd)).replace(/\s+/g,' ').toLowerCase().slice(0,1600)});});return out;}
+  function ensureP(){if(!pidx)pidx=buildPage();return pidx;}
+  function searchPage(q){q=q.toLowerCase().trim();if(!q)return[];var t=q.split(/\s+/),o=[];ensureP().forEach(function(e){if(!t.every(function(x){return e.text.indexOf(x)>=0;}))return;var sc=0,l=e.label.toLowerCase();t.forEach(function(x){if(l.indexOf(x)>=0)sc+=5;});if(l.indexOf(q)>=0)sc+=8;o.push({e:e,sc:sc});});o.sort(function(a,b){return b.sc-a.sc;});return o.slice(0,6).map(function(r){return r.e;});}
+  var extIdx=null,extTried=false;
+  function anchorFor(el){var n=el;while(n&&n.tagName!=='BODY'){if(n.id)return n.id;n=n.parentElement;}return '';}
+  function loadExt(){if(extTried)return;extTried=true;var acc=[],pend=EXT.length;function fin(){if(--pend<=0){extIdx=acc;if(!ov.hidden&&input.value.trim())render(build(input.value));}}EXT.forEach(function(p){fetch(p.f).then(function(r){return r.text();}).then(function(tx){try{var doc=new DOMParser().parseFromString(tx,'text/html'),seen={};doc.querySelectorAll('h1,h2,h3,h4').forEach(function(hd){var label=(hd.textContent||'').replace(/\s+/g,' ').trim();if(!label||label.length<3||label.length>96)return;var k=label.toLowerCase();if(seen[k])return;seen[k]=1;var id=anchorFor(hd),sc2=(hd.closest&&hd.closest('section,article,.page,.blk,main'))||hd.parentElement,tt=(label+' '+((sc2&&sc2.textContent)||'')).replace(/\s+/g,' ');acc.push({label:label,sub:p.l,url:p.f+(id?('#'+id):''),text:tt.toLowerCase().slice(0,1600)});});}catch(_){}}).catch(function(){}).then(fin);});}
+  function searchExt(q){if(!extIdx)return[];q=q.toLowerCase().trim();if(!q)return[];var t=q.split(/\s+/),o=[];extIdx.forEach(function(e){if(!t.every(function(x){return e.text.indexOf(x)>=0;}))return;var sc=0,l=e.label.toLowerCase();t.forEach(function(x){if(l.indexOf(x)>=0)sc+=5;});if(l.indexOf(q)>=0)sc+=8;o.push({e:e,sc:sc});});o.sort(function(a,b){return b.sc-a.sc;});return o.slice(0,8).map(function(r){return r.e;});}
+  function build(q){var out=[];searchPage(q).forEach(function(e){out.push({type:'el',label:e.label,sub:'On this page',el:e.el});});searchExt(q).forEach(function(e){out.push({type:'ext',label:e.label,sub:e.sub,url:e.url});});return out;}
+  function unmark(){document.querySelectorAll('mark.rmgs-hl').forEach(function(m){var p=m.parentNode;if(!p)return;while(m.firstChild)p.insertBefore(m.firstChild,m);p.removeChild(m);if(p.normalize)p.normalize();});}
+  function markPhrase(scope,q){unmark();if(!scope||!q)return null;q=q.trim().toLowerCase();if(!q)return null;var cands=[q];q.split(/\s+/).sort(function(a,b){return b.length-a.length;}).forEach(function(t){if(t.length>2&&cands.indexOf(t)<0)cands.push(t);});for(var c=0;c<cands.length;c++){var ph=cands[c],w=document.createTreeWalker(scope,NodeFilter.SHOW_TEXT,null),node;while(node=w.nextNode()){var pn=node.parentNode;if(!pn||/^(script|style|mark)$/i.test(pn.nodeName)||!pn.offsetParent)continue;var i=node.nodeValue.toLowerCase().indexOf(ph);if(i<0)continue;try{var r=document.createRange();r.setStart(node,i);r.setEnd(node,i+ph.length);var mk=document.createElement('mark');mk.className='rmgs-hl';r.surroundContents(mk);return mk;}catch(e){continue;}}}return null;}
+  var ov=document.createElement('div');ov.className='site-search';ov.hidden=true;
+  ov.innerHTML='<div class="site-search__backdrop"></div><div class="site-search__panel" role="dialog" aria-label="Search"><div class="site-search__bar">'+ic+'<input class="site-search__input" type="text" placeholder="Search the whole site…" aria-label="Search"><button class="site-search__close" type="button" aria-label="Close">Esc</button></div><div class="site-search__results"></div></div>';
+  document.body.appendChild(ov);
+  var input=ov.querySelector('.site-search__input'),res=ov.querySelector('.site-search__results'),cur=[],act=-1;
+  function render(list){cur=list;act=list.length?0:-1;if(!input.value.trim()){res.innerHTML='<div class="site-search__empty">Search every RMGS page…</div>';return;}if(!list.length){res.innerHTML='<div class="site-search__empty">No matches.</div>';return;}res.innerHTML=list.map(function(e,i){return '<button class="site-search__hit'+(i===0?' is-active':'')+'" type="button" data-i="'+i+'"><span class="ssh-label">'+esc(e.label)+'</span><span class="ssh-sub">'+esc(e.sub)+'</span></button>';}).join('');}
+  function open(){ov.hidden=false;document.documentElement.style.overflow='hidden';input.value='';render([]);loadExt();setTimeout(function(){input.focus();},30);}
+  function close(){ov.hidden=true;document.documentElement.style.overflow='';}
+  function goEl(el,q){close();setTimeout(function(){var sec=scopeOf(el);var m=markPhrase(sec,q),tgt=m||el;try{tgt.scrollIntoView({behavior:'smooth',block:'center'});}catch(_){}if(m)setTimeout(unmark,4200);},110);}
+  function go(it){var q=input.value;if(it.type==='el'){goEl(it.el,q);return;}if(it.type==='ext'){var base=it.url,qq=(q||'').trim();if(qq){base+=(base.indexOf('#')>=0?'':'#')+':~:text='+encodeURIComponent(qq.replace(/,+/g,' ').trim());}window.location.href=base;return;}}
+  input.addEventListener('input',function(){render(build(input.value));});
+  ov.addEventListener('click',function(e){if(e.target.classList.contains('site-search__backdrop')||e.target.classList.contains('site-search__close')){close();return;}var hit=e.target.closest&&e.target.closest('.site-search__hit');if(hit)go(cur[+hit.dataset.i]);});
+  input.addEventListener('keydown',function(e){if(e.key==='Escape'){close();return;}if(e.key==='Enter'){if(cur[act])go(cur[act]);return;}if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if(!cur.length)return;act=(act+(e.key==='ArrowDown'?1:-1)+cur.length)%cur.length;var hs=res.querySelectorAll('.site-search__hit');for(var i=0;i<hs.length;i++)hs[i].classList.toggle('is-active',i===act);if(hs[act])hs[act].scrollIntoView({block:'nearest'});}});
+  document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();open();}else if(e.key==='/'&&ov.hidden&&!/^(input|textarea|select)$/i.test((e.target&&e.target.tagName)||'')){e.preventDefault();open();}});
+  var hostSel=document.querySelector('.nav-r')||document.querySelector('.rmgs-nav__right')||document.querySelector('.nav-inner')||document.querySelector('.rmgs-nav__inner')||document.querySelector('header')||document.querySelector('.nav');
+  if(hostSel){var b=document.createElement('button');b.className='nav-search-btn';b.type='button';b.setAttribute('aria-label','Search');b.innerHTML=ic;b.addEventListener('click',open);hostSel.appendChild(b);}
+  try{var ss=new URLSearchParams(location.search).get('ss');if(ss){open();input.value=ss;render(build(ss));}}catch(e){}
+})();
+</script>
+
+</body>
+</html>
