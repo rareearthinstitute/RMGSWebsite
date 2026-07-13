@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RMGS, Inc. — Critical Infrastructure Security &amp; Resilience</title>
+<meta name="description" content="RMGS supports DHS, CISA, and the owners and operators of the Nation's 16 critical infrastructure sectors — exercises, assessments, adversary emulation, and protective security, delivered by a proven federal prime.">
+<meta name="theme-color" content="#f0efe9">
+<meta name="color-scheme" content="light">
+<meta name="author" content="RMGS, Inc.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="RMGS, Inc.">
+<meta property="og:title" content="RMGS, Inc. — Critical Infrastructure Security &amp; Resilience">
+<meta property="og:description" content="A decade inside the homeland-security mission. RMGS delivers exercises, assessments, adversary emulation, and protective security for CISA, DHS, and critical infrastructure owners and operators.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='0' fill='%23f0efe9'/><path d='M14 30 A18 18 0 0 1 50 30' fill='none' stroke='%230d0d0b' stroke-width='5' stroke-linecap='round'/><path d='M50 34 A18 18 0 0 1 14 34' fill='none' stroke='%2371705f' stroke-width='5' stroke-linecap='round'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+  :root{
+    --paper:#f0efe9;     /* bone — Anduril field */
+    --paper-2:#e9e8e0;
+    --ink:#0d0d0b;       /* near-black */
+    --ink-2:#3c3b34;
+    --muted:#71705f;
+    --hair:#dcdad0;
+    --hair-2:#c8c6b8;
+    --blue:#0d0d0b;      /* primary accent is black */
+    --blue-deep:#000000;
+    --navy:#0d0d0b;      /* dark sections go black */
+    --nav-navy:#06182e;  /* RMGS navy — header only, ties into the main site */
+    --cyan:#2fd0c7;      /* RMGS accent — header only */
+    --volt:#e2f317;      /* acid accent — used sparingly */
+    --maxw:1280px;
+    --mono:"SF Mono",ui-monospace,"Cascadia Mono",Consolas,"Roboto Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;background:var(--paper);color-scheme:light;-webkit-text-size-adjust:100%}
+  html,body{background-color:#f0efe9}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  section[id]{scroll-margin-top:88px} /* keep anchored headings clear of the fixed nav */
+  body{
+    font-family:"Archivo","Helvetica Neue",Arial,system-ui,sans-serif;
+    background:var(--paper);
+    color:var(--ink-2);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  /* volt page-load bar */
+  .loadbar{position:fixed;top:0;left:0;height:2px;background:var(--volt);width:0;z-index:400;pointer-events:none;animation:loadbar 1.1s ease .1s forwards}
+  @keyframes loadbar{0%{width:0;opacity:1}75%{width:100%;opacity:1}100%{width:100%;opacity:0}}
+  @media(prefers-reduced-motion:reduce){.loadbar{display:none}}
+
+  /* masked line reveals */
+  .lr{display:block;overflow:hidden}
+  html.js .lr>span{display:block;transform:translateY(112%);transition:transform .85s cubic-bezier(.22,.61,.21,1)}
+  html.js .in .lr>span,html.js .in.lr>span{transform:none}
+  .hl .lr:nth-child(2)>span{transition-delay:.1s}
+  .hl .lr:nth-child(3)>span{transition-delay:.2s}
+  @media(prefers-reduced-motion:reduce){html.js .lr>span{transform:none;transition:none}}
+  a{color:inherit;text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:4px}
+  .skip{position:fixed;left:12px;top:-60px;z-index:300;background:var(--blue);color:#fff;font-weight:700;padding:10px 16px;border-radius:6px;transition:top .2s}
+  .skip:focus{top:12px}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  h1,h2,h3,h4{color:var(--ink);font-weight:700;line-height:1.04;letter-spacing:-.02em}
+  section{position:relative}
+
+  .kicker{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--blue);font-weight:600;display:flex;align-items:center;gap:14px;margin-bottom:20px;
+  }
+  .kicker .idx{color:var(--muted)}
+  .kicker::after{content:"";height:1px;flex:0 0 56px;background:var(--hair-2)}
+
+  /* ---------- NAV (matches RMGS index) ---------- */
+  header.nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    backdrop-filter:blur(10px);
+    background:rgba(6,24,46,.72);
+    border-bottom:1px solid transparent;
+    transition:background .3s,border-color .3s,transform .35s ease;
+  }
+  header.nav.hidden{transform:translateY(-100%)}
+  header.nav.scrolled{background:rgba(4,16,31,.95);border-bottom:1px solid rgba(255,255,255,.12)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:74px;max-width:1320px;margin:0 auto;padding:0 32px;gap:22px}
+  .logo{display:flex;align-items:center;gap:0;font-weight:800;color:#fff;letter-spacing:.04em;font-size:20px}
+  .logo-mark{width:56px;height:56px;flex:none;display:block;transition:transform .35s cubic-bezier(.34,1.45,.4,1)}
+  .logo:hover .logo-mark{transform:scale(1.08)}
+  .logo-svg{width:100%;height:100%;display:block;overflow:visible}
+  .logo-svg .arc{fill:none;stroke-width:9;stroke-linecap:round;stroke-dasharray:120;stroke-dashoffset:120;animation:logoDraw 1.1s ease forwards}
+  .logo-svg .arc-blue{stroke:#1f86c9}
+  .logo-svg .arc-gray{stroke:#8b9298;animation-delay:.22s}
+  .logo-svg .ring{transform-origin:50px 50px;transition:transform 1.05s cubic-bezier(.34,1.4,.4,1)}
+  .logo:hover .logo-svg .ring{transform:rotate(360deg)}
+  .logo-svg .orbit{fill:none;stroke:#8ff0e6;stroke-width:9;stroke-linecap:round;stroke-dasharray:5 246;stroke-dashoffset:0;animation:logoOrbit 3.6s linear infinite;filter:drop-shadow(0 0 3px rgba(143,240,230,.85))}
+  .logo:hover .logo-svg .orbit{animation-duration:1.5s}
+  .logo-svg .logo-word{fill:#fff;font:800 30px/1 "Helvetica Neue",Arial,sans-serif;letter-spacing:-1px;opacity:0;animation:logoWord .55s ease .5s forwards}
+  @keyframes logoDraw{to{stroke-dashoffset:0}}
+  @keyframes logoWord{from{opacity:0}to{opacity:1}}
+  @keyframes logoOrbit{to{stroke-dashoffset:-251.3}}
+  .logo-tag{display:block;flex:none;font-size:9px;line-height:1.3;letter-spacing:.16em;color:#8da4bf;font-weight:600;text-transform:uppercase;width:82px;margin-left:12px;padding-left:12px;border-left:1px solid rgba(255,255,255,.12)}
+  @media(prefers-reduced-motion:reduce){
+    .logo-svg .arc{animation:none;stroke-dashoffset:0}
+    .logo-svg .logo-word{animation:none;opacity:1}
+    .logo-svg .orbit{animation:none;opacity:0}
+    .logo:hover .logo-svg .ring{transform:none}
+    .logo:hover .logo-mark{transform:none}
+  }
+  @media(min-width:941px){header.nav .nav-inner>nav{flex:1;display:flex;justify-content:center}}
+  header.nav nav ul{display:flex;gap:26px;list-style:none;align-items:center}
+  header.nav nav a{font-size:12.5px;color:#e6edf5;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;transition:color .2s}
+  header.nav nav a:hover{color:var(--cyan)}
+  .nav-cta{border:1px solid var(--cyan);color:var(--cyan) !important;padding:13px 26px;border-radius:5px;font-size:13px;white-space:nowrap;transition:all .2s;margin-left:8px}
+  .nav-cta:hover{background:var(--cyan);color:#03101f !important}
+  .nav-right{display:flex;align-items:center;gap:28px}
+  .nav-search{display:flex;color:#e6edf5;transition:color .2s}
+  .nav-search:hover{color:var(--cyan)}
+  .nav-flag{display:flex;border-radius:5px;overflow:hidden;line-height:0}
+  @media(max-width:1180px){header.nav nav ul{gap:22px}}
+  @media(max-width:620px){.nav-right{display:none}}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:0}
+  .burger span{width:24px;height:2px;background:#fff;display:block}
+  @media(max-width:940px){
+    header.nav nav{display:none;position:absolute;top:74px;left:0;right:0;background:#050e1a;border-bottom:1px solid rgba(255,255,255,.12);padding:18px 32px 24px;z-index:200;box-shadow:0 26px 44px rgba(0,0,0,.5)}
+    header.nav nav.open{display:block}
+    header.nav nav ul{flex-direction:column;align-items:flex-start;gap:16px}
+    .burger{display:flex}
+  }
+
+  /* ---------- HERO — centered display type on bone ---------- */
+  .hero{padding:186px 0 0;position:relative;text-align:center}
+  .hero-grid{position:relative;max-width:none}
+  .hero .kicker{justify-content:center}
+  .hero .kicker::after{display:none}
+  .hero .kicker::before{content:"";height:1px;flex:0 0 56px;background:var(--hair-2)}
+  .hero h1{
+    font-size:clamp(52px,9.2vw,148px);margin:0 auto 34px;max-width:12ch;
+    text-transform:uppercase;letter-spacing:-.028em;line-height:.92;
+  }
+  .hero h1 em{font-style:normal;color:inherit}
+  .hero .lede{font-size:18px;color:var(--ink-2);max-width:62ch;margin:0 auto 38px}
+  .hero .lede strong{color:var(--ink)}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:0;justify-content:center}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;
+    padding:16px 30px;border-radius:0;transition:background .2s,color .2s,border-color .2s;
+  }
+  .btn-primary{background:var(--ink);color:var(--paper)}
+  .btn-primary:hover{background:var(--volt);color:var(--ink)}
+  .btn-ghost{border:1px solid var(--ink);color:var(--ink)}
+  .btn-ghost:hover{background:var(--ink);color:var(--paper)}
+  /* full-width credential + jump bands */
+  .cred-strip{
+    display:flex;flex-wrap:wrap;gap:0;justify-content:center;
+    border-top:1px solid var(--hair-2);border-bottom:1px solid var(--hair);
+    margin-top:78px;
+  }
+  .cred{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:16px 26px;display:flex;align-items:center;gap:9px;border-right:1px solid var(--hair)}
+  .cred:first-child{border-left:1px solid var(--hair)}
+  .cred b{color:var(--ink);font-weight:700}
+
+  /* on-page jump nav */
+  .jump{display:flex;flex-wrap:wrap;gap:8px 30px;padding:18px 0;margin-top:0;align-items:center;justify-content:center}
+  .jump .jl{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+  .jump a{
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);
+    padding:5px 0;border-bottom:1px solid transparent;transition:color .2s,border-color .2s,background .2s;
+  }
+  .jump a:hover{color:var(--ink);background:var(--volt)}
+  .jump a.now{color:var(--ink);border-color:var(--ink)}
+  .jump a .jn{color:var(--muted);margin-right:6px}
+
+  @media(max-width:940px){.hero{padding-top:150px}}
+
+  /* ---------- FULL-BLEED MEDIA BAND ---------- */
+  .media{position:relative;background:#0d0d0b;height:min(80vh,780px);overflow:hidden}
+  .media img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.08) brightness(.9)}
+  .media.noimg img{display:none}
+  .media.noimg::before{
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(1000px 520px at 72% 18%,rgba(226,243,23,.05),transparent 60%),
+      repeating-linear-gradient(90deg,rgba(240,239,233,.045) 0 1px,transparent 1px 140px),
+      linear-gradient(180deg,#131311,#0d0d0b);
+  }
+  .media.noimg::after{
+    content:attr(data-await);
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:#71705f;white-space:nowrap;text-transform:uppercase;
+  }
+  /* full-color variant with a slow brightness surge — lights breathing */
+  .media-color img{
+    filter:saturate(1.08) contrast(1.04) brightness(.88);
+    animation:surge 7s ease-in-out infinite;
+  }
+  @keyframes surge{
+    0%,100%{filter:saturate(1.08) contrast(1.04) brightness(.88)}
+    50%{filter:saturate(1.22) contrast(1.06) brightness(1.14)}
+  }
+  @media(prefers-reduced-motion:reduce){.media-color img{animation:none;filter:saturate(1.1) contrast(1.04)}}
+  .media .tick{position:absolute;width:18px;height:18px;border:1px solid rgba(226,243,23,.55)}
+  .media .tick.tl{top:20px;left:20px;border-right:0;border-bottom:0}
+  .media .tick.tr{top:20px;right:20px;border-left:0;border-bottom:0}
+  .media .tick.bl{bottom:20px;left:20px;border-right:0;border-top:0}
+  .media .tick.br{bottom:20px;right:20px;border-left:0;border-top:0}
+  .media-cap{
+    position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:20px;
+    padding:22px 48px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#d6d5cc;
+  }
+  @media(max-width:640px){.media{height:52vh}.media-cap{padding:16px 24px;font-size:9px;letter-spacing:.14em}}
+
+  /* ---------- SECTION SHELL ---------- */
+  .sec{padding:118px 0;border-top:1px solid var(--hair-2)}
+  .sec h2{
+    font-size:clamp(34px,4.8vw,68px);max-width:20ch;margin-bottom:26px;
+    text-transform:uppercase;letter-spacing:-.022em;line-height:.96;
+  }
+  .sec .sub{font-size:17px;color:var(--ink-2);max-width:68ch}
+  .sec .sub strong{color:var(--ink)}
+  /* sticky chapter labels + visible column rule on wide screens */
+  @media(min-width:1100px){
+    .sec:not(.bridge)>.wrap{display:grid;grid-template-columns:230px minmax(0,1fr);column-gap:64px;position:relative}
+    .sec:not(.bridge)>.wrap>*{grid-column:2}
+    .sec:not(.bridge)>.wrap>.kicker{grid-column:1;position:sticky;top:112px;align-self:start;margin-bottom:0}
+    .sec:not(.bridge)>.wrap::before{content:"";position:absolute;top:0;bottom:0;left:290px;width:1px;background:var(--hair)}
+  }
+
+  /* ---------- HISTORY / TIMELINE ---------- */
+  .hist-grid{max-width:760px;margin-top:48px}
+  .tl{list-style:none;border-left:1px solid var(--hair-2);margin-left:6px}
+  .tl li{position:relative;padding:0 0 34px 30px}
+  .tl li:last-child{padding-bottom:0}
+  .tl li::before{
+    content:"";position:absolute;left:-5px;top:7px;width:9px;height:9px;border-radius:50%;
+    background:var(--paper);border:2px solid var(--blue);
+  }
+  .tl .yr{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--blue);text-transform:uppercase;font-weight:600}
+  .tl h3{font-size:17.5px;margin:6px 0 7px}
+  .tl p{font-size:14.5px;color:var(--ink-2);max-width:58ch}
+  .tl .ref{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--muted);margin-top:7px;text-transform:uppercase}
+
+  /* ---------- SECTORS ---------- */
+  .sec-sectors{background:var(--paper-2)}
+  .sector-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hair-2);border:1px solid var(--hair-2);border-radius:0;overflow:hidden;margin-top:56px}
+  .sector{
+    background:var(--paper);padding:24px 22px 22px;min-height:230px;display:flex;flex-direction:column;
+    transition:background .2s;position:relative;overflow:hidden;cursor:default;
+  }
+  .sector::after{ /* affordance cue that tiles reveal detail */
+    content:"+";position:absolute;top:18px;right:18px;
+    font-family:var(--mono);font-size:15px;color:var(--hair-2);
+    transition:color .2s;
+  }
+  .sector:hover::after,.sector:focus-within::after{content:"−";color:var(--volt);z-index:1}
+  .sector .more{
+    position:absolute;inset:0;background:var(--ink);color:#d6d5cc;
+    padding:20px 22px;overflow:auto;
+    opacity:0;transform:translateY(10px);pointer-events:none;
+    transition:opacity .28s ease,transform .28s ease;
+  }
+  .sector:hover .more,.sector:focus-visible .more,.sector:focus-within .more{
+    opacity:1;transform:none;pointer-events:auto;
+  }
+  .sector .more .mk{
+    font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--volt);margin-bottom:6px;
+  }
+  .sector .more p{font-size:12.5px;line-height:1.55;color:#d6d5cc;margin-bottom:14px}
+  .sector .more p:last-child{margin-bottom:0}
+  .sector .more p b{color:#fff;font-weight:700}
+  @media(prefers-reduced-motion:reduce){.sector .more{transition:none;transform:none}}
+  .sector .n{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.14em;margin-bottom:14px}
+  .sector h3{font-size:14.5px;font-weight:700;letter-spacing:.02em;line-height:1.35;text-transform:uppercase}
+  .sector .badge{
+    margin-top:auto;padding-top:16px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:7px;
+  }
+  .sector .badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--blue)}
+  .sector-note{margin-top:22px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted)}
+  .sector-note a{color:var(--blue)}
+  .sector-note a:hover{text-decoration:underline}
+  @media(max-width:1020px){.sector-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.sector-grid{grid-template-columns:1fr}.sector{min-height:0}}
+
+  /* ---------- EXPERIENCE TILES ---------- */
+  .xp-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:56px}
+  .xp{
+    border:1px solid var(--hair-2);border-radius:0;background:transparent;overflow:hidden;
+    transition:border-color .2s,background .2s;
+  }
+  .xp[open]{border-color:var(--ink);background:var(--paper)}
+  .xp summary{
+    list-style:none;cursor:pointer;display:grid;
+    grid-template-columns:88px minmax(0,1fr) auto;gap:24px;align-items:center;
+    padding:26px 28px;
+  }
+  .xp summary::-webkit-details-marker{display:none}
+  .xp summary:hover .xp-t{color:var(--blue)}
+  .xp .xp-n{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+  .xp .xp-t{font-size:19px;font-weight:700;color:var(--ink);letter-spacing:-.015em;transition:color .2s}
+  .xp .xp-s{display:block;font-size:14px;font-weight:400;color:var(--muted);margin-top:5px;letter-spacing:0}
+  .xp .xp-toggle{
+    font-family:var(--mono);font-size:18px;color:var(--ink);width:38px;height:38px;flex:none;
+    border:1px solid var(--hair-2);border-radius:0;display:flex;align-items:center;justify-content:center;
+    transition:transform .25s,border-color .2s,background .2s;
+  }
+  .xp summary:hover .xp-toggle{background:var(--volt);border-color:var(--ink)}
+  .xp[open] .xp-toggle{transform:rotate(45deg);border-color:var(--ink)}
+  .xp-body{padding:0 28px 30px 140px;border-top:1px solid var(--hair)}
+  .xp-body>p{padding-top:22px;font-size:15px;color:var(--ink-2);max-width:76ch}
+  .xp-body>p strong{color:var(--ink)}
+  .xp-recs{margin-top:22px;border:1px solid var(--hair);border-radius:0;overflow:hidden}
+  .xp-rec{
+    display:grid;grid-template-columns:190px minmax(0,1fr) 120px 90px;gap:18px;align-items:baseline;
+    padding:11px 16px;border-bottom:1px solid var(--hair);font-size:13px;
+  }
+  .xp-rec:last-child{border-bottom:0}
+  .xp-rec:nth-child(odd){background:var(--paper-2)}
+  .xp-rec .rid{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--blue)}
+  .xp-rec .rname{color:var(--ink-2)}
+  .xp-rec .rval{font-family:var(--mono);font-size:11px;color:var(--ink);text-align:right}
+  .xp-rec .rst{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:right}
+  .xp-rec .rst.on{color:var(--blue)}
+  .xp-src{margin-top:14px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  @media(max-width:760px){
+    .xp summary{grid-template-columns:minmax(0,1fr) auto;gap:16px;padding:22px 20px}
+    .xp .xp-n{display:none}
+    .xp-body{padding:0 20px 26px}
+    .xp-rec{grid-template-columns:minmax(0,1fr) 90px;gap:10px}
+    .xp-rec .rname{grid-column:1 / -1}
+    .xp-rec .rst{display:none}
+  }
+
+  /* ---------- WHAT WE DELIVER ---------- */
+  .deliver-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:56px 44px;margin-top:64px}
+  .del .rule{height:1px;background:var(--hair-2);margin-bottom:22px;position:relative}
+  .del .rule::before{content:"";position:absolute;left:0;top:0;width:44px;height:1px;background:var(--blue)}
+  .del h3{font-size:16px;margin-bottom:10px;text-transform:uppercase;letter-spacing:.02em}
+  .del p{font-size:14.5px;color:var(--ink-2)}
+  .del .m{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  @media(max-width:940px){.deliver-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:600px){.deliver-grid{grid-template-columns:1fr}}
+
+  /* ---------- BRIDGE — black band, Anduril style ---------- */
+  .bridge{background:var(--ink);color:#d6d5cc;border-top:0}
+  .bridge .kicker{color:var(--volt)}
+  .bridge .kicker .idx{color:#8a897c}
+  .bridge .kicker::after{background:rgba(240,239,233,.2)}
+  .bridge h2{color:var(--paper)}
+  .bridge .sub{color:#d6d5cc}
+  .bridge .sub strong{color:var(--paper)}
+  .bridge-inner{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:72px;align-items:center}
+  .bridge .btn-primary{background:var(--volt);color:var(--ink);font-weight:700}
+  .bridge .btn-primary:hover{background:var(--paper)}
+  .bridge .btn-ghost{border-color:rgba(240,239,233,.35);color:var(--paper)}
+  .bridge .btn-ghost:hover{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+  .bridge-list{list-style:none;border-top:1px solid rgba(240,239,233,.18)}
+  .bridge-list li{border-bottom:1px solid rgba(240,239,233,.18)}
+  .bridge-list a{
+    display:flex;align-items:baseline;gap:14px;padding:15px 4px;transition:color .2s;color:#d6d5cc;font-size:15px;
+  }
+  .bridge-list a:hover{color:var(--volt)}
+  .bridge-list .n{font-family:var(--mono);font-size:10.5px;color:#8a897c;width:26px;flex:none}
+  .bridge-list .arr{margin-left:auto;font-family:var(--mono);font-size:12px;color:#8a897c}
+  .bridge-list a:hover .arr{color:var(--volt)}
+  @media(max-width:940px){.bridge-inner{grid-template-columns:1fr;gap:48px}}
+
+  /* ---------- FOOTER — tall black block, giant wordmark ---------- */
+  footer{background:var(--ink);color:#8a897c;padding:80px 0 40px;border-top:1px solid rgba(240,239,233,.15)}
+  footer a{color:#d6d5cc}
+  footer a:hover{color:var(--volt)}
+  footer .mono{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+  .foot-mark{
+    font-size:clamp(96px,19vw,260px);font-weight:800;line-height:.78;letter-spacing:-.045em;
+    color:var(--paper);text-transform:uppercase;user-select:none;
+    padding-bottom:44px;border-bottom:1px solid rgba(240,239,233,.18);
+  }
+  .foot-mark span{color:#3a3a33}
+  .foot-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px;padding:52px 0 72px;border-bottom:1px solid rgba(240,239,233,.18)}
+  .foot-cols .fh{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#71705f;margin-bottom:18px}
+  .foot-cols ul{list-style:none}
+  .foot-cols li{margin-bottom:11px}
+  .foot-cols a{font-size:14.5px}
+  .foot-cols .fp{font-size:13.5px;color:#a4a396;line-height:1.7}
+  .foot-legal{display:flex;flex-wrap:wrap;gap:12px 34px;justify-content:space-between;padding-top:26px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#71705f}
+  @media(max-width:760px){.foot-cols{grid-template-columns:1fr;gap:34px;padding:40px 0 48px}.foot-mark{padding-bottom:30px}footer{padding-top:56px}}
+
+  /* reveal — only hidden when JS is confirmed running, so content never vanishes without it */
+  html.js .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+  html.js .rv.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){html.js .rv{opacity:1;transform:none;transition:none}}
+
+  /* back to top */
+  .totop{
+    position:fixed;right:22px;bottom:22px;z-index:90;width:44px;height:44px;border-radius:0;
+    background:var(--ink);color:var(--paper);border:1px solid rgba(240,239,233,.2);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:16px;
+    opacity:0;pointer-events:none;transform:translateY(8px);
+    transition:opacity .25s,transform .25s,background .2s,color .2s;
+  }
+  .totop.show{opacity:1;pointer-events:auto;transform:none}
+  .totop:hover{background:var(--volt);color:var(--ink);border-color:var(--ink)}
+
+  /* ---------- MOBILE OPTIMIZATION ---------- */
+  @media(max-width:640px){
+    .wrap{padding:0 20px}
+    .nav-inner{padding:0 20px;height:64px}
+    .logo-mark{width:46px;height:46px}
+    header.nav nav{top:64px}
+    .hero{padding:126px 0 0}
+    .hero h1{font-size:clamp(40px,12.5vw,58px);margin-bottom:22px}
+    .hero .lede{font-size:16px;margin-bottom:28px}
+    .sec{padding:64px 0}
+    .sec h2{font-size:clamp(30px,9vw,40px)}
+    .sec .sub{font-size:15.5px}
+    .kicker{letter-spacing:.18em;margin-bottom:16px}
+    .kicker::after{flex-basis:34px}
+    .cred-strip{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:52px;border:1px solid var(--hair-2)}
+    .cred{flex-direction:column;align-items:center;gap:3px;border-right:1px solid var(--hair);border-bottom:1px solid var(--hair);border-left:0;margin-right:0;padding:15px 10px;font-size:10px;line-height:1.35;text-align:center;justify-content:center}
+    .cred:nth-child(2n){border-right:0}
+    .cred:nth-last-child(-n+2){border-bottom:0}
+    .cred:first-child{border-left:0}
+    .jump{gap:11px 22px;padding:20px 0}
+    .jump .jl{flex-basis:100%;text-align:center;margin:0 0 3px}
+    .hist-grid{margin-top:28px}
+    .tl li{padding:0 0 26px 24px}
+    .tl h3{font-size:16px}
+    .sector-grid{margin-top:36px}
+    .sector{padding:18px 16px 16px}
+    .deliver-grid{gap:36px;margin-top:40px}
+    .xp-grid{margin-top:36px}
+    .xp .xp-t{font-size:16.5px}
+    .xp .xp-s{font-size:13px}
+    .xp-body>p{font-size:14px}
+    .xp-toggle{width:32px;height:32px;font-size:15px}
+    .bridge-inner{gap:36px}
+    .bridge-list a{font-size:14px;padding:13px 2px}
+    footer .wrap{flex-direction:column;align-items:flex-start;gap:10px;font-size:12px}
+  }
+  @media(max-width:480px){
+    .hero-ctas{flex-direction:column}
+    .hero-ctas .btn{width:100%;justify-content:center}
+    .xp summary{padding:18px 16px}
+    .xp-body{padding:0 16px 22px}
+    .xp-rec{padding:10px 12px;font-size:12.5px}
+  }
+</style>
+</head>
+<body id="top">
+<div class="loadbar" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html" aria-label="RMGS — Special Operations Solutions">
+      <span class="logo-mark"><svg class="logo-svg" viewBox="0 0 100 100" role="img" aria-label="RMGS"><g class="ring"><path class="arc arc-blue" d="M10.15 46.5 A40 40 0 0 1 89.85 46.5"/><path class="arc arc-gray" d="M89.85 53.5 A40 40 0 0 1 10.15 53.5"/></g><circle class="orbit" cx="50" cy="50" r="40"/><text class="logo-word" x="50" y="59" text-anchor="middle" textLength="70" lengthAdjust="spacingAndGlyphs">RMGS</text></svg></span>
+      <span class="logo-tag">Special Operations Solutions</span>
+    </a>
+    <nav id="menu" aria-label="Primary">
+      <ul>
+        <li><a href="index.html#capabilities">what we do</a></li>
+        <li><a href="index.html#performance">performance</a></li>
+        <li><a href="index.html#partners">partners</a></li>
+        <li><a href="index.html">company</a></li>
+        <li><a href="index.html">careers</a></li>
+        <li><a class="nav-cta" href="index.html#contact">partner with us</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <span class="nav-flag" role="img" aria-label="United States">
+        <svg width="44" height="30" viewBox="0 0 76 52" aria-hidden="true">
+          <rect width="76" height="52" fill="#fff"/>
+          <g fill="#b22234">
+            <rect y="0" width="76" height="4"/><rect y="8" width="76" height="4"/><rect y="16" width="76" height="4"/><rect y="24" width="76" height="4"/><rect y="32" width="76" height="4"/><rect y="40" width="76" height="4"/><rect y="48" width="76" height="4"/>
+          </g>
+          <rect width="34" height="28" fill="#3c3b6e"/>
+          <g fill="#fff">
+            <circle cx="5" cy="4" r="1.3"/><circle cx="12" cy="4" r="1.3"/><circle cx="19" cy="4" r="1.3"/><circle cx="26" cy="4" r="1.3"/>
+            <circle cx="8.5" cy="9" r="1.3"/><circle cx="15.5" cy="9" r="1.3"/><circle cx="22.5" cy="9" r="1.3"/><circle cx="29.5" cy="9" r="1.3"/>
+            <circle cx="5" cy="14" r="1.3"/><circle cx="12" cy="14" r="1.3"/><circle cx="19" cy="14" r="1.3"/><circle cx="26" cy="14" r="1.3"/>
+            <circle cx="8.5" cy="19" r="1.3"/><circle cx="15.5" cy="19" r="1.3"/><circle cx="22.5" cy="19" r="1.3"/><circle cx="29.5" cy="19" r="1.3"/>
+            <circle cx="5" cy="24" r="1.3"/><circle cx="12" cy="24" r="1.3"/><circle cx="19" cy="24" r="1.3"/><circle cx="26" cy="24" r="1.3"/>
+          </g>
+        </svg>
+      </span>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="kicker"><span class="idx">RMGS / CISA</span> Critical Infrastructure Security &amp; Resilience</p>
+        <h1 class="hl"><span class="lr"><span>Resilience for</span></span><span class="lr"><span>the systems</span></span><span class="lr"><span>America runs on</span></span></h1>
+        <p class="lede">RMGS supports <strong>DHS, CISA, and the owners and operators of the Nation's critical infrastructure</strong> — designing the exercises, assessments, and adversary-informed programs that keep sixteen sectors secure, functional, and ready for the threats that matter.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#mission">Our homeland record ↓</a>
+          <a class="btn btn-ghost" href="#capabilities-bridge">Explore new capabilities</a>
+        </div>
+        <div class="cred-strip" aria-label="Credentials">
+          <span class="cred"><b>SDVOSB</b> federal prime</span>
+          <span class="cred"><b>TS</b> facility clearance</span>
+          <span class="cred"><b>ISO</b> 9001 · 18788 · PSC-1</span>
+          <span class="cred"><b>CMMC L2</b> SPRS 110</span>
+        </div>
+        <nav class="jump" aria-label="On this page">
+          <span class="jl">On this page</span>
+          <a href="#mission"><span class="jn">01</span><span class="sl">History</span></a>
+          <a href="#deliver"><span class="jn">02</span><span class="sl">What we deliver</span></a>
+          <a href="#sectors"><span class="jn">03</span><span class="sl">Sectors</span></a>
+          <a href="#experience"><span class="jn">04</span><span class="sl">Experience</span></a>
+          <a href="#capabilities-bridge"><span class="jn">05</span><span class="sl">New capabilities</span></a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FULL-BLEED MEDIA BAND · DATA CENTER ================= -->
+<section class="media media-color" aria-label="Server racks — information technology sector" data-await="Awaiting imagery — save media-datacenter.jpg beside this page">
+  <img src="media-datacenter.jpg" alt="Rows of illuminated server racks in a data center" onerror="this.closest('.media').classList.add('noimg')">
+  <span class="tick tl" aria-hidden="true"></span><span class="tick tr" aria-hidden="true"></span>
+  <span class="tick bl" aria-hidden="true"></span><span class="tick br" aria-hidden="true"></span>
+  <div class="media-cap">
+    <span>Data &amp; communications lifelines</span>
+    <span>IT &amp; Communications / SEC 03 · 13</span>
+  </div>
+</section>
+
+<!-- ================= 01 · MISSION / HISTORY ================= -->
+<section class="sec" id="mission">
+  <div class="wrap">
+    <p class="kicker rv"><span class="idx">01</span> Deep history with DHS &amp; CISA</p>
+    <h2 class="rv"><span class="lr"><span>More than a decade inside the homeland-security mission.</span></span></h2>
+    <p class="sub rv">Long before CISA existed, RMGS was training the Coast Guard's counterterrorism response teams and supporting DHS preparedness. Today that record runs through the <strong>CISA Infrastructure Security Division, FEMA's National Exercise program, and five DHS components</strong> — the same operator-led rigor, applied to the infrastructure the Nation cannot afford to lose.</p>
+
+    <div class="hist-grid">
+      <ol class="tl rv">
+        <li>
+          <span class="yr">Ongoing since the early years</span>
+          <h3>U.S. Coast Guard — Maritime Security Response Teams</h3>
+          <p>Counterterrorism response training for MSRT East and West — the Coast Guard's premier tactical teams — with CPARS-documented performance and low instructor turnover.</p>
+        </li>
+        <li>
+          <span class="yr">2014</span>
+          <h3>DHS HSEEP-compliant exercise efforts</h3>
+          <p>Exercise design and delivery for the DHS infrastructure-protection mission (Sector Outreach and Programs Division) — homeland preparedness work that predates CISA itself.</p>
+          <div class="ref">HSHQDC-14-F-00147 · $3.2M delivered</div>
+        </li>
+        <li>
+          <span class="yr">2020 — present</span>
+          <h3>CISA Infrastructure Security Division exercises</h3>
+          <p>HSEEP-compliant exercise design, facilitation, and after-action reporting for critical-infrastructure stakeholders — integrating physical-security expertise to produce operationally meaningful insight, not paperwork.</p>
+        </li>
+        <li>
+          <span class="yr">Federal &amp; state preparedness</span>
+          <h3>FEMA National Exercise Division &amp; Virginia HSEEP</h3>
+          <p>Capability validation and exercise delivery under FEMA's National Exercise program, plus HSEEP support to the Virginia Department of Emergency Management and VDOT.</p>
+        </li>
+        <li>
+          <span class="yr">2025</span>
+          <h3>Linxx Security Solutions joins the RMGS family</h3>
+          <p>Guard force, executive protection, risk assessment, and crisis response for DHS, USCG, NASA, and commercial customers — protective security purpose-built for high-liability environments.</p>
+        </li>
+        <li>
+          <span class="yr">2026</span>
+          <h3>Host-city readiness — FIFA World Cup &amp; NFL</h3>
+          <p>Over 30 tabletop and functional exercises preparing transportation, utility, emergency-management, and venue stakeholders for game-day conditions — stressing power, communications, water, and public-safety response under live injects.</p>
+          <div class="ref">FIFA 2026 Kansas City Safety &amp; Security · NFL</div>
+        </li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= 02 · WHAT WE DELIVER ================= -->
+<section class="sec" id="deliver">
+  <div class="wrap">
+    <p class="kicker rv"><span class="idx">02</span> What we deliver</p>
+    <h2 class="rv"><span class="lr"><span>Adversary-informed resilience, end to end.</span></span></h2>
+    <p class="sub rv">The same discipline RMGS brings to the special operations community — applied to infrastructure security and resilience, for federal and commercial customers alike.</p>
+
+    <div class="deliver-grid">
+      <div class="del rv"><div class="rule"></div><div class="m">Exercises</div><h3>Exercise lifecycle</h3><p>HSEEP-compliant design, execution, evaluation, and improvement planning at the national level — from CISA infrastructure-security exercises to FEMA capability validation.</p></div>
+      <div class="del rv"><div class="rule"></div><div class="m">Adversary emulation</div><h3>Red team</h3><p>Threat-informed adversary emulation against highly protected facilities and critical infrastructure — including nuclear sites and small modular reactor security.</p></div>
+      <div class="del rv"><div class="rule"></div><div class="m">Assessment</div><h3>Threat &amp; security assessment</h3><p>Independent vulnerability and design-basis-threat assessment, mapped to executive decisions and aligned to ISO 31000 risk-management principles.</p></div>
+      <div class="del rv"><div class="rule"></div><div class="m">Emerging threat</div><h3>Counter-UAS</h3><p>The small drone is already inside the threat model. RMGS emulates the sUAS adversary and stress-tests detect-track-identify-defeat architectures around fixed sites.</p></div>
+      <div class="del rv"><div class="rule"></div><div class="m">Protective security</div><h3>Guard force &amp; protection</h3><p>Through Linxx Security Solutions: guard force, executive protection, and crisis response for DHS, USCG, NASA, and commercial clients.</p></div>
+      <div class="del rv"><div class="rule"></div><div class="m">Major events</div><h3>Host-city readiness</h3><p>Preparing cities, venues, utilities, and public-safety agencies for national-level events — FIFA World Cup 2026 and the NFL among them.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 03 · SECTORS ================= -->
+<section class="sec sec-sectors" id="sectors">
+  <div class="wrap">
+    <p class="kicker rv"><span class="idx">03</span> The sixteen sectors</p>
+    <h2 class="rv"><span class="lr"><span>We work where CISA works.</span></span></h2>
+    <p class="sub rv">CISA designates sixteen critical infrastructure sectors whose assets, systems, and networks are considered so vital that their incapacitation would have a debilitating effect on national security, economic security, or public health and safety. <strong>RMGS has delivered exercises, assessments, adversary emulation, or protective security across nine of them</strong> — sector numbering per the CISA framework.</p>
+
+    <div class="sector-grid rv">
+      <div class="sector" tabindex="0">
+        <div class="n">SEC / 02</div><h3>Commercial Facilities</h3><div class="badge">Delivered — venue security, FIFA &amp; NFL</div>
+        <div class="more">
+          <div class="mk">What RMGS has done</div>
+          <p>Over 30 tabletop and functional exercises preparing FIFA World Cup 2026 host-city venues and stakeholders for game-day conditions, plus a <b>league-mandated pre-season security certification assessment</b> of a professional venue, mapped to ISO 31000.</p>
+          <div class="mk">Why it matters</div>
+          <p>Stadiums and mass gatherings are the Nation's most visible soft targets — a game-day failure is measured in lives, not headlines.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">SEC / 03</div><h3>Communications</h3><div class="badge">Delivered — lifeline exercises</div>
+        <div class="more">
+          <div class="mk">What RMGS has done</div>
+          <p>Host-city lifeline exercises that <b>stress communications under live injects</b> — degrading networks alongside power, water, and public safety to expose where coordination actually breaks.</p>
+          <div class="mk">Why it matters</div>
+          <p>Every other sector's response runs on communications. When comms degrade, command and control fails first — and everything downstream follows.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">SEC / 06</div><h3>Defense Industrial Base</h3><div class="badge">Delivered — DoD &amp; DTRA programs</div>
+        <div class="more">
+          <div class="mk">What RMGS has done</div>
+          <p>Two decades inside DoD programs — <b>DTRA nuclear-enterprise support, CWMD test &amp; evaluation, and adversary emulation</b> at defense facilities, with a Top Secret facility clearance and a majority-cleared workforce.</p>
+          <div class="mk">Why it matters</div>
+          <p>The DIB builds and sustains the deterrent. Adversaries target it continuously, below the threshold of war — through its facilities, people, and supply chains.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">SEC / 07</div><h3>Emergency Services</h3><div class="badge">Delivered — FEMA, VDEM, first responders</div>
+        <div class="more">
+          <div class="mk">What RMGS has done</div>
+          <p><b>HSEEP-compliant exercise design, facilitation, and after-action reporting</b> for DHS and the Commonwealth of Virginia (VDEM, VDOT), FEMA capability validation, and CBRN first-responder training.</p>
+          <div class="mk">Why it matters</div>
+          <p>Emergency services is the sector that catches every other sector's failure — its readiness is the difference between an incident and a catastrophe.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">SEC / 08</div><h3>Energy</h3><div class="badge">Delivered — grid &amp; energy-node exercises</div>
+        <div class="more">
+          <div class="mk">What RMGS has done</div>
+          <p>Exercises stressing <b>power and energy nodes under live injects</b> for host cities and infrastructure stakeholders, and counter-sUAS threat emulation around the fixed sites — substations and energy nodes — that warfighting power depends on.</p>
+          <div class="mk">Why it matters</div>
+          <p>The grid is the dependency under everything else: no power means no water, no communications, no defense. It fails as a system, not a site.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">SEC / 11</div><h3>Government Facilities</h3><div class="badge">Delivered — red team at protected sites</div>
+        <div class="more">
+          <div class="mk">What RMGS has done</div>
+          <p><b>Red-team adversary emulation and design-basis-threat assessment</b> at some of the Nation's most tightly controlled federal sites — testing physical security the way a capable adversary actually would.</p>
+          <div class="mk">Why it matters</div>
+          <p>These facilities concentrate the people, information, and continuity-of-government functions adversaries prize most. Checklist security doesn't find what an adversary finds.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">SEC / 14</div><h3>Nuclear Reactors, Materials &amp; Waste</h3><div class="badge">Delivered — adversary emulation, SMR security</div>
+        <div class="more">
+          <div class="mk">What RMGS has done</div>
+          <p>Adversary role-player support at <b>one of the most tightly controlled nuclear facilities in the world</b>, infiltration of a national nuclear research facility, SMR security red-teaming, and an active $8.0M DTRA nuclear-enterprise task order.</p>
+          <div class="mk">Why it matters</div>
+          <p>No sector carries higher consequence — and the coming wave of SMR deployments multiplies the sites, and the attack surface, that must be defended from day one.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">SEC / 15</div><h3>Transportation Systems</h3><div class="badge">Delivered — host-city &amp; VDOT programs</div>
+        <div class="more">
+          <div class="mk">What RMGS has done</div>
+          <p>Host-city transportation readiness exercises for FIFA 2026, VDOT VIPREP support, and <b>$6.5M+ training the Coast Guard teams that protect ports and waterways</b> — the maritime backbone of the sector.</p>
+          <div class="mk">Why it matters</div>
+          <p>Nothing moves without it: people, freight, and military logistics ride the same networks, and a disruption anywhere cascades everywhere.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">SEC / 16</div><h3>Water &amp; Wastewater</h3><div class="badge">Delivered — lifeline exercises</div>
+        <div class="more">
+          <div class="mk">What RMGS has done</div>
+          <p>Lifeline exercises <b>stressing water and wastewater response under live injects</b> for host cities and utility stakeholders — alongside power, communications, and public safety.</p>
+          <div class="mk">Why it matters</div>
+          <p>Water is the least-defended lifeline with the least redundancy. A city can improvise around most failures — days without water isn't one of them.</p>
+        </div>
+      </div>
+    </div>
+    <p class="sector-note rv">Sector framework per <a href="https://www.cisa.gov/topics/critical-infrastructure-security-and-resilience/critical-infrastructure-sectors" target="_blank" rel="noopener">CISA — Critical Infrastructure Sectors ↗</a> (opens in a new tab)</p>
+  </div>
+</section>
+
+<!-- ================= 04 · SECTOR EXPERIENCE ================= -->
+<section class="sec" id="experience">
+  <div class="wrap">
+    <p class="kicker rv"><span class="idx">04</span> Sector experience</p>
+    <h2 class="rv"><span class="lr"><span>The record, contract by contract.</span></span></h2>
+    <p class="sub rv">Five lines of critical-infrastructure experience, drawn directly from RMGS's federal contract record — <strong>expand each tile for the underlying vehicles, task orders, and dollars delivered.</strong></p>
+
+    <div class="xp-grid">
+      <details class="xp rv">
+        <summary>
+          <span class="xp-n">XP / 01</span>
+          <span><span class="xp-t">Infrastructure exercises &amp; preparedness</span><span class="xp-s">HSEEP-compliant exercise lifecycle for DHS, CISA, and national-level stakeholders</span></span>
+          <span class="xp-toggle" aria-hidden="true">+</span>
+        </summary>
+        <div class="xp-body">
+          <p>RMGS has designed, facilitated, and evaluated exercises for the homeland-security enterprise for over a decade — beginning with <strong>$3.2M of HSEEP-compliant exercise efforts for the DHS infrastructure-protection mission</strong> (Sector Outreach and Programs Division), and extending through national-level exercise support to USSOCOM. The same team supports CISA Infrastructure Security Division exercises today.</p>
+          <div class="xp-recs">
+            <div class="xp-rec"><span class="rid">HSHQDC-14-F-00147</span><span class="rname">HSEEP-Compliant Exercise Efforts (SOPD) · DHS/CISA</span><span class="rval">$3.2M</span><span class="rst">Completed</span></div>
+            <div class="xp-rec"><span class="rid">H92240-21-F-0177</span><span class="rname">TRIDENT Exercise Support · USSOCOM</span><span class="rval">$6.4M</span><span class="rst">Completed</span></div>
+            <div class="xp-rec"><span class="rid">H92240-20-F-0470</span><span class="rname">MSOFS Exercise Planner · USSOCOM</span><span class="rval">$760K</span><span class="rst">Completed</span></div>
+          </div>
+          <div class="xp-src">Source: RMGS capability &amp; past-performance corpus · FPDS / GovWin</div>
+        </div>
+      </details>
+
+      <details class="xp rv">
+        <summary>
+          <span class="xp-n">XP / 02</span>
+          <span><span class="xp-t">Coast Guard tactical &amp; high-risk training</span><span class="xp-s">$6.5M+ across six DHS/USCG contracts — the teams that defend maritime infrastructure</span></span>
+          <span class="xp-toggle" aria-hidden="true">+</span>
+        </summary>
+        <div class="xp-body">
+          <p>Since 2019, RMGS has held a continuous series of DHS/USCG contracts training the <strong>Special Missions Training Center and Detachments East &amp; West</strong> — the schoolhouse behind the Maritime Security Response Teams that protect ports, waterways, and coastal infrastructure. Close-quarters combat, high-risk instruction, and instructor cadres at Chesapeake and San Diego, with CPARS-documented performance.</p>
+          <div class="xp-recs">
+            <div class="xp-rec"><span class="rid">70Z023-19-A-PFC00100</span><span class="rname">BPA — High-Risk Training · DHS/USCG</span><span class="rval">BPA</span><span class="rst">Completed</span></div>
+            <div class="xp-rec"><span class="rid">70Z023-23-F-SMTC0001</span><span class="rname">CQC Instructor Support — SMTD East &amp; West</span><span class="rval">$1.7M</span><span class="rst">Completed</span></div>
+            <div class="xp-rec"><span class="rid">70Z023-22-F-SMTC0001</span><span class="rname">Special Missions Training Detachment Training</span><span class="rval">$1.2M</span><span class="rst">Completed</span></div>
+            <div class="xp-rec"><span class="rid">70Z023-21-F-PFC04800</span><span class="rname">CQC Instructor Support — SMTC &amp; SMTD (Yr 3)</span><span class="rval">$1.3M</span><span class="rst">Completed</span></div>
+            <div class="xp-rec"><span class="rid">70Z023-20-F-PFCA0200</span><span class="rname">Instructional Support — Chesapeake &amp; San Diego</span><span class="rval">$1.2M</span><span class="rst">Completed</span></div>
+            <div class="xp-rec"><span class="rid">70Z023-19-F-PFCA0100</span><span class="rname">CQC Instructor Support — SMTC &amp; SMTD East/West</span><span class="rval">$1.2M</span><span class="rst">Completed</span></div>
+          </div>
+          <div class="xp-src">Source: RMGS capability &amp; past-performance corpus · FPDS / GovWin</div>
+        </div>
+      </details>
+
+      <details class="xp rv">
+        <summary>
+          <span class="xp-n">XP / 03</span>
+          <span><span class="xp-t">Red team &amp; adversary emulation</span><span class="xp-s">Design-basis threat, OPFOR, and counter-sUAS against the Nation's most protected sites</span></span>
+          <span class="xp-toggle" aria-hidden="true">+</span>
+        </summary>
+        <div class="xp-body">
+          <p>Rooted in the U.S. Navy's <strong>"Original Red Cell"</strong> and founding members of Naval Special Warfare Development Group, RMGS red teams emulate the adversary against highly protected facilities and critical infrastructure — design-basis-threat assessment, sensitive site exploitation, role players, and small-UAS threat emulation, including engagements at nuclear facilities and emerging SMR security work.</p>
+          <div class="xp-recs">
+            <div class="xp-rec"><span class="rid">HSHQDC-14-F-00147</span><span class="rname">Infrastructure exercise &amp; red-team support · DHS/CISA</span><span class="rval">$3.2M</span><span class="rst">Completed</span></div>
+            <div class="xp-rec"><span class="rid">19AQMM-22-A-0038</span><span class="rname">Role Players &amp; Vehicles BPA · DoS Diplomatic Security</span><span class="rval">$466K</span><span class="rst on">Active</span></div>
+            <div class="xp-rec"><span class="rid">W50S7K-22-P-0004</span><span class="rname">Southern Strike OPFOR Support · USAF</span><span class="rval">$208K</span><span class="rst">Completed</span></div>
+            <div class="xp-rec"><span class="rid">H92240-13-C-0014</span><span class="rname">Role Players &amp; Pyrotechnic Effects · USSOCOM</span><span class="rval">$466K</span><span class="rst">Completed</span></div>
+          </div>
+          <div class="xp-src">Source: RMGS capability &amp; past-performance corpus · FPDS / GovWin</div>
+        </div>
+      </details>
+
+      <details class="xp rv">
+        <summary>
+          <span class="xp-n">XP / 04</span>
+          <span><span class="xp-t">CWMD &amp; the nuclear enterprise</span><span class="xp-s">DTRA programs, homeland layered defense, and fielded CBRN response IP</span></span>
+          <span class="xp-toggle" aria-hidden="true">+</span>
+        </summary>
+        <div class="xp-body">
+          <p>RMGS supports the nuclear enterprise directly — an <strong>active $8.0M DTRA task order running through 2028</strong> — alongside a prime position on MDA's SHIELD homeland layered-defense IDIQ. Through subsidiary Resilient Systems Group, RMGS holds fielded, patented CBRN response IP: the SPEEDS® decontamination kit and SCOTS kit, sold to U.S., NATO, and allied forces.</p>
+          <div class="xp-recs">
+            <div class="xp-rec"><span class="rid">HDTRA1-23-F-0101</span><span class="rname">IT Asset Management / End-Use Monitoring, Nuclear Enterprise · DTRA</span><span class="rval">$8.0M</span><span class="rst on">Active — 2028</span></div>
+            <div class="xp-rec"><span class="rid">HQ0859-26-D-F461</span><span class="rname">MDA SHIELD — Homeland Layered Defense IDIQ (prime)</span><span class="rval">$151B MAC</span><span class="rst on">Active</span></div>
+            <div class="xp-rec"><span class="rid">US 6,913,928 B2</span><span class="rname">SPEEDS® CBRN decontamination kit — fielded IP</span><span class="rval">Patent</span><span class="rst on">Fielded</span></div>
+            <div class="xp-rec"><span class="rid">US 12,257,819 B1</span><span class="rname">SCOTS kit — fielded IP</span><span class="rval">Patent</span><span class="rst on">Fielded</span></div>
+          </div>
+          <div class="xp-src">Source: RMGS capability &amp; past-performance corpus · FPDS / GovWin</div>
+        </div>
+      </details>
+
+      <details class="xp rv">
+        <summary>
+          <span class="xp-n">XP / 05</span>
+          <span><span class="xp-t">Maritime &amp; port infrastructure security</span><span class="xp-s">Port and harbor defense, coastal infrastructure, and operator-led maritime programs</span></span>
+          <span class="xp-toggle" aria-hidden="true">+</span>
+        </summary>
+        <div class="xp-body">
+          <p>Ports and waterways are the Transportation Systems sector's maritime backbone — and RMGS's deepest domain. <strong>Port and harbor defense assessments, coastal-infrastructure security, and global crewed-vessel operations</strong>, anchored by the $295M MSOFS IDIQ (nearly $80M delivered) and an undersea prototyping lane through the UTIC OTA consortium.</p>
+          <div class="xp-recs">
+            <div class="xp-rec"><span class="rid">H92240-20-D-0013</span><span class="rname">MSOFS IDIQ (prime) — maritime SOF support · USSOCOM</span><span class="rval">$295M / $79.8M del.</span><span class="rst on">Active</span></div>
+            <div class="xp-rec"><span class="rid">H92240-14-D-0016</span><span class="rname">NSWC Logistics, Instruction &amp; Engineering Support</span><span class="rval">$31.2M</span><span class="rst">Completed</span></div>
+            <div class="xp-rec"><span class="rid">H92240-22-A-0003</span><span class="rname">Crewed Vessel Leases BPA · USSOCOM</span><span class="rval">$750K</span><span class="rst on">Active</span></div>
+            <div class="xp-rec"><span class="rid">UTIC · NUWC</span><span class="rname">Undersea Technology Innovation Consortium — OTA member</span><span class="rval">OTA</span><span class="rst on">Active</span></div>
+          </div>
+          <div class="xp-src">Source: RMGS capability &amp; past-performance corpus · FPDS / GovWin</div>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 05 · BRIDGE TO NEW CAPABILITIES ================= -->
+<section class="sec bridge" id="capabilities-bridge">
+  <div class="wrap">
+    <div class="bridge-inner">
+      <div>
+        <p class="kicker rv"><span class="idx">05</span> Continue into RMGS</p>
+        <h2 class="rv"><span class="lr"><span>See what we're building next.</span></span></h2>
+        <p class="sub rv">The tools RMGS is fielding now — <strong>counter-UAS command and control, sensor fusion, intelligence briefs, and acquisition navigation</strong> — were built for the hardest national-security problems, and they apply directly to infrastructure defense. Step into the main site to explore them.</p>
+        <div class="hero-ctas" style="margin-top:34px">
+          <a class="btn btn-primary" href="index.html#:~:text=New%20Capabilities">New Capabilities →</a>
+          <a class="btn btn-ghost" href="index.html">Enter the full site</a>
+        </div>
+      </div>
+      <ul class="bridge-list rv" aria-label="Featured capabilities">
+        <li><a href="csuas-framework.html"><span class="n">02</span><span class="sl">Counter-UAS — detect, track, defeat</span><span class="arr">↗</span></a></li>
+        <li><a href="sentinel-cop-prototype.html"><span class="n">07</span><span class="sl">Sentinel COP — one pane of glass</span><span class="arr">↗</span></a></li>
+        <li><a href="wexmac-maps-rmgs.html?tab=intel"><span class="n">04</span><span class="sl">Intel Briefs — strategic assessments</span><span class="arr">↗</span></a></li>
+        <li><a href="stingrai.html"><span class="n">05</span><span class="sl">STINGRAI — counter-network ISR</span><span class="arr">↗</span></a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-mark" aria-hidden="true">RMGS<span>.</span></div>
+    <div class="foot-cols">
+      <div>
+        <div class="fh">Site</div>
+        <ul>
+          <li><a href="index.html"><span class="sl">Main site</span></a></li>
+          <li><a href="index.html#capabilities"><span class="sl">What we do</span></a></li>
+          <li><a href="index.html#performance"><span class="sl">Performance</span></a></li>
+          <li><a href="index.html#contact"><span class="sl">Partner with us</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="fh">This page</div>
+        <ul>
+          <li><a href="#mission"><span class="sl">History</span></a></li>
+          <li><a href="#deliver"><span class="sl">What we deliver</span></a></li>
+          <li><a href="#sectors"><span class="sl">Sectors</span></a></li>
+          <li><a href="#experience"><span class="sl">Experience</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="fh">Contact</div>
+        <ul>
+          <li><a href="mailto:hansenb@rmgsinc.com"><span class="sl">hansenb@rmgsinc.com</span></a></li>
+        </ul>
+        <p class="fp">500 Viking Drive, Suite 302<br>Virginia Beach, VA 23452</p>
+      </div>
+    </div>
+    <div class="foot-legal">
+      <span>© 2026 RMGS, Inc.</span>
+      <span>CAGE 57NE1 · SDVOSB · TS facility · ISO 9001 · ISO 18788 · PSC-1 · CMMC L2</span>
+    </div>
+  </div>
+</footer>
+
+<button class="totop" id="totop" aria-label="Back to top">↑</button>
+
+<script>
+  // nav scroll state (hide on scroll down, return on scroll up) + back-to-top visibility
+  const nav=document.getElementById('nav'),totop=document.getElementById('totop');
+  let lastY=0;
+  addEventListener('scroll',()=>{
+    const y=scrollY;
+    nav.classList.toggle('scrolled',y>10);
+    nav.classList.toggle('hidden',y>180&&y>lastY&&!document.getElementById('menu').classList.contains('open'));
+    totop.classList.toggle('show',y>700);
+    lastY=y;
+  },{passive:true});
+
+  // hero headline line reveal on load
+  addEventListener('DOMContentLoaded',()=>setTimeout(()=>document.querySelector('.hl')?.classList.add('in'),120));
+  totop.addEventListener('click',()=>scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}));
+
+  // mobile menu
+  const burger=document.getElementById('burger'),menu=document.getElementById('menu');
+  burger.addEventListener('click',()=>{
+    const open=menu.classList.toggle('open');
+    burger.setAttribute('aria-expanded',open);
+  });
+
+  // reveal on scroll
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+  // experience tiles behave as an accordion — one open at a time
+  const tiles=[...document.querySelectorAll('details.xp')];
+  tiles.forEach(t=>t.addEventListener('toggle',()=>{
+    if(t.open) tiles.forEach(o=>{if(o!==t) o.open=false});
+  }));
+
+  // scrollspy for the on-page jump nav
+  const jumps=[...document.querySelectorAll('.jump a')];
+  const spy=new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting){
+      jumps.forEach(a=>a.classList.toggle('now',a.getAttribute('href')==='#'+e.target.id));
+    }
+  }),{rootMargin:'-40% 0px -55% 0px'});
+  jumps.forEach(a=>{const s=document.querySelector(a.getAttribute('href'));if(s)spy.observe(s)});
+
+  // scramble-on-hover (Anduril-style) for labeled links
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    const CH='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    document.querySelectorAll('.sl').forEach(sl=>{
+      const orig=sl.textContent;let timer=null;
+      sl.closest('a').addEventListener('mouseenter',()=>{
+        if(timer)return;
+        let frame=0,total=Math.min(orig.length,14)+6;
+        timer=setInterval(()=>{
+          frame++;
+          sl.textContent=orig.split('').map((c,i)=>{
+            if(c===' '||c==='—'||c==='-')return c;
+            return i<(frame-4)*(orig.length/total)?c:CH[Math.random()*CH.length|0];
+          }).join('');
+          if(frame>=total){clearInterval(timer);timer=null;sl.textContent=orig}
+        },28);
+      });
+    });
+  }
+</script>
+
+<!-- ===== Unified all-pages search (matches the rest of the RMGS site) ===== -->
+<script>
+(function(){
+  if(document.querySelector('.site-search'))return;
+  var SELF=(location.pathname.split('/').pop()||'index.html'); if(!SELF)SELF='index.html';
+  var ALL=[{f:'index.html',l:'RMGS Home'},{f:'stingrai.html',l:'STINGRAI'},{f:'soto-cano.html',l:'Soto Cano'},{f:'southcom-navigator.html',l:'SOUTHCOM Acquisition Tool'},{f:'csuas-framework.html',l:'Counter-UAS'},{f:'logistics-capture-tool.html',l:'Logistics Capture Tool'},{f:'wexmac-maps-rmgs.html',l:'Opportunity Map'},{f:'sentinel-cop-prototype.html',l:'Sentinel COP'},{f:'critical-infrastructure.html',l:'Critical Infrastructure'}];
+  var EXT=ALL.filter(function(p){return p.f!==SELF;});
+  var CSS='.nav-search-btn{background:none;border:none;color:#e6edf5;cursor:pointer;padding:8px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;transition:color .2s,background .2s;flex:none}.nav-search-btn:hover{color:#2fd0c7;background:rgba(255,255,255,.06)}'
+   +'.site-search[hidden]{display:none}.site-search{position:fixed;inset:0;z-index:4000;display:flex;align-items:flex-start;justify-content:center;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}'
+   +'.site-search__backdrop{position:absolute;inset:0;background:rgba(3,10,20,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}'
+   +'.site-search__panel{position:relative;margin-top:11vh;width:min(620px,92vw);background:#0a2342;border:1px solid rgba(255,255,255,.14);border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.55);overflow:hidden}'
+   +'.site-search__bar{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.14);color:#9fb2c4}'
+   +'.site-search__input{flex:1;background:none;border:none;outline:none;color:#fff;font-size:16px;font-family:inherit}.site-search__input::placeholder{color:#7f93a8}'
+   +'.site-search__close{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#9fb2c4;font-size:11px;font-family:monospace;padding:4px 8px;border-radius:6px;cursor:pointer;letter-spacing:.08em}.site-search__close:hover{color:#fff}'
+   +'.site-search__results{max-height:56vh;overflow-y:auto;padding:6px}.site-search__empty{padding:18px 16px;color:#7f93a8;font-size:14px}'
+   +'.site-search__hit{display:flex;flex-direction:column;gap:2px;width:100%;text-align:left;background:none;border:none;color:#fff;padding:10px 14px;border-radius:9px;cursor:pointer}.site-search__hit:hover,.site-search__hit.is-active{background:rgba(47,208,199,.12)}'
+   +'.ssh-label{font-size:15px;font-weight:600;line-height:1.25}.ssh-sub{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#2fd0c7}'
+   +'mark.rmgs-hl{background:rgba(47,208,199,.34);color:#fff;border-radius:3px;padding:0 1px;box-shadow:0 0 0 2px rgba(47,208,199,.34);animation:rmgsHl 4.2s ease forwards}@keyframes rmgsHl{0%,72%{background:rgba(47,208,199,.4)}100%{background:transparent;box-shadow:none}}';
+  var st=document.createElement('style');st.textContent=CSS;document.head.appendChild(st);
+  var ic='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>';
+  function esc(s){return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function scopeOf(node){return (node.closest&&node.closest('section,article,.page,.blk,main'))||node.parentElement||document.body;}
+  function secText(node){var s=scopeOf(node);return s?(s.textContent||''):'';}
+  var pidx=null;
+  function buildPage(){var out=[],seen={};document.querySelectorAll('h1,h2,h3,h4').forEach(function(hd){if(hd.closest('header,nav,.nav,.rmgs-nav,.site-search'))return;var label=(hd.textContent||'').replace(/\s+/g,' ').trim();if(!label||label.length<3||label.length>96)return;var k=label.toLowerCase();if(seen[k])return;seen[k]=1;out.push({label:label,el:hd,text:(label+' '+secText(hd)).replace(/\s+/g,' ').toLowerCase().slice(0,1600)});});return out;}
+  function ensureP(){if(!pidx)pidx=buildPage();return pidx;}
+  function searchPage(q){q=q.toLowerCase().trim();if(!q)return[];var t=q.split(/\s+/),o=[];ensureP().forEach(function(e){if(!t.every(function(x){return e.text.indexOf(x)>=0;}))return;var sc=0,l=e.label.toLowerCase();t.forEach(function(x){if(l.indexOf(x)>=0)sc+=5;});if(l.indexOf(q)>=0)sc+=8;o.push({e:e,sc:sc});});o.sort(function(a,b){return b.sc-a.sc;});return o.slice(0,6).map(function(r){return r.e;});}
+  var extIdx=null,extTried=false;
+  function anchorFor(el){var n=el;while(n&&n.tagName!=='BODY'){if(n.id)return n.id;n=n.parentElement;}return '';}
+  function loadExt(){if(extTried)return;extTried=true;var acc=[],pend=EXT.length;function fin(){if(--pend<=0){extIdx=acc;if(!ov.hidden&&input.value.trim())render(build(input.value));}}EXT.forEach(function(p){fetch(p.f).then(function(r){return r.text();}).then(function(tx){try{var doc=new DOMParser().parseFromString(tx,'text/html'),seen={};doc.querySelectorAll('h1,h2,h3,h4').forEach(function(hd){var label=(hd.textContent||'').replace(/\s+/g,' ').trim();if(!label||label.length<3||label.length>96)return;var k=label.toLowerCase();if(seen[k])return;seen[k]=1;var id=anchorFor(hd),sc2=(hd.closest&&hd.closest('section,article,.page,.blk,main'))||hd.parentElement,tt=(label+' '+((sc2&&sc2.textContent)||'')).replace(/\s+/g,' ');acc.push({label:label,sub:p.l,url:p.f+(id?('#'+id):''),text:tt.toLowerCase().slice(0,1600)});});}catch(_){}}).catch(function(){}).then(fin);});}
+  function searchExt(q){if(!extIdx)return[];q=q.toLowerCase().trim();if(!q)return[];var t=q.split(/\s+/),o=[];extIdx.forEach(function(e){if(!t.every(function(x){return e.text.indexOf(x)>=0;}))return;var sc=0,l=e.label.toLowerCase();t.forEach(function(x){if(l.indexOf(x)>=0)sc+=5;});if(l.indexOf(q)>=0)sc+=8;o.push({e:e,sc:sc});});o.sort(function(a,b){return b.sc-a.sc;});return o.slice(0,8).map(function(r){return r.e;});}
+  function build(q){var out=[];searchPage(q).forEach(function(e){out.push({type:'el',label:e.label,sub:'On this page',el:e.el});});searchExt(q).forEach(function(e){out.push({type:'ext',label:e.label,sub:e.sub,url:e.url});});return out;}
+  function unmark(){document.querySelectorAll('mark.rmgs-hl').forEach(function(m){var p=m.parentNode;if(!p)return;while(m.firstChild)p.insertBefore(m.firstChild,m);p.removeChild(m);if(p.normalize)p.normalize();});}
+  function markPhrase(scope,q){unmark();if(!scope||!q)return null;q=q.trim().toLowerCase();if(!q)return null;var cands=[q];q.split(/\s+/).sort(function(a,b){return b.length-a.length;}).forEach(function(t){if(t.length>2&&cands.indexOf(t)<0)cands.push(t);});for(var c=0;c<cands.length;c++){var ph=cands[c],w=document.createTreeWalker(scope,NodeFilter.SHOW_TEXT,null),node;while(node=w.nextNode()){var pn=node.parentNode;if(!pn||/^(script|style|mark)$/i.test(pn.nodeName)||!pn.offsetParent)continue;var i=node.nodeValue.toLowerCase().indexOf(ph);if(i<0)continue;try{var r=document.createRange();r.setStart(node,i);r.setEnd(node,i+ph.length);var mk=document.createElement('mark');mk.className='rmgs-hl';r.surroundContents(mk);return mk;}catch(e){continue;}}}return null;}
+  var ov=document.createElement('div');ov.className='site-search';ov.hidden=true;
+  ov.innerHTML='<div class="site-search__backdrop"></div><div class="site-search__panel" role="dialog" aria-label="Search"><div class="site-search__bar">'+ic+'<input class="site-search__input" type="text" placeholder="Search the whole site…" aria-label="Search"><button class="site-search__close" type="button" aria-label="Close">Esc</button></div><div class="site-search__results"></div></div>';
+  document.body.appendChild(ov);
+  var input=ov.querySelector('.site-search__input'),res=ov.querySelector('.site-search__results'),cur=[],act=-1;
+  function render(list){cur=list;act=list.length?0:-1;if(!input.value.trim()){res.innerHTML='<div class="site-search__empty">Search every RMGS page…</div>';return;}if(!list.length){res.innerHTML='<div class="site-search__empty">No matches.</div>';return;}res.innerHTML=list.map(function(e,i){return '<button class="site-search__hit'+(i===0?' is-active':'')+'" type="button" data-i="'+i+'"><span class="ssh-label">'+esc(e.label)+'</span><span class="ssh-sub">'+esc(e.sub)+'</span></button>';}).join('');}
+  function open(){ov.hidden=false;document.documentElement.style.overflow='hidden';input.value='';render([]);loadExt();setTimeout(function(){input.focus();},30);}
+  function close(){ov.hidden=true;document.documentElement.style.overflow='';}
+  function goEl(el,q){close();setTimeout(function(){var sec=scopeOf(el);var m=markPhrase(sec,q),tgt=m||el;try{tgt.scrollIntoView({behavior:'smooth',block:'center'});}catch(_){}if(m)setTimeout(unmark,4200);},110);}
+  function go(it){var q=input.value;if(it.type==='el'){goEl(it.el,q);return;}if(it.type==='ext'){var base=it.url,qq=(q||'').trim();if(qq){base+=(base.indexOf('#')>=0?'':'#')+':~:text='+encodeURIComponent(qq.replace(/,+/g,' ').trim());}window.location.href=base;return;}}
+  input.addEventListener('input',function(){render(build(input.value));});
+  ov.addEventListener('click',function(e){if(e.target.classList.contains('site-search__backdrop')||e.target.classList.contains('site-search__close')){close();return;}var hit=e.target.closest&&e.target.closest('.site-search__hit');if(hit)go(cur[+hit.dataset.i]);});
+  input.addEventListener('keydown',function(e){if(e.key==='Escape'){close();return;}if(e.key==='Enter'){if(cur[act])go(cur[act]);return;}if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if(!cur.length)return;act=(act+(e.key==='ArrowDown'?1:-1)+cur.length)%cur.length;var hs=res.querySelectorAll('.site-search__hit');for(var i=0;i<hs.length;i++)hs[i].classList.toggle('is-active',i===act);if(hs[act])hs[act].scrollIntoView({block:'nearest'});}});
+  document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();open();}else if(e.key==='/'&&ov.hidden&&!/^(input|textarea|select)$/i.test((e.target&&e.target.tagName)||'')){e.preventDefault();open();}});
+  var b=document.createElement('button');b.className='nav-search-btn';b.type='button';b.setAttribute('aria-label','Search');b.innerHTML=ic;b.addEventListener('click',open);
+  var host=document.querySelector('.nav-inner')||document.querySelector('.nav-right')||document.querySelector('header');
+  if(host){var burger=host.querySelector('.burger');if(burger&&burger.parentNode===host){host.insertBefore(b,burger);}else{host.appendChild(b);}}
+  try{var ss=new URLSearchParams(location.search).get('ss');if(ss){open();input.value=ss;render(build(ss));}}catch(e){}
+})();
+</script>
+</body>
+</html>
