@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RMGS, Inc. — NEA/AC Regional APS · Markets Follow Security</title>
+<meta name="description" content="Why RMGS is a strong prime implementer for the Department of State NEA/AC Regional Annual Program Statement (DFOP0018712): port security, border modernization, critical infrastructure protection, and security-sector capacity across the Middle East and North Africa.">
+<meta name="theme-color" content="#f0efe9">
+<meta name="color-scheme" content="light">
+<meta name="author" content="RMGS, Inc.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="RMGS, Inc.">
+<meta property="og:title" content="RMGS — NEA/AC Regional APS · DFOP0018712">
+<meta property="og:description" content="Markets follow security. The RMGS rationale for the $190M NEA/AC Regional Annual Program Statement, task area by task area and country by country.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='0' fill='%23f0efe9'/><path d='M14 30 A18 18 0 0 1 50 30' fill='none' stroke='%230d0d0b' stroke-width='5' stroke-linecap='round'/><path d='M50 34 A18 18 0 0 1 14 34' fill='none' stroke='%2371705f' stroke-width='5' stroke-linecap='round'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+  :root{
+    --paper:#f0efe9;
+    --paper-2:#e9e8e0;
+    --ink:#0d0d0b;
+    --ink-2:#3c3b34;
+    --muted:#71705f;
+    --hair:#dcdad0;
+    --hair-2:#c8c6b8;
+    --blue:#0d0d0b;
+    --blue-deep:#000000;
+    --navy:#0d0d0b;
+    --nav-navy:#06182e;
+    --cyan:#2fd0c7;
+    --volt:#e2f317;
+    --maxw:1280px;
+    --mono:"SF Mono",ui-monospace,"Cascadia Mono",Consolas,"Roboto Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;background:var(--paper);color-scheme:light;-webkit-text-size-adjust:100%}
+  html,body{background-color:#f0efe9}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  section[id]{scroll-margin-top:88px}
+  body{
+    font-family:"Archivo","Helvetica Neue",Arial,system-ui,sans-serif;
+    background:var(--paper);
+    color:var(--ink-2);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  .loadbar{position:fixed;top:0;left:0;height:2px;background:var(--volt);width:0;z-index:400;pointer-events:none;animation:loadbar 1.1s ease .1s forwards}
+  @keyframes loadbar{0%{width:0;opacity:1}75%{width:100%;opacity:1}100%{width:100%;opacity:0}}
+  @media(prefers-reduced-motion:reduce){.loadbar{display:none}}
+
+  .lr{display:block;overflow:hidden}
+  html.js .lr>span{display:block;transform:translateY(112%);transition:transform .85s cubic-bezier(.22,.61,.21,1)}
+  html.js .in .lr>span,html.js .in.lr>span{transform:none}
+  .hl .lr:nth-child(2)>span{transition-delay:.1s}
+  .hl .lr:nth-child(3)>span{transition-delay:.2s}
+  @media(prefers-reduced-motion:reduce){html.js .lr>span{transform:none;transition:none}}
+
+  a{color:inherit;text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:4px}
+  .skip{position:fixed;left:12px;top:-60px;z-index:300;background:var(--ink);color:#fff;font-weight:700;padding:10px 16px;border-radius:6px;transition:top .2s}
+  .skip:focus{top:12px}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  h1,h2,h3,h4{color:var(--ink);font-weight:700;line-height:1.04;letter-spacing:-.02em}
+  section{position:relative}
+
+  .kicker{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--blue);font-weight:600;display:flex;align-items:center;gap:14px;margin-bottom:20px;
+  }
+  .kicker .idx{color:var(--muted)}
+  .kicker::after{content:"";height:1px;flex:0 0 56px;background:var(--hair-2)}
+
+  /* ---------- NAV (matches RMGS index) ---------- */
+  header.nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    backdrop-filter:blur(10px);
+    background:rgba(6,24,46,.72);
+    border-bottom:1px solid transparent;
+    transition:background .3s,border-color .3s,transform .35s ease;
+  }
+  header.nav.hidden{transform:translateY(-100%)}
+  header.nav.scrolled{background:rgba(4,16,31,.95);border-bottom:1px solid rgba(255,255,255,.12)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:74px;max-width:1320px;margin:0 auto;padding:0 32px;gap:22px}
+  .logo{display:flex;align-items:center;gap:0;font-weight:800;color:#fff;letter-spacing:.04em;font-size:20px}
+  .logo-mark{width:56px;height:56px;flex:none;display:block;transition:transform .35s cubic-bezier(.34,1.45,.4,1)}
+  .logo:hover .logo-mark{transform:scale(1.08)}
+  .logo-svg{width:100%;height:100%;display:block;overflow:visible}
+  .logo-svg .arc{fill:none;stroke-width:9;stroke-linecap:round;stroke-dasharray:120;stroke-dashoffset:120;animation:logoDraw 1.1s ease forwards}
+  .logo-svg .arc-blue{stroke:#1f86c9}
+  .logo-svg .arc-gray{stroke:#8b9298;animation-delay:.22s}
+  .logo-svg .ring{transform-origin:50px 50px;transition:transform 1.05s cubic-bezier(.34,1.4,.4,1)}
+  .logo:hover .logo-svg .ring{transform:rotate(360deg)}
+  .logo-svg .orbit{fill:none;stroke:#8ff0e6;stroke-width:9;stroke-linecap:round;stroke-dasharray:5 246;stroke-dashoffset:0;animation:logoOrbit 3.6s linear infinite;filter:drop-shadow(0 0 3px rgba(143,240,230,.85))}
+  .logo:hover .logo-svg .orbit{animation-duration:1.5s}
+  .logo-svg .logo-word{fill:#fff;font:800 30px/1 "Helvetica Neue",Arial,sans-serif;letter-spacing:-1px;opacity:0;animation:logoWord .55s ease .5s forwards}
+  @keyframes logoDraw{to{stroke-dashoffset:0}}
+  @keyframes logoWord{from{opacity:0}to{opacity:1}}
+  @keyframes logoOrbit{to{stroke-dashoffset:-251.3}}
+  .logo-tag{display:block;flex:none;font-size:9px;line-height:1.3;letter-spacing:.16em;color:#8da4bf;font-weight:600;text-transform:uppercase;width:82px;margin-left:12px;padding-left:12px;border-left:1px solid rgba(255,255,255,.12)}
+  @media(prefers-reduced-motion:reduce){
+    .logo-svg .arc{animation:none;stroke-dashoffset:0}
+    .logo-svg .logo-word{animation:none;opacity:1}
+    .logo-svg .orbit{animation:none;opacity:0}
+    .logo:hover .logo-svg .ring{transform:none}
+    .logo:hover .logo-mark{transform:none}
+  }
+  @media(min-width:941px){header.nav .nav-inner>nav{flex:1;display:flex;justify-content:center}}
+  header.nav nav ul{display:flex;gap:26px;list-style:none;align-items:center}
+  header.nav nav a{font-size:12.5px;color:#e6edf5;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;transition:color .2s}
+  header.nav nav a:hover{color:var(--cyan)}
+  .nav-cta{border:1px solid var(--cyan);color:var(--cyan) !important;padding:13px 26px;border-radius:5px;font-size:13px;white-space:nowrap;transition:all .2s;margin-left:8px}
+  .nav-cta:hover{background:var(--cyan);color:#03101f !important}
+  .nav-right{display:flex;align-items:center;gap:28px}
+  .nav-search{display:flex;color:#e6edf5;transition:color .2s}
+  .nav-search:hover{color:var(--cyan)}
+  .nav-flag{display:flex;border-radius:5px;overflow:hidden;line-height:0}
+  @media(max-width:1180px){header.nav nav ul{gap:22px}}
+  @media(max-width:620px){.nav-right{display:none}}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:0}
+  .burger span{width:24px;height:2px;background:#fff;display:block}
+  @media(max-width:940px){
+    header.nav nav{display:none;position:absolute;top:74px;left:0;right:0;background:#050e1a;border-bottom:1px solid rgba(255,255,255,.12);padding:18px 32px 24px;z-index:200;box-shadow:0 26px 44px rgba(0,0,0,.5)}
+    header.nav nav.open{display:block}
+    header.nav nav ul{flex-direction:column;align-items:flex-start;gap:16px}
+    .burger{display:flex}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{padding:186px 0 0;position:relative;text-align:center}
+  .hero-grid{position:relative;max-width:none}
+  .hero .kicker{justify-content:center}
+  .hero .kicker::after{display:none}
+  .hero .kicker::before{content:"";height:1px;flex:0 0 56px;background:var(--hair-2)}
+  .hero h1{
+    font-size:clamp(52px,9.2vw,148px);margin:0 auto 34px;max-width:12ch;
+    text-transform:uppercase;letter-spacing:-.028em;line-height:.92;
+  }
+  .hero .lede{font-size:18px;color:var(--ink-2);max-width:64ch;margin:0 auto 38px}
+  .hero .lede strong{color:var(--ink)}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:0;justify-content:center}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;
+    padding:16px 30px;border-radius:0;transition:background .2s,color .2s,border-color .2s;
+  }
+  .btn-primary{background:var(--ink);color:var(--paper)}
+  .btn-primary:hover{background:var(--volt);color:var(--ink)}
+  .btn-ghost{border:1px solid var(--ink);color:var(--ink)}
+  .btn-ghost:hover{background:var(--ink);color:var(--paper)}
+  .cred-strip{
+    display:flex;flex-wrap:wrap;gap:0;justify-content:center;
+    border-top:1px solid var(--hair-2);border-bottom:1px solid var(--hair);
+    margin-top:78px;
+  }
+  .cred{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:16px 26px;display:flex;align-items:center;gap:9px;border-right:1px solid var(--hair)}
+  .cred:first-child{border-left:1px solid var(--hair)}
+  .cred b{color:var(--ink);font-weight:700}
+  .jump{display:flex;flex-wrap:wrap;gap:8px 30px;padding:18px 0;margin-top:0;align-items:center;justify-content:center}
+  .jump .jl{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+  .jump a{
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);
+    padding:5px 0;border-bottom:1px solid transparent;transition:color .2s,border-color .2s,background .2s;
+  }
+  .jump a:hover{color:var(--ink);background:var(--volt)}
+  .jump a.now{color:var(--ink);border-color:var(--ink)}
+  .jump a .jn{color:var(--muted);margin-right:6px}
+  @media(max-width:940px){.hero{padding-top:150px}}
+
+  /* ---------- FULL-BLEED MEDIA BAND ---------- */
+  .media{position:relative;background:#0d0d0b;height:min(80vh,780px);overflow:hidden}
+  .media img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.08) brightness(.9)}
+  .media.noimg img{display:none}
+  .media.noimg::before{
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(1000px 520px at 72% 18%,rgba(226,243,23,.05),transparent 60%),
+      repeating-linear-gradient(90deg,rgba(240,239,233,.045) 0 1px,transparent 1px 140px),
+      linear-gradient(180deg,#131311,#0d0d0b);
+  }
+  .media.noimg::after{
+    content:attr(data-await);
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-family:var(--mono);font-size:10px;letter-spacing:.24em;color:#71705f;white-space:nowrap;text-transform:uppercase;
+  }
+  .media-color img{
+    filter:saturate(1.08) contrast(1.04) brightness(.88);
+    animation:surge 7s ease-in-out infinite;
+  }
+  @keyframes surge{
+    0%,100%{filter:saturate(1.08) contrast(1.04) brightness(.88)}
+    50%{filter:saturate(1.22) contrast(1.06) brightness(1.14)}
+  }
+  @media(prefers-reduced-motion:reduce){.media-color img{animation:none;filter:saturate(1.1) contrast(1.04)}}
+  .media .tick{position:absolute;width:18px;height:18px;border:1px solid rgba(226,243,23,.55)}
+  .media .tick.tl{top:20px;left:20px;border-right:0;border-bottom:0}
+  .media .tick.tr{top:20px;right:20px;border-left:0;border-bottom:0}
+  .media .tick.bl{bottom:20px;left:20px;border-right:0;border-top:0}
+  .media .tick.br{bottom:20px;right:20px;border-left:0;border-top:0}
+  .media-cap{
+    position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:20px;
+    padding:22px 48px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#d6d5cc;
+  }
+  @media(max-width:640px){.media{height:52vh}.media-cap{padding:16px 24px;font-size:9px;letter-spacing:.14em}}
+
+  /* ---------- SECTION SHELL ---------- */
+  .sec{padding:118px 0;border-top:1px solid var(--hair-2)}
+  .sec h2{
+    font-size:clamp(34px,4.8vw,68px);max-width:20ch;margin-bottom:26px;
+    text-transform:uppercase;letter-spacing:-.022em;line-height:.96;
+  }
+  .sec .sub{font-size:17px;color:var(--ink-2);max-width:68ch}
+  .sec .sub strong{color:var(--ink)}
+  @media(min-width:1100px){
+    .sec:not(.bridge)>.wrap{display:grid;grid-template-columns:230px minmax(0,1fr);column-gap:64px;position:relative}
+    .sec:not(.bridge)>.wrap>*{grid-column:2}
+    .sec:not(.bridge)>.wrap>.kicker{grid-column:1;position:sticky;top:112px;align-self:start;margin-bottom:0}
+    .sec:not(.bridge)>.wrap::before{content:"";position:absolute;top:0;bottom:0;left:290px;width:1px;background:var(--hair)}
+  }
+
+  /* ---------- SPEC ROWS (opportunity facts / contract records) ---------- */
+  .xp-recs{margin-top:34px;border:1px solid var(--hair);border-radius:0;overflow:hidden}
+  .xp-rec{
+    display:grid;grid-template-columns:190px minmax(0,1fr) 120px 90px;gap:18px;align-items:baseline;
+    padding:11px 16px;border-bottom:1px solid var(--hair);font-size:13px;
+  }
+  .xp-rec:last-child{border-bottom:0}
+  .xp-rec:nth-child(odd){background:var(--paper-2)}
+  .xp-rec .rid{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--blue)}
+  .xp-rec .rname{color:var(--ink-2)}
+  .xp-rec .rval{font-family:var(--mono);font-size:11px;color:var(--ink);text-align:right}
+  .xp-rec .rst{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:right}
+  .xp-rec .rst.on{color:var(--blue)}
+  .xp-src{margin-top:14px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  @media(max-width:760px){
+    .xp-rec{grid-template-columns:minmax(0,1fr) 90px;gap:10px}
+    .xp-rec .rname{grid-column:1 / -1}
+    .xp-rec .rst{display:none}
+  }
+
+  /* ---------- RATIONALE PILLARS ---------- */
+  .deliver-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:56px 44px;margin-top:64px}
+  .del .rule{height:1px;background:var(--hair-2);margin-bottom:22px;position:relative}
+  .del .rule::before{content:"";position:absolute;left:0;top:0;width:44px;height:1px;background:var(--blue)}
+  .del h3{font-size:16px;margin-bottom:10px;text-transform:uppercase;letter-spacing:.02em}
+  .del p{font-size:14.5px;color:var(--ink-2)}
+  .del p b{color:var(--ink)}
+  .del .m{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  @media(max-width:940px){.deliver-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:600px){.deliver-grid{grid-template-columns:1fr}}
+
+  /* ---------- TASK-AREA ACCORDION TILES ---------- */
+  .xp-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:56px}
+  .xp{
+    border:1px solid var(--hair-2);border-radius:0;background:transparent;overflow:hidden;
+    transition:border-color .2s,background .2s;
+  }
+  .xp[open]{border-color:var(--ink);background:var(--paper)}
+  .xp summary{
+    list-style:none;cursor:pointer;display:grid;
+    grid-template-columns:88px minmax(0,1fr) auto;gap:24px;align-items:center;
+    padding:26px 28px;
+  }
+  .xp summary::-webkit-details-marker{display:none}
+  .xp summary:hover .xp-t{color:var(--blue)}
+  .xp .xp-n{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+  .xp .xp-t{font-size:19px;font-weight:700;color:var(--ink);letter-spacing:-.015em;transition:color .2s}
+  .xp .xp-s{display:block;font-size:14px;font-weight:400;color:var(--muted);margin-top:5px;letter-spacing:0}
+  .xp .xp-toggle{
+    font-family:var(--mono);font-size:18px;color:var(--ink);width:38px;height:38px;flex:none;
+    border:1px solid var(--hair-2);border-radius:0;display:flex;align-items:center;justify-content:center;
+    transition:transform .25s,border-color .2s,background .2s;
+  }
+  .xp summary:hover .xp-toggle{background:var(--volt);border-color:var(--ink)}
+  .xp[open] .xp-toggle{transform:rotate(45deg);border-color:var(--ink)}
+  .xp-body{padding:0 28px 30px 140px;border-top:1px solid var(--hair)}
+  .xp-body>p{padding-top:22px;font-size:15px;color:var(--ink-2);max-width:76ch}
+  .xp-body>p strong{color:var(--ink)}
+  .xp-body .xp-recs{margin-top:22px}
+  @media(max-width:760px){
+    .xp summary{grid-template-columns:minmax(0,1fr) auto;gap:16px;padding:22px 20px}
+    .xp .xp-n{display:none}
+    .xp-body{padding:0 20px 26px}
+  }
+
+  /* ---------- COUNTRY GRID (hover tiles) ---------- */
+  .sec-sectors{background:var(--paper-2)}
+  .sector-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hair-2);border:1px solid var(--hair-2);border-radius:0;overflow:hidden;margin-top:56px}
+  .sector{
+    background:var(--paper);padding:24px 22px 22px;min-height:250px;display:flex;flex-direction:column;
+    transition:background .2s;position:relative;overflow:hidden;cursor:default;
+  }
+  .sector::after{
+    content:"+";position:absolute;top:18px;right:18px;
+    font-family:var(--mono);font-size:15px;color:var(--hair-2);
+    transition:color .2s;
+  }
+  .sector:hover::after,.sector:focus-within::after{content:"−";color:var(--volt);z-index:1}
+  .sector .more{
+    position:absolute;inset:0;background:var(--ink);color:#d6d5cc;
+    padding:20px 22px;overflow:auto;
+    opacity:0;transform:translateY(10px);pointer-events:none;
+    transition:opacity .28s ease,transform .28s ease;
+  }
+  .sector:hover .more,.sector:focus-visible .more,.sector:focus-within .more{
+    opacity:1;transform:none;pointer-events:auto;
+  }
+  .sector .more .mk{
+    font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--volt);margin-bottom:6px;
+  }
+  .sector .more p{font-size:12.5px;line-height:1.55;color:#d6d5cc;margin-bottom:14px}
+  .sector .more p:last-child{margin-bottom:0}
+  .sector .more p b{color:#fff;font-weight:700}
+  @media(prefers-reduced-motion:reduce){.sector .more{transition:none;transform:none}}
+  .sector .n{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.14em;margin-bottom:14px}
+  .sector h3{font-size:14.5px;font-weight:700;letter-spacing:.02em;line-height:1.35;text-transform:uppercase}
+  .sector .th{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5}
+  .sector .badge{
+    margin-top:auto;padding-top:16px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:7px;
+  }
+  .sector .badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--blue)}
+  .sector-wide{grid-column:1/-1;min-height:0}
+  .sector-note{margin-top:22px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted)}
+  .sector-note a{color:var(--blue)}
+  .sector-note a:hover{text-decoration:underline}
+  @media(max-width:1020px){.sector-grid{grid-template-columns:repeat(2,1fr)}.sector-wide{grid-column:1/-1}}
+  @media(max-width:560px){.sector-grid{grid-template-columns:1fr}.sector{min-height:0}}
+
+  /* ---------- BRIDGE — black band ---------- */
+  .bridge{background:var(--ink);color:#d6d5cc;border-top:0}
+  .bridge .kicker{color:var(--volt)}
+  .bridge .kicker .idx{color:#8a897c}
+  .bridge .kicker::after{background:rgba(240,239,233,.2)}
+  .bridge h2{color:var(--paper)}
+  .bridge .sub{color:#d6d5cc}
+  .bridge .sub strong{color:var(--paper)}
+  .bridge-inner{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:72px;align-items:center}
+  .bridge .btn-primary{background:var(--volt);color:var(--ink);font-weight:700}
+  .bridge .btn-primary:hover{background:var(--paper)}
+  .bridge .btn-ghost{border-color:rgba(240,239,233,.35);color:var(--paper)}
+  .bridge .btn-ghost:hover{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+  .bridge-list{list-style:none;border-top:1px solid rgba(240,239,233,.18)}
+  .bridge-list li{border-bottom:1px solid rgba(240,239,233,.18)}
+  .bridge-list .bl-row,.bridge-list a{
+    display:flex;align-items:baseline;gap:14px;padding:15px 4px;transition:color .2s;color:#d6d5cc;font-size:15px;
+  }
+  .bridge-list a:hover{color:var(--volt)}
+  .bridge-list .n{font-family:var(--mono);font-size:10.5px;color:#8a897c;width:26px;flex:none}
+  .bridge-list .arr{margin-left:auto;font-family:var(--mono);font-size:12px;color:#8a897c}
+  .bridge-list a:hover .arr{color:var(--volt)}
+  .bridge-list .pts{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--volt);white-space:nowrap}
+  @media(max-width:940px){.bridge-inner{grid-template-columns:1fr;gap:48px}}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--ink);color:#8a897c;padding:80px 0 40px;border-top:1px solid rgba(240,239,233,.15)}
+  footer a{color:#d6d5cc}
+  footer a:hover{color:var(--volt)}
+  .foot-mark{
+    font-size:clamp(96px,19vw,260px);font-weight:800;line-height:.78;letter-spacing:-.045em;
+    color:var(--paper);text-transform:uppercase;user-select:none;
+    padding-bottom:44px;border-bottom:1px solid rgba(240,239,233,.18);
+  }
+  .foot-mark span{color:#3a3a33}
+  .foot-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px;padding:52px 0 72px;border-bottom:1px solid rgba(240,239,233,.18)}
+  .foot-cols .fh{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#71705f;margin-bottom:18px}
+  .foot-cols ul{list-style:none}
+  .foot-cols li{margin-bottom:11px}
+  .foot-cols a{font-size:14.5px}
+  .foot-cols .fp{font-size:13.5px;color:#a4a396;line-height:1.7}
+  .foot-legal{display:flex;flex-wrap:wrap;gap:12px 34px;justify-content:space-between;padding-top:26px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#71705f}
+  @media(max-width:760px){.foot-cols{grid-template-columns:1fr;gap:34px;padding:40px 0 48px}.foot-mark{padding-bottom:30px}footer{padding-top:56px}}
+
+  /* reveal */
+  html.js .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+  html.js .rv.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){html.js .rv{opacity:1;transform:none;transition:none}}
+
+  /* back to top */
+  .totop{
+    position:fixed;right:22px;bottom:22px;z-index:90;width:44px;height:44px;border-radius:0;
+    background:var(--ink);color:var(--paper);border:1px solid rgba(240,239,233,.2);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:16px;
+    opacity:0;pointer-events:none;transform:translateY(8px);
+    transition:opacity .25s,transform .25s,background .2s,color .2s;
+  }
+  .totop.show{opacity:1;pointer-events:auto;transform:none}
+  .totop:hover{background:var(--volt);color:var(--ink);border-color:var(--ink)}
+
+  /* ---------- LOGIC FRAMEWORK DIAGRAM ---------- */
+  .lf{margin-top:72px}
+  .lf-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:20px}
+  .lf-head .lt{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);font-weight:600}
+  .lf-head .lh{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .lf-scroll{overflow-x:auto;border:1px solid var(--hair-2);background:var(--paper)}
+  .lf svg{display:block;min-width:1000px;width:100%;height:auto}
+  .lf-col{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;fill:var(--muted)}
+  .lfe{fill:none;stroke:var(--hair-2);stroke-width:1.2;transition:stroke .2s,stroke-width .2s}
+  .lfe.lit{stroke:var(--ink);stroke-width:1.8}
+  .lfn{cursor:pointer;outline:none}
+  .lfn rect{fill:#ffffff;stroke:var(--hair-2);transition:stroke .2s,fill .2s}
+  .lfn text{font-family:"Archivo","Helvetica Neue",sans-serif;font-size:12px;font-weight:600;fill:var(--ink)}
+  .lfn:hover rect,.lfn:focus-visible rect{stroke:var(--ink)}
+  .lfn.on rect{fill:var(--volt);stroke:var(--ink)}
+  .lf-detail{border:1px solid var(--hair-2);border-top:0;padding:22px 24px;background:var(--paper-2)}
+  .lf-detail .dk{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .lf-detail h3{font-size:16px;margin-bottom:8px}
+  .lf-detail p{font-size:14px;color:var(--ink-2);max-width:90ch}
+
+  /* ---------- MOBILE ---------- */
+  @media(max-width:640px){
+    .wrap{padding:0 20px}
+    .nav-inner{padding:0 20px;height:64px}
+    .logo-mark{width:46px;height:46px}
+    header.nav nav{top:64px}
+    .hero{padding:126px 0 0}
+    .hero h1{font-size:clamp(40px,12.5vw,58px);margin-bottom:22px}
+    .hero .lede{font-size:16px;margin-bottom:28px}
+    .sec{padding:64px 0}
+    .sec h2{font-size:clamp(30px,9vw,40px)}
+    .sec .sub{font-size:15.5px}
+    .kicker{letter-spacing:.18em;margin-bottom:16px}
+    .kicker::after{flex-basis:34px}
+    .cred-strip{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:52px;border:1px solid var(--hair-2)}
+    .cred{flex-direction:column;align-items:center;gap:3px;border-right:1px solid var(--hair);border-bottom:1px solid var(--hair);border-left:0;margin-right:0;padding:15px 10px;font-size:10px;line-height:1.35;text-align:center;justify-content:center}
+    .cred:nth-child(2n){border-right:0}
+    .cred:nth-last-child(-n+2){border-bottom:0}
+    .cred:first-child{border-left:0}
+    .jump{gap:11px 22px;padding:20px 0}
+    .jump .jl{flex-basis:100%;text-align:center;margin:0 0 3px}
+    .cred:first-child{border-left:0}
+    .sector-grid{margin-top:36px}
+    .sector{padding:18px 16px 16px}
+    .deliver-grid{gap:36px;margin-top:40px}
+    .xp-grid{margin-top:36px}
+    .xp .xp-t{font-size:16.5px}
+    .xp .xp-s{font-size:13px}
+    .xp-body>p{font-size:14px}
+    .xp-toggle{width:32px;height:32px;font-size:15px}
+    .bridge-inner{gap:36px}
+    .bridge-list .bl-row,.bridge-list a{font-size:14px;padding:13px 2px}
+    footer .wrap{font-size:12px}
+  }
+  @media(max-width:480px){
+    .hero-ctas{flex-direction:column}
+    .hero-ctas .btn{width:100%;justify-content:center}
+    .xp summary{padding:18px 16px}
+    .xp-body{padding:0 16px 22px}
+    .xp-rec{padding:10px 12px;font-size:12.5px}
+  }
+</style>
+</head>
+<body id="top">
+<div class="loadbar" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html" aria-label="RMGS — Special Operations Solutions">
+      <span class="logo-mark"><svg class="logo-svg" viewBox="0 0 100 100" role="img" aria-label="RMGS"><g class="ring"><path class="arc arc-blue" d="M10.15 46.5 A40 40 0 0 1 89.85 46.5"/><path class="arc arc-gray" d="M89.85 53.5 A40 40 0 0 1 10.15 53.5"/></g><circle class="orbit" cx="50" cy="50" r="40"/><text class="logo-word" x="50" y="59" text-anchor="middle" textLength="70" lengthAdjust="spacingAndGlyphs">RMGS</text></svg></span>
+      <span class="logo-tag">Special Operations Solutions</span>
+    </a>
+    <nav id="menu" aria-label="Primary">
+      <ul>
+        <li><a href="index.html#capabilities">what we do</a></li>
+        <li><a href="index.html#performance">performance</a></li>
+        <li><a href="index.html#partners">partners</a></li>
+        <li><a href="index.html">company</a></li>
+        <li><a href="index.html">careers</a></li>
+        <li><a class="nav-cta" href="index.html#contact">partner with us</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <span class="nav-flag" role="img" aria-label="United States">
+        <svg width="44" height="30" viewBox="0 0 76 52" aria-hidden="true">
+          <rect width="76" height="52" fill="#fff"/>
+          <g fill="#b22234">
+            <rect y="0" width="76" height="4"/><rect y="8" width="76" height="4"/><rect y="16" width="76" height="4"/><rect y="24" width="76" height="4"/><rect y="32" width="76" height="4"/><rect y="40" width="76" height="4"/><rect y="48" width="76" height="4"/>
+          </g>
+          <rect width="34" height="28" fill="#3c3b6e"/>
+          <g fill="#fff">
+            <circle cx="5" cy="4" r="1.3"/><circle cx="12" cy="4" r="1.3"/><circle cx="19" cy="4" r="1.3"/><circle cx="26" cy="4" r="1.3"/>
+            <circle cx="8.5" cy="9" r="1.3"/><circle cx="15.5" cy="9" r="1.3"/><circle cx="22.5" cy="9" r="1.3"/><circle cx="29.5" cy="9" r="1.3"/>
+            <circle cx="5" cy="14" r="1.3"/><circle cx="12" cy="14" r="1.3"/><circle cx="19" cy="14" r="1.3"/><circle cx="26" cy="14" r="1.3"/>
+            <circle cx="8.5" cy="19" r="1.3"/><circle cx="15.5" cy="19" r="1.3"/><circle cx="22.5" cy="19" r="1.3"/><circle cx="29.5" cy="19" r="1.3"/>
+            <circle cx="5" cy="24" r="1.3"/><circle cx="12" cy="24" r="1.3"/><circle cx="19" cy="24" r="1.3"/><circle cx="26" cy="24" r="1.3"/>
+          </g>
+        </svg>
+      </span>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="kicker"><span class="idx">RMGS / DoS NEA-AC</span> Regional APS · DFOP0018712</p>
+        <h1 class="hl"><span class="lr"><span>Markets</span></span><span class="lr"><span>follow</span></span><span class="lr"><span>security</span></span></h1>
+        <p class="lede">The NEA/AC Regional Annual Program Statement offers <strong>up to $190M for foreign assistance that opens markets for American business</strong> across the Middle East and North Africa. RMGS brings a two-decade federal record in the security work those programs depend on: ports, borders, infrastructure, and security institutions.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#rationale">Why RMGS ↓</a>
+          <a class="btn btn-ghost" href="#opportunity">The opportunity</a>
+        </div>
+        <div class="cred-strip" aria-label="Credentials">
+          <span class="cred"><b>SDVOSB</b> federal prime</span>
+          <span class="cred"><b>TS</b> facility clearance</span>
+          <span class="cred"><b>ISO</b> 9001 · 18788 · PSC-1</span>
+          <span class="cred"><b>60+</b> countries of performance</span>
+        </div>
+        <nav class="jump" aria-label="On this page">
+          <span class="jl">On this page</span>
+          <a href="#opportunity"><span class="jn">01</span><span class="sl">The opportunity</span></a>
+          <a href="#rationale"><span class="jn">02</span><span class="sl">Why RMGS</span></a>
+          <a href="#tasks"><span class="jn">03</span><span class="sl">Task areas</span></a>
+          <a href="#countries"><span class="jn">04</span><span class="sl">Countries</span></a>
+          <a href="#soi-outline"><span class="jn">05</span><span class="sl">The SOI</span></a>
+          <a href="#soi"><span class="jn">06</span><span class="sl">Path to award</span></a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MEDIA BAND ================= -->
+<section class="media media-color" aria-label="U.S. Department of the Treasury" data-await="Awaiting imagery — save Treasury.jpg beside this page">
+  <img src="Treasury.jpg" alt="The U.S. Department of the Treasury building in Washington, D.C." onerror="this.closest('.media').classList.add('noimg')">
+  <span class="tick tl" aria-hidden="true"></span><span class="tick tr" aria-hidden="true"></span>
+  <span class="tick bl" aria-hidden="true"></span><span class="tick br" aria-hidden="true"></span>
+  <div class="media-cap">
+    <span>Finance · trade · investment statecraft</span>
+    <span>NEA region / 9 country programs</span>
+  </div>
+</section>
+
+<!-- ================= 01 · THE OPPORTUNITY ================= -->
+<section class="sec" id="opportunity">
+  <div class="wrap">
+    <p class="kicker rv"><span class="idx">01</span> The opportunity</p>
+    <h2 class="rv"><span class="lr"><span>Assistance as statecraft.</span></span></h2>
+    <p class="sub rv">The Bureau of Near Eastern Affairs' Office of Assistance Coordination is competing <strong>up to $190M in Economic Support Funds and National Security Investment Program funds</strong> across nine MENA country programs. Priority sectors include energy, critical infrastructure, emerging technology, critical minerals, trade facilitation, workforce development, and economic recovery in conflict-affected areas. For-profit firms are eligible. Selection is a two-step process: a 1–3 page Statement of Interest, followed by an invited full proposal.</p>
+
+    <div class="xp-recs rv" aria-label="Opportunity facts">
+      <div class="xp-rec"><span class="rid">DFOP0018712</span><span class="rname">NEA/AC Regional Annual Program Statement · Assistance Listing 19.600</span><span class="rval">$190M</span><span class="rst on">Open</span></div>
+      <div class="xp-rec"><span class="rid">AWARDS</span><span class="rname">1–9 anticipated · grant, fixed amount award, or cooperative agreement</span><span class="rval">$250K–$30M</span><span class="rst">Per award</span></div>
+      <div class="xp-rec"><span class="rid">PERIOD</span><span class="rname">12–36 months of performance · anticipated start</span><span class="rval">Oct 1, 2026</span><span class="rst">Planned</span></div>
+      <div class="xp-rec"><span class="rid">DEADLINE</span><span class="rname">Statements of Interest accepted on a rolling basis via MyGrants</span><span class="rval">Rolling</span><span class="rst on">Active</span></div>
+      <div class="xp-rec"><span class="rid">ELIGIBILITY</span><span class="rname">Not-for-profits, educational institutions, public international organizations — and for-profit firms</span><span class="rval">Eligible</span><span class="rst on">RMGS</span></div>
+    </div>
+    <div class="xp-src rv">Source: DFOP0018712 NEA/AC Regional APS, Sections A–C &amp; E</div>
+
+    <div class="lf rv" id="logic">
+      <div class="lf-head">
+        <span class="lt">The logic framework of the opportunity</span>
+        <span class="lh">Hover or tap a node to explore · reconstructed from DFOP0018712</span>
+      </div>
+      <div class="lf-scroll">
+        <svg viewBox="0 0 1200 430" role="img" aria-label="Logic framework of the grant: regional conditions drive the funding mechanism, which funds activities that produce outcomes and strategic ends">
+          <text class="lf-col" x="100" y="26" text-anchor="middle">Conditions</text>
+          <text class="lf-col" x="350" y="26" text-anchor="middle">Mechanism</text>
+          <text class="lf-col" x="600" y="26" text-anchor="middle">Funded activities</text>
+          <text class="lf-col" x="850" y="26" text-anchor="middle">Outcomes</text>
+          <text class="lf-col" x="1100" y="26" text-anchor="middle">Strategic ends</text>
+
+          <path class="lfe" data-from="c1" data-to="p1" d="M190 84 C230 84,220 154,260 154"/>
+          <path class="lfe" data-from="c2" data-to="p1" d="M190 224 C230 224,220 154,260 154"/>
+          <path class="lfe" data-from="c3" data-to="p1" d="M190 364 C230 364,220 294,260 294"/>
+          <path class="lfe" data-from="p1" data-to="a1" d="M440 154 C480 154,470 84,510 84"/>
+          <path class="lfe" data-from="p1" data-to="a2" d="M440 154 C480 154,470 224,510 224"/>
+          <path class="lfe" data-from="p1" data-to="a3" d="M440 154 C485 154,465 364,510 364"/>
+          <path class="lfe" data-from="p2" data-to="a1" d="M440 294 C485 294,465 84,510 84"/>
+          <path class="lfe" data-from="p2" data-to="a3" d="M440 294 C480 294,470 364,510 364"/>
+          <path class="lfe" data-from="a1" data-to="o1" d="M690 84 C725 84,725 84,760 84"/>
+          <path class="lfe" data-from="a2" data-to="o2" d="M690 224 C725 224,725 224,760 224"/>
+          <path class="lfe" data-from="a3" data-to="o1" d="M690 364 C730 364,715 84,760 84"/>
+          <path class="lfe" data-from="a3" data-to="o3" d="M690 364 C725 364,725 364,760 364"/>
+          <path class="lfe" data-from="o1" data-to="e1" d="M940 84 C980 84,970 154,1010 154"/>
+          <path class="lfe" data-from="o2" data-to="e1" d="M940 224 C980 224,970 154,1010 154"/>
+          <path class="lfe" data-from="o2" data-to="e2" d="M940 224 C980 224,970 294,1010 294"/>
+          <path class="lfe" data-from="o3" data-to="e2" d="M940 364 C980 364,970 294,1010 294"/>
+
+          <g class="lfn" data-id="c1" tabindex="0" role="button" aria-label="Condition: underdeveloped markets">
+            <rect x="10" y="52" width="180" height="64"/>
+            <text x="100" y="80" text-anchor="middle"><tspan x="100" dy="0">Underdeveloped</tspan><tspan x="100" dy="15">markets</tspan></text>
+          </g>
+          <g class="lfn" data-id="c2" tabindex="0" role="button" aria-label="Condition: adversary encroachment">
+            <rect x="10" y="192" width="180" height="64"/>
+            <text x="100" y="220" text-anchor="middle"><tspan x="100" dy="0">Adversary</tspan><tspan x="100" dy="15">encroachment</tspan></text>
+          </g>
+          <g class="lfn" data-id="c3" tabindex="0" role="button" aria-label="Condition: instability and conflict">
+            <rect x="10" y="332" width="180" height="64"/>
+            <text x="100" y="360" text-anchor="middle"><tspan x="100" dy="0">Instability</tspan><tspan x="100" dy="15">&amp; conflict</tspan></text>
+          </g>
+          <g class="lfn" data-id="p1" tabindex="0" role="button" aria-label="Mechanism: assistance as statecraft">
+            <rect x="260" y="122" width="180" height="64"/>
+            <text x="350" y="150" text-anchor="middle"><tspan x="350" dy="0">Assistance</tspan><tspan x="350" dy="15">as statecraft</tspan></text>
+          </g>
+          <g class="lfn" data-id="p2" tabindex="0" role="button" aria-label="Mechanism: market principles, trade over aid">
+            <rect x="260" y="262" width="180" height="64"/>
+            <text x="350" y="290" text-anchor="middle"><tspan x="350" dy="0">Market</tspan><tspan x="350" dy="15">principles</tspan></text>
+          </g>
+          <g class="lfn" data-id="a1" tabindex="0" role="button" aria-label="Funded activity: champion U.S. firms">
+            <rect x="510" y="52" width="180" height="64"/>
+            <text x="600" y="80" text-anchor="middle"><tspan x="600" dy="0">Champion</tspan><tspan x="600" dy="15">U.S. firms</tspan></text>
+          </g>
+          <g class="lfn" data-id="a2" tabindex="0" role="button" aria-label="Funded activity: export U.S. technology and standards">
+            <rect x="510" y="192" width="180" height="64"/>
+            <text x="600" y="220" text-anchor="middle"><tspan x="600" dy="0">Export U.S.</tspan><tspan x="600" dy="15">standards</tspan></text>
+          </g>
+          <g class="lfn" data-id="a3" tabindex="0" role="button" aria-label="Funded activity: reform and capacity building">
+            <rect x="510" y="332" width="180" height="64"/>
+            <text x="600" y="360" text-anchor="middle"><tspan x="600" dy="0">Reform</tspan><tspan x="600" dy="15">&amp; capacity</tspan></text>
+          </g>
+          <g class="lfn" data-id="o1" tabindex="0" role="button" aria-label="Outcome: market access opens">
+            <rect x="760" y="52" width="180" height="64"/>
+            <text x="850" y="80" text-anchor="middle"><tspan x="850" dy="0">Market access</tspan><tspan x="850" dy="15">opens</tspan></text>
+          </g>
+          <g class="lfn" data-id="o2" tabindex="0" role="button" aria-label="Outcome: dependencies shift away from adversaries">
+            <rect x="760" y="192" width="180" height="64"/>
+            <text x="850" y="220" text-anchor="middle"><tspan x="850" dy="0">Dependencies</tspan><tspan x="850" dy="15">shift</tspan></text>
+          </g>
+          <g class="lfn" data-id="o3" tabindex="0" role="button" aria-label="Outcome: partner self-reliance">
+            <rect x="760" y="332" width="180" height="64"/>
+            <text x="850" y="360" text-anchor="middle"><tspan x="850" dy="0">Partner</tspan><tspan x="850" dy="15">self-reliance</tspan></text>
+          </g>
+          <g class="lfn" data-id="e1" tabindex="0" role="button" aria-label="Strategic end: U.S. exports and investment rise">
+            <rect x="1010" y="122" width="180" height="64"/>
+            <text x="1100" y="150" text-anchor="middle"><tspan x="1100" dy="0">U.S. exports</tspan><tspan x="1100" dy="15">&amp; investment</tspan></text>
+          </g>
+          <g class="lfn" data-id="e2" tabindex="0" role="button" aria-label="Strategic end: an aligned, stable region">
+            <rect x="1010" y="262" width="180" height="64"/>
+            <text x="1100" y="290" text-anchor="middle"><tspan x="1100" dy="0">Aligned,</tspan><tspan x="1100" dy="15">stable region</tspan></text>
+          </g>
+        </svg>
+      </div>
+      <div class="lf-detail" id="lf-detail">
+        <div class="dk" id="lf-dk">Explore</div>
+        <h3 id="lf-dt">How the grant thinks</h3>
+        <p id="lf-dd">This is the causal chain the APS is funding, reconstructed from its own text. Select a node to see the grant's logic at that step. An SOI scores well when its activities trace cleanly along these wires.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 02 · WHY RMGS ================= -->
+<section class="sec" id="rationale">
+  <div class="wrap">
+    <p class="kicker rv"><span class="idx">02</span> Why RMGS</p>
+    <h2 class="rv"><span class="lr"><span>The case for RMGS as prime.</span></span></h2>
+    <p class="sub rv">Most priorities in this APS depend on security work: port access, trusted infrastructure, functioning customs, and institutions protected from malign influence. <strong>RMGS has performed that work for two decades as a federal prime, including for the Department of State.</strong></p>
+
+    <div class="deliver-grid">
+      <div class="del rv">
+        <div class="rule"></div>
+        <div class="m">01 · The customer</div>
+        <h3>A standing DoS record</h3>
+        <p>RMGS is a prime on the DoS <b>Bureau of African Affairs Advisory &amp; Reporting IDIQ ($500M)</b>, embedding subject-matter advisors inside host-government institutions and security forces with logistics, life support, and reporting. Through the RMGS family, it is also a prime on <b>GATA II ($990M)</b>, Diplomatic Security's anti-terrorism assistance vehicle, delivering 80+ courses across 34 countries. The APS calls for the same delivery model in a neighboring region.</p>
+      </div>
+      <div class="del rv">
+        <div class="rule"></div>
+        <div class="m">02 · The environments</div>
+        <h3>Compliance where it's hardest</h3>
+        <p>Iraq requires "capacity to operate in a complex security environment." Lebanon and Libya require <b>strict vetting and monitoring</b> so that no assistance reaches Hizballah, IAMGs, or other armed groups. RMGS holds independently audited certifications for private security operations (<b>ISO 18788, ASIS PSC-1</b>) along with ISO 9001 and CMMC Level 2, a Top Secret facility clearance, a majority-cleared workforce, and performance in more than 60 countries, including the CENTCOM theater.</p>
+      </div>
+      <div class="del rv">
+        <div class="rule"></div>
+        <div class="m">03 · The record</div>
+        <h3>The scoring math</h3>
+        <p>The review criteria weight <b>organizational capacity at 35 of 100 points</b>. RMGS brings 350+ executed contracts and task orders, $165M in federal prime performance, CPARS-documented delivery, and a portfolio that is 84% firm-fixed-price. Under EO 14332, tied scores break toward the applicant with the lower indirect rate.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 03 · TASK AREAS ================= -->
+<section class="sec" id="tasks">
+  <div class="wrap">
+    <p class="kicker rv"><span class="idx">03</span> Task areas</p>
+    <h2 class="rv"><span class="lr"><span>Task areas, matched to record.</span></span></h2>
+    <p class="sub rv">Five lines of effort where APS priorities intersect with RMGS's federal contract record. <strong>Expand each for the underlying vehicles, task orders, and dollars delivered.</strong></p>
+
+    <div class="xp-grid">
+      <details class="xp rv">
+        <summary>
+          <span class="xp-n">TA / 01</span>
+          <span><span class="xp-t">Port &amp; maritime security</span><span class="xp-s">Algeria's port security focus · Tunisia's Bizerte logistics node · Oman beyond Hormuz · regional corridors</span></span>
+          <span class="xp-toggle" aria-hidden="true">+</span>
+        </summary>
+        <div class="xp-body">
+          <p>RMGS delivers <strong>port and harbor defense assessments, small-craft and riverine instruction, and maritime interdiction training</strong> at schoolhouse scale for the U.S. Navy, USSOCOM, and the Coast Guard teams that protect American ports today. This capability applies directly to the maritime gateways named in the APS: Algerian ports, Bizerte, and Oman's trade infrastructure.</p>
+          <div class="xp-recs">
+            <div class="xp-rec"><span class="rid">H92240-20-D-0013</span><span class="rname">MSOFS IDIQ (prime) — maritime SOF support · USSOCOM</span><span class="rval">$295M / $79.8M del.</span><span class="rst on">Active</span></div>
+            <div class="xp-rec"><span class="rid">N00189-26-C-D001</span><span class="rname">NAVSCIATTS — partner-nation small-craft training &amp; logistics · Navy</span><span class="rval">$2.1M</span><span class="rst on">Active</span></div>
+            <div class="xp-rec"><span class="rid">70Z023-23-F-SMTC0001</span><span class="rname">CQC Instructor Support — USCG Special Missions Training</span><span class="rval">$1.7M</span><span class="rst">Completed</span></div>
+            <div class="xp-rec"><span class="rid">H92240-22-A-0003</span><span class="rname">Crewed Vessel Leases BPA · USSOCOM</span><span class="rval">$750K</span><span class="rst on">Active</span></div>
+          </div>
+          <div class="xp-src">Source: RMGS capability &amp; past-performance corpus · FPDS / GovWin</div>
+        </div>
+      </details>
+
+      <details class="xp rv">
+        <summary>
+          <span class="xp-n">TA / 02</span>
+          <span><span class="xp-t">Border security &amp; interdiction</span><span class="xp-s">Iraq's border &amp; customs modernization priority · counter-IED/UAS · WMD interdiction</span></span>
+          <span class="xp-toggle" aria-hidden="true">+</span>
+        </summary>
+        <div class="xp-body">
+          <p>RMGS trains border and security forces: <strong>anti-terrorism assistance, explosive countermeasures, counter-IED/UAS, and visit-board-search-and-seizure instruction under GATA II</strong>, WMD interdiction expertise from two decades of counter-proliferation work, and Export Control &amp; Border Security (EXBS) program support for the Department of State. This maps to Iraq's border security and customs modernization priority.</p>
+          <div class="xp-recs">
+            <div class="xp-rec"><span class="rid">SAQMMA-17-D-0134</span><span class="rname">GATA II — Global Anti-Terrorism Assistance IDIQ (prime, RMGS family) · DoS DS/T/ATA</span><span class="rval">$990M MAC</span><span class="rst on">Active</span></div>
+            <div class="xp-rec"><span class="rid">EXBS</span><span class="rname">Export Control &amp; Border Security program support · DoS</span><span class="rval">Sub</span><span class="rst">Performed</span></div>
+            <div class="xp-rec"><span class="rid">70Z023-19-A-PFC00100</span><span class="rname">BPA — High-Risk Training · DHS/USCG</span><span class="rval">BPA</span><span class="rst">Completed</span></div>
+            <div class="xp-rec"><span class="rid">IND17PD01227</span><span class="rname">Individual Protective Measures / Deployment Readiness · DIA</span><span class="rval">$3.8M</span><span class="rst">Completed</span></div>
+          </div>
+          <div class="xp-src">Source: RMGS capability &amp; past-performance corpus · FPDS / GovWin</div>
+        </div>
+      </details>
+
+      <details class="xp rv">
+        <summary>
+          <span class="xp-n">TA / 03</span>
+          <span><span class="xp-t">Critical infrastructure protection</span><span class="xp-s">Iraq's CI-protection theme · energy &amp; grid security · trusted digital backbones</span></span>
+          <span class="xp-toggle" aria-hidden="true">+</span>
+        </summary>
+        <div class="xp-body">
+          <p>RMGS red teams, rooted in the Navy's <strong>"Original Red Cell,"</strong> deliver design-basis-threat assessment, adversary emulation, and counter-sUAS threat testing at highly protected U.S. facilities, along with a decade of HSEEP-compliant infrastructure-security exercises for DHS and CISA. The same methods support Iraq's infrastructure-protection priority and energy-sector programs across the region.</p>
+          <div class="xp-recs">
+            <div class="xp-rec"><span class="rid">HSHQDC-14-F-00147</span><span class="rname">HSEEP-Compliant Exercise Efforts (SOPD) · DHS/CISA</span><span class="rval">$3.2M</span><span class="rst">Completed</span></div>
+            <div class="xp-rec"><span class="rid">HDTRA1-23-F-0101</span><span class="rname">Nuclear Enterprise support · DTRA</span><span class="rval">$8.0M</span><span class="rst on">Active — 2028</span></div>
+            <div class="xp-rec"><span class="rid">19AQMM-22-A-0038</span><span class="rname">Role Players &amp; Vehicles BPA · DoS Diplomatic Security</span><span class="rval">$466K</span><span class="rst on">Active</span></div>
+          </div>
+          <div class="xp-src">Source: RMGS capability &amp; past-performance corpus · FPDS / GovWin</div>
+        </div>
+      </details>
+
+      <details class="xp rv">
+        <summary>
+          <span class="xp-n">TA / 04</span>
+          <span><span class="xp-t">Security-sector capacity &amp; advisory</span><span class="xp-s">Algeria &amp; Morocco's Sahel stabilization priorities · Libya's institutional unification · embedded advisors</span></span>
+          <span class="xp-toggle" aria-hidden="true">+</span>
+        </summary>
+        <div class="xp-body">
+          <p>RMGS performs this work today for the Department of State in Sub-Saharan Africa: <strong>embedded subject-matter advisors inside host-government institutions and security-force units</strong>, mentoring on doctrine, systems, and TTPs alongside host-nation forces. The Algeria, Morocco, and Libya priorities call for the same model, applied to Sahel stabilization and institutional unification.</p>
+          <div class="xp-recs">
+            <div class="xp-rec"><span class="rid">SAQMMA-17-D-0056</span><span class="rname">Bureau of African Affairs Advisory &amp; Reporting Services IDIQ (prime) · DoS</span><span class="rval">$500M / $6.1M del.</span><span class="rst on">Active</span></div>
+            <div class="xp-rec"><span class="rid">SAQMMA-17-D-0134</span><span class="rname">GATA II — 80+ courses, 34 countries · DoS DS/T/ATA</span><span class="rval">$990M MAC</span><span class="rst on">Active</span></div>
+            <div class="xp-rec"><span class="rid">N00189-26-C-D001</span><span class="rname">NAVSCIATTS — 7+ years of partner-nation instruction · Navy</span><span class="rval">$2.1M</span><span class="rst on">Active</span></div>
+          </div>
+          <div class="xp-src">Source: RMGS capability &amp; past-performance corpus · FPDS / GovWin</div>
+        </div>
+      </details>
+
+      <details class="xp rv">
+        <summary>
+          <span class="xp-n">TA / 05</span>
+          <span><span class="xp-t">Workforce training at scale</span><span class="xp-s">Workforce development aligned with U.S. business needs · recovery in conflict-affected areas</span></span>
+          <span class="xp-toggle" aria-hidden="true">+</span>
+        </summary>
+        <div class="xp-body">
+          <p>Most country programs in this APS include a workforce development component. RMGS builds and manages training programs at scale: <strong>sourcing, vetting, clearing, and managing instructor cadres</strong>; curriculum development from schoolhouse to field; 80+ courses in the GATA II catalog; and CBRN instruction delivered across roughly 270 U.S. diplomatic posts.</p>
+          <div class="xp-recs">
+            <div class="xp-rec"><span class="rid">GS-07F-196DA</span><span class="rname">GSA Multiple Award Schedule — training &amp; mission support delivered</span><span class="rval">$15.2M del.</span><span class="rst on">Active</span></div>
+            <div class="xp-rec"><span class="rid">70Z023 series</span><span class="rname">USCG instructor cadres — six contracts since 2019</span><span class="rval">$6.5M+</span><span class="rst">Performed</span></div>
+            <div class="xp-rec"><span class="rid">IND17PD01227</span><span class="rname">Advanced Deployment Readiness training · DIA</span><span class="rval">$3.8M</span><span class="rst">Completed</span></div>
+          </div>
+          <div class="xp-src">Source: RMGS capability &amp; past-performance corpus · FPDS / GovWin</div>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 04 · COUNTRIES ================= -->
+<section class="sec sec-sectors" id="countries">
+  <div class="wrap">
+    <p class="kicker rv"><span class="idx">04</span> Nine programs</p>
+    <h2 class="rv"><span class="lr"><span>Country by country.</span></span></h2>
+    <p class="sub rv">The APS defines priorities for eight countries, the West Bank, and the region as a whole. <strong>Hover each program for its stated priority and where RMGS fits.</strong> Award ceilings per the APS; floors are $250K throughout.</p>
+
+    <div class="sector-grid rv">
+      <div class="sector" tabindex="0">
+        <div class="n">NEA / 01</div><h3>Algeria</h3><div class="th">Port security · natural resources · AI · commercial investment</div><div class="badge">Ceiling $20M</div>
+        <div class="more">
+          <div class="mk">The priority</div>
+          <p>Develop hydrocarbon and critical-minerals potential with U.S. partners, connect AI infrastructure to trusted vendors, and <b>export Algerian security expertise to stabilize the Sahel.</b></p>
+          <div class="mk">The RMGS fit</div>
+          <p>Port and harbor security assessments for the export gateways, and the embedded-advisor model RMGS runs for DoS in Africa today, which maps to Algeria's goal of exporting security expertise to the Sahel.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">NEA / 02</div><h3>Bahrain</h3><div class="th">Energy security · network security · supply chain · fintech</div><div class="badge">Ceiling $20M</div>
+        <div class="more">
+          <div class="mk">The priority</div>
+          <p>Deepen the U.S. economic relationship and <b>advance Abraham Accords regional integration</b> across defense systems, energy, digital infrastructure, and financial services.</p>
+          <div class="mk">The RMGS fit</div>
+          <p>Threat and vulnerability assessment for energy and network infrastructure, exercise programs that validate resilience, and a long working history with the U.S. Navy.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">NEA / 03</div><h3>Iraq</h3><div class="th">Border security · customs modernization · CI protection · IAMG-free implementation</div><div class="badge">Ceiling $20M</div>
+        <div class="more">
+          <div class="mk">The priority</div>
+          <p>Keep IAMGs out of government spending, modernize borders and customs, protect critical infrastructure, and build transparent markets. Implementers must be able to <b>operate in Iraq's complex security environment.</b></p>
+          <div class="mk">The RMGS fit</div>
+          <p>The Iraq eligibility requirements match RMGS's operating model: ISO 18788 / PSC-1 audited vetting and monitoring, counterterrorism-compliance experience from GATA II, border and interdiction training, and critical-infrastructure protection from assessment through exercise.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">NEA / 04</div><h3>Lebanon</h3><div class="th">Energy &amp; telecom infrastructure · Hizballah service substitution · strict vetting</div><div class="badge">Ceiling $30M</div>
+        <div class="more">
+          <div class="mk">The priority</div>
+          <p>Support sovereignty by substituting Hizballah-provided services and securing energy and telecom infrastructure, under <b>strict vetting so no assistance benefits armed groups.</b></p>
+          <div class="mk">The RMGS fit</div>
+          <p>Lebanon carries the APS's largest ceiling and its heaviest compliance requirements. RMGS's independently audited security-operations management (ISO 18788, PSC-1) is designed for this monitoring standard.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">NEA / 05</div><h3>Libya</h3><div class="th">Institutional unification · energy governance · civilian-only vetting</div><div class="badge">Ceiling $20M</div>
+        <div class="more">
+          <div class="mk">The priority</div>
+          <p>Promote unification of political, economic, and <b>security institutions</b> and foster energy and defense-sector growth, with strict vetting ensuring assistance reaches civilian institutions only.</p>
+          <div class="mk">The RMGS fit</div>
+          <p>Security-sector advisory and institutional capacity building, supported by independently audited vetting and monitoring practices that meet the civilian-only assistance requirement.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">NEA / 06</div><h3>Morocco</h3><div class="th">World Cup 2030 buildout · tech · energy · Sahel stabilization</div><div class="badge">Ceiling $20M</div>
+        <div class="more">
+          <div class="mk">The priority</div>
+          <p>Capture the <b>World Cup 2030 infrastructure buildout</b> for U.S. firms across energy, cybersecurity, aviation, rail, and ports, while contributing to Sahel stability.</p>
+          <div class="mk">The RMGS fit</div>
+          <p>RMGS currently supports FIFA 2026 preparations, with 30+ host-city readiness exercises and a league-mandated venue security assessment. That work is directly relevant to Morocco's World Cup 2030 buildout.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">NEA / 07</div><h3>Oman</h3><div class="th">Technology · space · critical minerals · sanctions enforcement</div><div class="badge">Ceiling $20M</div>
+        <div class="more">
+          <div class="mk">The priority</div>
+          <p>Grow emerging sectors with U.S. firms, leverage Oman's geography <b>outside the Strait of Hormuz</b>, and support enforcement of sanctions against Iran.</p>
+          <div class="mk">The RMGS fit</div>
+          <p>Maritime interdiction and VBSS instruction supporting sanctions enforcement, plus port-security depth for the trade infrastructure Oman's location makes strategic.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">NEA / 08</div><h3>Tunisia</h3><div class="th">Grid modernization · ICT · Bizerte port &amp; logistics · procurement reform</div><div class="badge">Ceiling $20M</div>
+        <div class="more">
+          <div class="mk">The priority</div>
+          <p>Position U.S. firms and standards in infrastructure, logistics, and technology. Bizerte is named as a <b>strategic port and logistics node</b>, and grid modernization is a priority sector.</p>
+          <div class="mk">The RMGS fit</div>
+          <p>Port and logistics-node security assessment, plus energy-infrastructure exercise experience relevant to Tunisia's grid modernization priority.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">NEA / 09</div><h3>West Bank</h3><div class="th">Workforce readiness · ICT links · reducing malign-actor conditions</div><div class="badge">Ceiling $20M</div>
+        <div class="more">
+          <div class="mk">The priority</div>
+          <p>Build private-sector capacity and <b>workforce readiness aligned with U.S. business needs</b> to reduce conditions exploited by malign actors.</p>
+          <div class="mk">The RMGS fit</div>
+          <p>Workforce training at scale: curriculum, instructor cadres, and measurable outcomes, delivered with strict vetting. Note that local registration is required, so this program is strongest as a supporting line of effort.</p>
+        </div>
+      </div>
+      <div class="sector sector-wide" tabindex="0">
+        <div class="n">NEA / 10</div><h3>Regional</h3><div class="th">Overland corridors (IMEC) · I2U2 · cross-border economic integration · energy competitiveness</div><div class="badge">Cross-cutting</div>
+        <div class="more">
+          <div class="mk">The priority</div>
+          <p>Strengthen regional energy integration, support <b>trade corridors like IMEC</b>, and promote cross-border cooperation that expands market access and reduces isolation.</p>
+          <div class="mk">The RMGS fit</div>
+          <p>Trade corridors run through ports, border crossings, and infrastructure nodes. RMGS's assessment, exercise, and training work applies at each of them and can be organized as a corridor-level security program.</p>
+        </div>
+      </div>
+    </div>
+    <p class="sector-note rv">Priorities and ceilings per DFOP0018712, Section C — Program Description</p>
+  </div>
+</section>
+
+<!-- ================= 05 · THE STATEMENT OF INTEREST ================= -->
+<section class="sec" id="soi-outline">
+  <div class="wrap">
+    <p class="kicker rv"><span class="idx">05</span> The SOI</p>
+    <h2 class="rv"><span class="lr"><span>The statement of interest, component by component.</span></span></h2>
+    <p class="sub rv">The APS allows a cover table, a three-page narrative, and up to four one-page annexes. The concept: <strong>"Securing the Buildout" — U.S.-standard event-security readiness for Morocco's World Cup 2030.</strong> The document map below allocates the space; hover each component for what RMGS writes there, and why.</p>
+
+    <div class="xp-recs rv" aria-label="SOI document map">
+      <div class="xp-rec"><span class="rid">COVER</span><span class="rname">Table of critical details — title, organization, countries, federal share, cost share, length</span><span class="rval">1 page</span><span class="rst">Excluded from limit</span></div>
+      <div class="xp-rec"><span class="rid">§ A</span><span class="rname">Issue / challenge / opportunity</span><span class="rval">~½ page</span><span class="rst on">Narrative</span></div>
+      <div class="xp-rec"><span class="rid">§ B</span><span class="rname">Proposed solution and activities</span><span class="rval">~1 page</span><span class="rst on">Narrative</span></div>
+      <div class="xp-rec"><span class="rid">§ B.1</span><span class="rname">Anticipated outcomes and results — tied to NSS 2025, ASP 2026–2030, NEA RSB</span><span class="rval">~½ page</span><span class="rst on">Narrative</span></div>
+      <div class="xp-rec"><span class="rid">§ B.2</span><span class="rname">Theory of change — the if / then / because statement, with evidence</span><span class="rval">~¼ page</span><span class="rst on">Narrative</span></div>
+      <div class="xp-rec"><span class="rid">§ C</span><span class="rname">Partner roles and responsibilities</span><span class="rval">~⅛ page</span><span class="rst on">Narrative</span></div>
+      <div class="xp-rec"><span class="rid">§ D</span><span class="rname">Resource contributions and cost share</span><span class="rval">~⅛ page</span><span class="rst on">Narrative</span></div>
+      <div class="xp-rec"><span class="rid">ANNEX 1–4</span><span class="rname">Program logic model · past-performance matrix · 30-month timeline · M&amp;E indicator table</span><span class="rval">4 × 1 page</span><span class="rst">Excluded from limit</span></div>
+    </div>
+    <div class="xp-src rv">Structure per DFOP0018712, Section D — Application Contents and Format</div>
+
+    <div class="sector-grid rv" style="margin-top:44px">
+      <div class="sector" tabindex="0">
+        <div class="n">SOI / COVER</div><h3>Critical details</h3><div class="th">Title · organization · country · dollars · duration</div><div class="badge">Sets the frame</div>
+        <div class="more">
+          <div class="mk">In the SOI</div>
+          <p>"Securing the Buildout: U.S.-Standard Event-Security Readiness for World Cup 2030." RMGS, Inc. (SDVOSB). Target country: Morocco. Federal share: <b>$8.5M over 30 months</b>, with a modest corporate cost share.</p>
+          <div class="mk">Why</div>
+          <p>The Morocco ceiling is $20M. Entering well below it signals cost discipline, and the cover table sits outside the page limit, so every scope signal here costs no narrative space.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">SOI / A</div><h3>Issue / opportunity</h3><div class="th">The problem statement, framed commercially</div><div class="badge">~½ page</div>
+        <div class="more">
+          <div class="mk">In the SOI</div>
+          <p>Morocco's World Cup 2030 buildout will award security-heavy tenders across venues, transport, and energy. <b>European and Chinese vendors are positioned; opaque procurement disadvantages U.S. firms.</b> The readiness gap is the opening.</p>
+          <div class="mk">Why</div>
+          <p>Quality of program idea carries 50 of 100 points, and it is scored on responsiveness to the framework. This frames a commercial-diplomacy problem, which is what the APS funds, rather than a security-assistance problem.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">SOI / B</div><h3>Solution &amp; activities</h3><div class="th">Three activity lines, all currently performed on contract</div><div class="badge">~1 page</div>
+        <div class="more">
+          <div class="mk">In the SOI</div>
+          <p>Three lines: <b>(1) HSEEP-derived host-city and venue readiness exercises; (2) venue and infrastructure security assessments to U.S. standards</b> (ISO 31000, design-basis threat); <b>(3) security workforce training</b> with U.S.-aligned technical specifications that feed tender documents.</p>
+          <div class="mk">Why</div>
+          <p>Every activity is one RMGS already performs on contract, for FIFA 2026, DHS/CISA, and GATA II customers. Feasibility can be shown, not asserted.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">SOI / B.1</div><h3>Outcomes &amp; results</h3><div class="th">Defining "success" in the APS's own terms</div><div class="badge">~½ page</div>
+        <div class="more">
+          <div class="mk">In the SOI</div>
+          <p>Countable results: exercises delivered, Moroccan personnel certified, assessments adopted, <b>tenders carrying U.S.-aligned specifications, and U.S. vendor engagements.</b> Success is defined as Moroccan authorities procuring to U.S. standards.</p>
+          <div class="mk">Why</div>
+          <p>The APS requires outcomes that advance the 2025 NSS, the ASP 2026–2030, and the NEA Regional Strategic Brief. Export wins and reduced adversary technology penetration are that language, stated measurably.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">SOI / B.2</div><h3>Theory of change</h3><div class="th">The if / then / because sentence</div><div class="badge">~¼ page</div>
+        <div class="more">
+          <div class="mk">In the SOI</div>
+          <p><b>If</b> Morocco's World Cup 2030 security readiness is built and validated on U.S. standards, <b>then</b> its ministries and venue authorities will specify and procure U.S. technology and services, <b>because</b> procurement follows the standards and training already embedded. Evidence: the FIFA 2026 host-city engagement and standards-adoption patterns in GATA II partner programs.</p>
+          <div class="mk">Why</div>
+          <p>Section D asks for this statement in this form, with supporting evidence. Providing it verbatim removes a reviewer checkbox and anchors the logic framework in Annex 1.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">SOI / C</div><h3>Partners</h3><div class="th">None — direct implementation</div><div class="badge">~⅛ page</div>
+        <div class="more">
+          <div class="mk">In the SOI</div>
+          <p><b>No subrecipients.</b> RMGS implements directly, with Moroccan government counterparts engaged as beneficiaries rather than pass-through entities.</p>
+          <div class="mk">Why</div>
+          <p>A single accountable implementer means cleaner vetting, no pass-through cost, and faster mobilization. It also concentrates the organizational-capacity score on RMGS's own record instead of diluting it.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">SOI / D</div><h3>Cost share</h3><div class="th">A modest, deliverable pledge</div><div class="badge">~⅛ page</div>
+        <div class="more">
+          <div class="mk">In the SOI</div>
+          <p>Preliminary in-kind contribution: <b>exercise-design intellectual property, corporate SME bench time, and reachback infrastructure</b>, per 2 CFR 200.306.</p>
+          <div class="mk">Why</div>
+          <p>Cost share is not required but is favorably considered in merit review. A modest pledge RMGS can document earns that consideration without creating audit risk.</p>
+        </div>
+      </div>
+      <div class="sector" tabindex="0">
+        <div class="n">SOI / ANNEX</div><h3>Format &amp; annexes</h3><div class="th">Where the evidence goes</div><div class="badge">4 × 1 page</div>
+        <div class="more">
+          <div class="mk">In the SOI</div>
+          <p>Three-page narrative; four annexes: <b>(1) a program logic model tracing the project along the APS framework shown under The Opportunity, (2) past-performance matrix with contract numbers, (3) 30-month timeline, (4) M&amp;E indicator table.</b></p>
+          <div class="mk">Why</div>
+          <p>Reviewers stop reading at the page limit, and charts and annexes are excluded from it. The evidence load goes to annexes; the narrative stays free for the argument.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 06 · PATH TO AWARD ================= -->
+<section class="sec bridge" id="soi">
+  <div class="wrap">
+    <div class="bridge-inner">
+      <div>
+        <p class="kicker rv"><span class="idx">06</span> Path to award</p>
+        <h2 class="rv"><span class="lr"><span>From SOI to start of work.</span></span></h2>
+        <p class="sub rv">Phase one is a 1–3 page Statement of Interest via MyGrants, reviewed on a rolling basis. Selected applicants are invited to submit a full proposal, with possible co-design. <strong>The criteria weight organizational capacity and feasibility, both documented above.</strong></p>
+        <div class="hero-ctas" style="margin-top:34px">
+          <a class="btn btn-primary" href="mailto:griggsn@rmgsinc.com?subject=NEA%2FAC%20Regional%20APS%20%E2%80%94%20SOI%20development">Start the SOI →</a>
+          <a class="btn btn-ghost" href="critical-infrastructure.html">Critical infrastructure page</a>
+        </div>
+      </div>
+      <ul class="bridge-list rv" aria-label="Review criteria">
+        <li><span class="bl-row"><span class="n">01</span>Quality of program idea<span class="pts">50 pts</span></span></li>
+        <li><span class="bl-row"><span class="n">02</span>Organizational capacity &amp; record<span class="pts">35 pts</span></span></li>
+        <li><span class="bl-row"><span class="n">03</span>Program planning &amp; objectives<span class="pts">15 pts</span></span></li>
+        <li><span class="bl-row"><span class="n">—</span>Tie-breaker: lowest indirect rate<span class="pts">EO 14332</span></span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-mark" aria-hidden="true">RMGS<span>.</span></div>
+    <div class="foot-cols">
+      <div>
+        <div class="fh">Site</div>
+        <ul>
+          <li><a href="index.html"><span class="sl">Main site</span></a></li>
+          <li><a href="critical-infrastructure.html"><span class="sl">Critical infrastructure</span></a></li>
+          <li><a href="index.html#performance"><span class="sl">Performance</span></a></li>
+          <li><a href="index.html#contact"><span class="sl">Partner with us</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="fh">This page</div>
+        <ul>
+          <li><a href="#opportunity"><span class="sl">The opportunity</span></a></li>
+          <li><a href="#rationale"><span class="sl">Why RMGS</span></a></li>
+          <li><a href="#tasks"><span class="sl">Task areas</span></a></li>
+          <li><a href="#countries"><span class="sl">Countries</span></a></li>
+          <li><a href="#soi-outline"><span class="sl">The SOI</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="fh">Contact</div>
+        <ul>
+          <li><a href="mailto:griggsn@rmgsinc.com"><span class="sl">griggsn@rmgsinc.com</span></a></li>
+        </ul>
+        <p class="fp">500 Viking Drive, Suite 302<br>Virginia Beach, VA 23452</p>
+      </div>
+    </div>
+    <div class="foot-legal">
+      <span>© 2026 RMGS, Inc.</span>
+      <span>CAGE 57NE1 · SDVOSB · TS facility · ISO 9001 · ISO 18788 · PSC-1 · CMMC L2</span>
+    </div>
+  </div>
+</footer>
+
+<button class="totop" id="totop" aria-label="Back to top">↑</button>
+
+<script>
+  // nav scroll state (hide on scroll down, return on scroll up) + back-to-top visibility
+  const nav=document.getElementById('nav'),totop=document.getElementById('totop');
+  let lastY=0;
+  addEventListener('scroll',()=>{
+    const y=scrollY;
+    nav.classList.toggle('scrolled',y>10);
+    nav.classList.toggle('hidden',y>180&&y>lastY&&!document.getElementById('menu').classList.contains('open'));
+    totop.classList.toggle('show',y>700);
+    lastY=y;
+  },{passive:true});
+  totop.addEventListener('click',()=>scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}));
+
+  // hero headline line reveal on load
+  addEventListener('DOMContentLoaded',()=>setTimeout(()=>document.querySelector('.hl')?.classList.add('in'),120));
+
+  // mobile menu
+  const burger=document.getElementById('burger'),menu=document.getElementById('menu');
+  burger.addEventListener('click',()=>{
+    const open=menu.classList.toggle('open');
+    burger.setAttribute('aria-expanded',open);
+  });
+
+  // reveal on scroll
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+  // task-area tiles behave as an accordion — one open at a time
+  const tiles=[...document.querySelectorAll('details.xp')];
+  tiles.forEach(t=>t.addEventListener('toggle',()=>{
+    if(t.open) tiles.forEach(o=>{if(o!==t) o.open=false});
+  }));
+
+  // scrollspy for the on-page jump nav
+  const jumps=[...document.querySelectorAll('.jump a')];
+  const spy=new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting){
+      jumps.forEach(a=>a.classList.toggle('now',a.getAttribute('href')==='#'+e.target.id));
+    }
+  }),{rootMargin:'-40% 0px -55% 0px'});
+  jumps.forEach(a=>{const s=document.querySelector(a.getAttribute('href'));if(s)spy.observe(s)});
+
+  // logic framework of the opportunity — explorable wire diagram
+  const LF={
+    c1:{s:'Condition',t:'Underdeveloped markets',d:'The APS names limited market integration, underdeveloped infrastructure, and constrained private-sector growth as the region’s baseline challenges. These are the conditions the funding exists to change.'},
+    c2:{s:'Condition',t:'Adversary encroachment',d:'Competitors are positioned where the United States is not: Huawei in Omani and Algerian infrastructure, Iran-aligned groups in Iraq and Lebanon, European and Chinese firms contesting tenders across the region. The APS treats each country program as a competition for influence.'},
+    c3:{s:'Condition',t:'Instability & conflict',d:'Conflict and displacement destabilize the region and create openings for malign actors. Economic recovery in conflict-affected areas is an eligible sector for exactly that reason, and Lebanon, Iraq, Libya, and the West Bank programs all carry stabilization logic.'},
+    p1:{s:'Mechanism',t:'Assistance as statecraft',d:'The core mechanism: up to $190M in Economic Support Funds and National Security Investment Program funds, deployed as a tool of statecraft. Every award is scored on whether it advances U.S. economic, security, and diplomatic objectives under the 2025 NSS, the ASP 2026–2030, and the NEA Regional Strategic Brief.'},
+    p2:{s:'Mechanism',t:'Market principles',d:'"Trade over aid." Programs must catalyze private capital, follow market principles, orient implementers toward the American business community, and foster burden-sharing rather than dependency. Purely commercial projects and pure service delivery are both out of scope; the funded zone is between them.'},
+    a1:{s:'Funded activity',t:'Champion U.S. firms',d:'The APS’s first stated priority: position U.S. businesses and products as the preferred choice for regional partners, and help U.S. firms secure foreign government contracts and tenders for key projects.'},
+    a2:{s:'Funded activity',t:'Export U.S. technology & standards',d:'Promote the export of U.S. technology to lock in alignment with U.S. technological standards and frameworks, especially in AI, telecommunications, 5G, energy, and critical infrastructure.'},
+    a3:{s:'Funded activity',t:'Reform & capacity building',d:'The reform agenda that makes markets contestable: procurement transparency, customs modernization, financial-sector compliance, regulatory reform, and workforce training aligned with U.S. business needs.'},
+    o1:{s:'Outcome',t:'Market access opens',d:'Barriers that disadvantage U.S. firms come down. Tenders become transparent and contestable, and American companies compete on terms they can win. This is the outcome the Morocco, Tunisia, and Iraq programs state most explicitly.'},
+    o2:{s:'Outcome',t:'Dependencies shift',d:'Partner countries source technology, standards, and security cooperation from the United States instead of adversarial powers. The APS states the test directly: reduce host-country dependencies on adversarial powers.'},
+    o3:{s:'Outcome',t:'Partner self-reliance',d:'Outcomes must "foster self-reliance": institutions and workforces capable of sustaining results after the award ends, so assistance does not become a permanent subsidy.'},
+    e1:{s:'Strategic end',t:'U.S. exports & investment rise',d:'The APS defines success as investments that directly benefit American safety, strength, and prosperity, with increased U.S. exports and investment as the measurable expression.'},
+    e2:{s:'Strategic end',t:'An aligned, stable region',d:'A region integrated on U.S.-aligned terms: Abraham Accords expansion, corridors like IMEC, reduced adversary influence, and durable U.S. strategic leverage.'}
+  };
+  const lfNodes=[...document.querySelectorAll('.lfn')],lfEdges=[...document.querySelectorAll('.lfe')];
+  const dk=document.getElementById('lf-dk'),dt=document.getElementById('lf-dt'),dd=document.getElementById('lf-dd');
+  function lfShow(id){
+    const n=LF[id];if(!n)return;
+    dk.textContent=n.s;dt.textContent=n.t;dd.textContent=n.d;
+    lfNodes.forEach(el=>el.classList.toggle('on',el.dataset.id===id));
+    lfEdges.forEach(e=>e.classList.toggle('lit',e.dataset.from===id||e.dataset.to===id));
+  }
+  lfNodes.forEach(el=>{
+    const go=()=>lfShow(el.dataset.id);
+    el.addEventListener('mouseenter',go);
+    el.addEventListener('focus',go);
+    el.addEventListener('click',go);
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});
+  });
+
+  // scramble-on-hover for labeled links
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    const CH='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    document.querySelectorAll('.sl').forEach(sl=>{
+      const orig=sl.textContent;let timer=null;
+      sl.closest('a').addEventListener('mouseenter',()=>{
+        if(timer)return;
+        let frame=0,total=Math.min(orig.length,14)+6;
+        timer=setInterval(()=>{
+          frame++;
+          sl.textContent=orig.split('').map((c,i)=>{
+            if(c===' '||c==='—'||c==='-')return c;
+            return i<(frame-4)*(orig.length/total)?c:CH[Math.random()*CH.length|0];
+          }).join('');
+          if(frame>=total){clearInterval(timer);timer=null;sl.textContent=orig}
+        },28);
+      });
+    });
+  }
+</script>
+
+<!-- ===== Unified all-pages search (matches the rest of the RMGS site) ===== -->
+<script>
+(function(){
+  if(document.querySelector('.site-search'))return;
+  var SELF=(location.pathname.split('/').pop()||'index.html'); if(!SELF)SELF='index.html';
+  var ALL=[{f:'index.html',l:'RMGS Home'},{f:'stingrai.html',l:'STINGRAI'},{f:'soto-cano.html',l:'Soto Cano'},{f:'southcom-navigator.html',l:'SOUTHCOM Acquisition Tool'},{f:'csuas-framework.html',l:'Counter-UAS'},{f:'logistics-capture-tool.html',l:'Logistics Capture Tool'},{f:'wexmac-maps-rmgs.html',l:'Opportunity Map'},{f:'sentinel-cop-prototype.html',l:'Sentinel COP'},{f:'critical-infrastructure.html',l:'Critical Infrastructure'},{f:'nea-aps.html',l:'Economic Statecraft'}];
+  var EXT=ALL.filter(function(p){return p.f!==SELF;});
+  var CSS='.nav-search-btn{background:none;border:none;color:#e6edf5;cursor:pointer;padding:8px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;transition:color .2s,background .2s;flex:none}.nav-search-btn:hover{color:#2fd0c7;background:rgba(255,255,255,.06)}'
+   +'.site-search[hidden]{display:none}.site-search{position:fixed;inset:0;z-index:4000;display:flex;align-items:flex-start;justify-content:center;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}'
+   +'.site-search__backdrop{position:absolute;inset:0;background:rgba(3,10,20,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}'
+   +'.site-search__panel{position:relative;margin-top:11vh;width:min(620px,92vw);background:#0a2342;border:1px solid rgba(255,255,255,.14);border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.55);overflow:hidden}'
+   +'.site-search__bar{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.14);color:#9fb2c4}'
+   +'.site-search__input{flex:1;background:none;border:none;outline:none;color:#fff;font-size:16px;font-family:inherit}.site-search__input::placeholder{color:#7f93a8}'
+   +'.site-search__close{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:#9fb2c4;font-size:11px;font-family:monospace;padding:4px 8px;border-radius:6px;cursor:pointer;letter-spacing:.08em}.site-search__close:hover{color:#fff}'
+   +'.site-search__results{max-height:56vh;overflow-y:auto;padding:6px}.site-search__empty{padding:18px 16px;color:#7f93a8;font-size:14px}'
+   +'.site-search__hit{display:flex;flex-direction:column;gap:2px;width:100%;text-align:left;background:none;border:none;color:#fff;padding:10px 14px;border-radius:9px;cursor:pointer}.site-search__hit:hover,.site-search__hit.is-active{background:rgba(47,208,199,.12)}'
+   +'.ssh-label{font-size:15px;font-weight:600;line-height:1.25}.ssh-sub{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#2fd0c7}'
+   +'mark.rmgs-hl{background:rgba(47,208,199,.34);color:#fff;border-radius:3px;padding:0 1px;box-shadow:0 0 0 2px rgba(47,208,199,.34);animation:rmgsHl 4.2s ease forwards}@keyframes rmgsHl{0%,72%{background:rgba(47,208,199,.4)}100%{background:transparent;box-shadow:none}}';
+  var st=document.createElement('style');st.textContent=CSS;document.head.appendChild(st);
+  var ic='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>';
+  function esc(s){return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function scopeOf(node){return (node.closest&&node.closest('section,article,.page,.blk,main'))||node.parentElement||document.body;}
+  function secText(node){var s=scopeOf(node);return s?(s.textContent||''):'';}
+  var pidx=null;
+  function buildPage(){var out=[],seen={};document.querySelectorAll('h1,h2,h3,h4').forEach(function(hd){if(hd.closest('header,nav,.nav,.rmgs-nav,.site-search'))return;var label=(hd.textContent||'').replace(/\s+/g,' ').trim();if(!label||label.length<3||label.length>96)return;var k=label.toLowerCase();if(seen[k])return;seen[k]=1;out.push({label:label,el:hd,text:(label+' '+secText(hd)).replace(/\s+/g,' ').toLowerCase().slice(0,1600)});});return out;}
+  function ensureP(){if(!pidx)pidx=buildPage();return pidx;}
+  function searchPage(q){q=q.toLowerCase().trim();if(!q)return[];var t=q.split(/\s+/),o=[];ensureP().forEach(function(e){if(!t.every(function(x){return e.text.indexOf(x)>=0;}))return;var sc=0,l=e.label.toLowerCase();t.forEach(function(x){if(l.indexOf(x)>=0)sc+=5;});if(l.indexOf(q)>=0)sc+=8;o.push({e:e,sc:sc});});o.sort(function(a,b){return b.sc-a.sc;});return o.slice(0,6).map(function(r){return r.e;});}
+  var extIdx=null,extTried=false;
+  function anchorFor(el){var n=el;while(n&&n.tagName!=='BODY'){if(n.id)return n.id;n=n.parentElement;}return '';}
+  function loadExt(){if(extTried)return;extTried=true;var acc=[],pend=EXT.length;function fin(){if(--pend<=0){extIdx=acc;if(!ov.hidden&&input.value.trim())render(build(input.value));}}EXT.forEach(function(p){fetch(p.f).then(function(r){return r.text();}).then(function(tx){try{var doc=new DOMParser().parseFromString(tx,'text/html'),seen={};doc.querySelectorAll('h1,h2,h3,h4').forEach(function(hd){var label=(hd.textContent||'').replace(/\s+/g,' ').trim();if(!label||label.length<3||label.length>96)return;var k=label.toLowerCase();if(seen[k])return;seen[k]=1;var id=anchorFor(hd),sc2=(hd.closest&&hd.closest('section,article,.page,.blk,main'))||hd.parentElement,tt=(label+' '+((sc2&&sc2.textContent)||'')).replace(/\s+/g,' ');acc.push({label:label,sub:p.l,url:p.f+(id?('#'+id):''),text:tt.toLowerCase().slice(0,1600)});});}catch(_){}}).catch(function(){}).then(fin);});}
+  function searchExt(q){if(!extIdx)return[];q=q.toLowerCase().trim();if(!q)return[];var t=q.split(/\s+/),o=[];extIdx.forEach(function(e){if(!t.every(function(x){return e.text.indexOf(x)>=0;}))return;var sc=0,l=e.label.toLowerCase();t.forEach(function(x){if(l.indexOf(x)>=0)sc+=5;});if(l.indexOf(q)>=0)sc+=8;o.push({e:e,sc:sc});});o.sort(function(a,b){return b.sc-a.sc;});return o.slice(0,8).map(function(r){return r.e;});}
+  function build(q){var out=[];searchPage(q).forEach(function(e){out.push({type:'el',label:e.label,sub:'On this page',el:e.el});});searchExt(q).forEach(function(e){out.push({type:'ext',label:e.label,sub:e.sub,url:e.url});});return out;}
+  function unmark(){document.querySelectorAll('mark.rmgs-hl').forEach(function(m){var p=m.parentNode;if(!p)return;while(m.firstChild)p.insertBefore(m.firstChild,m);p.removeChild(m);if(p.normalize)p.normalize();});}
+  function markPhrase(scope,q){unmark();if(!scope||!q)return null;q=q.trim().toLowerCase();if(!q)return null;var cands=[q];q.split(/\s+/).sort(function(a,b){return b.length-a.length;}).forEach(function(t){if(t.length>2&&cands.indexOf(t)<0)cands.push(t);});for(var c=0;c<cands.length;c++){var ph=cands[c],w=document.createTreeWalker(scope,NodeFilter.SHOW_TEXT,null),node;while(node=w.nextNode()){var pn=node.parentNode;if(!pn||/^(script|style|mark)$/i.test(pn.nodeName)||!pn.offsetParent)continue;var i=node.nodeValue.toLowerCase().indexOf(ph);if(i<0)continue;try{var r=document.createRange();r.setStart(node,i);r.setEnd(node,i+ph.length);var mk=document.createElement('mark');mk.className='rmgs-hl';r.surroundContents(mk);return mk;}catch(e){continue;}}}return null;}
+  var ov=document.createElement('div');ov.className='site-search';ov.hidden=true;
+  ov.innerHTML='<div class="site-search__backdrop"></div><div class="site-search__panel" role="dialog" aria-label="Search"><div class="site-search__bar">'+ic+'<input class="site-search__input" type="text" placeholder="Search the whole site…" aria-label="Search"><button class="site-search__close" type="button" aria-label="Close">Esc</button></div><div class="site-search__results"></div></div>';
+  document.body.appendChild(ov);
+  var input=ov.querySelector('.site-search__input'),res=ov.querySelector('.site-search__results'),cur=[],act=-1;
+  function render(list){cur=list;act=list.length?0:-1;if(!input.value.trim()){res.innerHTML='<div class="site-search__empty">Search every RMGS page…</div>';return;}if(!list.length){res.innerHTML='<div class="site-search__empty">No matches.</div>';return;}res.innerHTML=list.map(function(e,i){return '<button class="site-search__hit'+(i===0?' is-active':'')+'" type="button" data-i="'+i+'"><span class="ssh-label">'+esc(e.label)+'</span><span class="ssh-sub">'+esc(e.sub)+'</span></button>';}).join('');}
+  function open(){ov.hidden=false;document.documentElement.style.overflow='hidden';input.value='';render([]);loadExt();setTimeout(function(){input.focus();},30);}
+  function close(){ov.hidden=true;document.documentElement.style.overflow='';}
+  function goEl(el,q){close();setTimeout(function(){var sec=scopeOf(el);var m=markPhrase(sec,q),tgt=m||el;try{tgt.scrollIntoView({behavior:'smooth',block:'center'});}catch(_){}if(m)setTimeout(unmark,4200);},110);}
+  function go(it){var q=input.value;if(it.type==='el'){goEl(it.el,q);return;}if(it.type==='ext'){var base=it.url,qq=(q||'').trim();if(qq){base+=(base.indexOf('#')>=0?'':'#')+':~:text='+encodeURIComponent(qq.replace(/,+/g,' ').trim());}window.location.href=base;return;}}
+  input.addEventListener('input',function(){render(build(input.value));});
+  ov.addEventListener('click',function(e){if(e.target.classList.contains('site-search__backdrop')||e.target.classList.contains('site-search__close')){close();return;}var hit=e.target.closest&&e.target.closest('.site-search__hit');if(hit)go(cur[+hit.dataset.i]);});
+  input.addEventListener('keydown',function(e){if(e.key==='Escape'){close();return;}if(e.key==='Enter'){if(cur[act])go(cur[act]);return;}if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if(!cur.length)return;act=(act+(e.key==='ArrowDown'?1:-1)+cur.length)%cur.length;var hs=res.querySelectorAll('.site-search__hit');for(var i=0;i<hs.length;i++)hs[i].classList.toggle('is-active',i===act);if(hs[act])hs[act].scrollIntoView({block:'nearest'});}});
+  document.addEventListener('keydown',function(e){if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();open();}else if(e.key==='/'&&ov.hidden&&!/^(input|textarea|select)$/i.test((e.target&&e.target.tagName)||'')){e.preventDefault();open();}});
+  var b=document.createElement('button');b.className='nav-search-btn';b.type='button';b.setAttribute('aria-label','Search');b.innerHTML=ic;b.addEventListener('click',open);
+  var host=document.querySelector('.nav-inner')||document.querySelector('.nav-right')||document.querySelector('header');
+  if(host){var burger=host.querySelector('.burger');if(burger&&burger.parentNode===host){host.insertBefore(b,burger);}else{host.appendChild(b);}}
+  try{var ss=new URLSearchParams(location.search).get('ss');if(ss){open();input.value=ss;render(build(ss));}}catch(e){}
+})();
+</script>
+</body>
+</html>
