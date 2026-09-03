@@ -19,16 +19,16 @@
 <script>document.documentElement.classList.add('js')</script>
 <style>
   :root{
-    --paper:#f0efe9;
-    --paper-2:#e9e8e0;
-    --ink:#0d0d0b;
-    --ink-2:#3c3b34;
-    --muted:#71705f;
-    --hair:#dcdad0;
-    --hair-2:#c8c6b8;
-    --blue:#0d0d0b;
-    --blue-deep:#000000;
-    --navy:#0d0d0b;
+    --paper:#04101d;
+    --paper-2:#0a2036;
+    --ink:#eef4f8;
+    --ink-2:#c3d2e0;
+    --muted:#8da4bf;
+    --hair:rgba(255,255,255,.08);
+    --hair-2:rgba(255,255,255,.16);
+    --blue:#2fd0c7;
+    --blue-deep:#1c8f88;
+    --navy:#04101d;
     --nav-navy:#06182e;
     --mod-navy:#04101d;
     --mod-navy-2:#071a30;
@@ -40,8 +40,8 @@
     --mono:"SF Mono",ui-monospace,"Cascadia Mono",Consolas,"Roboto Mono",monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth;background:var(--paper);color-scheme:light;-webkit-text-size-adjust:100%}
-  html,body{background-color:#f0efe9}
+  html{scroll-behavior:smooth;background:var(--paper);color-scheme:dark;-webkit-text-size-adjust:100%}
+  html,body{background-color:#04101d}
   @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   section[id]{scroll-margin-top:88px}
   body{
@@ -425,6 +425,22 @@
     .hero-ctas .btn{width:100%;justify-content:center}
     .xp-rec{padding:10px 12px;font-size:12.5px}
   }
+  /* ===== enhancements mirrored from Critical Infrastructure ===== */
+  /* 1 · ambient hero backdrop */
+  .hero{overflow:hidden}
+  .hero>.wrap{position:relative;z-index:1}
+  .hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(52% 62% at 30% 24%,rgba(37,96,140,.30),transparent 60%),radial-gradient(46% 56% at 78% 60%,rgba(47,208,199,.11),transparent 62%),radial-gradient(42% 50% at 60% 12%,rgba(59,130,246,.10),transparent 60%);animation:gcHeroDrift 20s ease-in-out infinite}
+  .hero::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:66px 66px;-webkit-mask-image:radial-gradient(72% 64% at 50% 34%,#000,transparent 78%);mask-image:radial-gradient(72% 64% at 50% 34%,#000,transparent 78%)}
+  @keyframes gcHeroDrift{0%{transform:translate(-2%,-1%) scale(1.05)}33%{transform:translate(2%,2%) scale(1.12)}66%{transform:translate(1%,-2%) scale(1.08)}100%{transform:translate(-2%,-1%) scale(1.05)}}
+  @media(prefers-reduced-motion:reduce){.hero::before{animation:none}}
+  /* 2 · card hover glow — standards tiles (mirror CI sector tiles) */
+  .std{transition:background .2s,border-color .25s,box-shadow .3s}
+  .std:hover,.std:focus-within{border-color:rgba(47,208,199,.5);box-shadow:0 0 0 1px rgba(47,208,199,.4),0 0 34px rgba(47,208,199,.14);position:relative;z-index:2}
+  /* 3 · branded motif band */
+  .gc-motif{position:relative;height:clamp(210px,25vw,310px);overflow:hidden;background:radial-gradient(120% 150% at 50% -20%,#0a2338,#04101d 72%);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+  .gc-motif svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .gc-motif-cap{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:20px;padding:16px clamp(20px,5vw,52px);font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .gc-motif-cap b{color:var(--cyan);font-weight:600}
 </style>
 </head>
 <body id="top">
@@ -502,22 +518,33 @@
 </section>
 
 <!-- ================= MEDIA BAND ================= -->
-<section class="media noimg" aria-label="GLOBALCAP" data-await="Awaiting imagery — save globalcap.jpg beside this page">
-  <img src="globalcap.jpg" alt="Partner-nation capacity building" onerror="this.closest('.media').classList.add('noimg')" onload="this.closest('.media').classList.remove('noimg')">
-  <span class="tick tl" aria-hidden="true"></span><span class="tick tr" aria-hidden="true"></span>
-  <span class="tick bl" aria-hidden="true"></span><span class="tick br" aria-hidden="true"></span>
-  <div class="media-cap">
-    <span>DoS GLOBALCAP IDIQ</span>
-    <span>AF/RPS · PM/GPI · PM/SA</span>
-    <span>PKO · ESF funded</span>
-  </div>
+<section class="gc-motif" aria-label="Partner-nation capacity network">
+  <svg viewBox="0 0 1440 280" preserveAspectRatio="xMidYMid slice" role="img" aria-hidden="true">
+    <defs>
+      <pattern id="gcDots" width="34" height="34" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.1" fill="rgba(255,255,255,.07)"/></pattern>
+      <filter id="gcGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <rect width="1440" height="280" fill="url(#gcDots)" opacity=".85"/>
+    <line x1="0" y1="248" x2="1440" y2="248" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+    <path id="gcP1" d="M-20,150 L160,120 L320,168 L480,108 L640,150 L800,92 L960,158 L1120,122 L1280,164 L1460,130" fill="none" stroke="rgba(47,208,199,.32)" stroke-width="1.4"/>
+    <path id="gcP2" d="M-20,214 L200,190 L400,228 L600,184 L820,222 L1040,190 L1260,226 L1460,198" fill="none" stroke="rgba(120,180,220,.22)" stroke-width="1.2"/>
+    <g fill="rgba(47,208,199,.22)"><rect x="120" y="200" width="1.4" height="48"/><rect x="300" y="176" width="1.4" height="72"/><rect x="470" y="210" width="1.4" height="38"/><rect x="660" y="168" width="1.4" height="80"/><rect x="840" y="204" width="1.4" height="44"/><rect x="1010" y="182" width="1.4" height="66"/><rect x="1200" y="196" width="1.4" height="52"/><rect x="1360" y="176" width="1.4" height="72"/></g>
+    <g fill="#07182b" stroke="rgba(47,208,199,.55)" stroke-width="1.2">
+      <circle cx="160" cy="120" r="3.4"/><circle cx="320" cy="168" r="3.4"/><circle cx="480" cy="108" r="3.4"/><circle cx="640" cy="150" r="3.4"/><circle cx="800" cy="92" r="5.2"/><circle cx="960" cy="158" r="3.4"/><circle cx="1120" cy="122" r="3.4"/><circle cx="1280" cy="164" r="3.4"/>
+      <circle cx="200" cy="190" r="3"/><circle cx="400" cy="228" r="3"/><circle cx="600" cy="184" r="5.2"/><circle cx="820" cy="222" r="3"/><circle cx="1040" cy="190" r="3"/><circle cx="1260" cy="226" r="3"/>
+    </g>
+    <circle r="3.6" fill="#7ff3ea" filter="url(#gcGlow)"><animateMotion dur="7s" repeatCount="indefinite"><mpath href="#gcP1"/></animateMotion></circle>
+    <circle r="2.9" fill="#8ff6ec" filter="url(#gcGlow)"><animateMotion dur="9s" begin="-3s" repeatCount="indefinite"><mpath href="#gcP2"/></animateMotion></circle>
+    <circle r="2.7" fill="#7ff3ea" filter="url(#gcGlow)"><animateMotion dur="8s" begin="-5s" repeatCount="indefinite"><mpath href="#gcP1"/></animateMotion></circle>
+  </svg>
+  <div class="gc-motif-cap"><span><b>5 activities</b> · one delivery model</span><span>Train · Equip · Build · Sustain</span></div>
 </section>
 
 <!-- ================= THE VEHICLE ================= -->
 <section class="sec" id="vehicle">
   <div class="wrap">
-    <p class="kicker"><span class="idx">01</span> The vehicle</p>
-    <h2 class="rv">One IDIQ. Five ways to build partner capacity.</h2>
+    <p class="kicker rv"><span class="idx">01</span> The vehicle</p>
+    <h2 class="rv"><span class="lr"><span>One IDIQ. Five ways to build partner capacity.</span></span></h2>
     <p class="sub rv">GLOBALCAP supports the Bureau of African Affairs (AF/RPS) and the Bureau of Political-Military Affairs (PM/GPI, PM/SA) as they strengthen partner nations' security institutions and operational capability. Task orders draw on <strong>five overarching capability areas defined in Section C of the contract</strong> — ordered separately or together, wherever the mission goes.</p>
     <div class="xp-recs rv" role="table" aria-label="Contract facts">
       <div class="xp-rec" role="row"><span class="rid">CLIENT</span><span class="rname"><b>U.S. Department of State</b> — Bureau of African Affairs (AF/RPS) · Bureau of Political-Military Affairs (PM/GPI · PM/SA)</span><span class="rval">DoS</span><span class="rst on">Federal</span></div>
@@ -751,8 +778,8 @@
 <!-- ================= STANDARDS ================= -->
 <section class="sec sec-standards" id="standards">
   <div class="wrap">
-    <p class="kicker"><span class="idx">03</span> The standard</p>
-    <h2 class="rv">Held to the numbers. Built for them.</h2>
+    <p class="kicker rv"><span class="idx">03</span> The standard</p>
+    <h2 class="rv"><span class="lr"><span>Held to the numbers. Built for them.</span></span></h2>
     <p class="sub rv">Section C.5 attaches performance standards and Department monitoring to every task order. <strong>These aren't aspirations — they're the contract.</strong> RMGS runs its quality system against them from mobilization to closeout.</p>
     <div class="std-grid rv">
       <div class="std">
@@ -805,8 +832,8 @@
 <!-- ================= WHY RMGS ================= -->
 <section class="sec" id="why">
   <div class="wrap">
-    <p class="kicker"><span class="idx">04</span> Why RMGS</p>
-    <h2 class="rv">Already inside the mission.</h2>
+    <p class="kicker rv"><span class="idx">04</span> Why RMGS</p>
+    <h2 class="rv"><span class="lr"><span>Already inside the mission.</span></span></h2>
     <p class="sub rv">GLOBALCAP asks for organizations with <strong>extensive overseas experience implementing foreign-assistance-funded projects</strong>. That's not a qualification RMGS argues — it's the record.</p>
     <div class="deliver-grid">
       <div class="del rv">
@@ -854,8 +881,8 @@
   <div class="wrap">
     <div class="bridge-inner">
       <div>
-        <p class="kicker"><span class="idx">05</span> Partner</p>
-        <h2 class="rv">Put GLOBALCAP to work.</h2>
+        <p class="kicker rv"><span class="idx">05</span> Partner</p>
+        <h2 class="rv"><span class="lr"><span>Put GLOBALCAP to work.</span></span></h2>
         <p class="sub rv" style="margin-bottom:34px">Program offices scoping a task order, teammates with niche capability, and partner-nation stakeholders — <strong>the fastest path is a conversation.</strong></p>
         <div class="hero-ctas" style="justify-content:flex-start">
           <a class="btn btn-primary" href="index.html#contact">Partner with us</a>
@@ -985,6 +1012,24 @@
       scope.querySelectorAll('.panel').forEach(pan=>pan.classList.toggle('on',pan.id===b.dataset.p));
     }));
   });
+</script>
+<script>
+(function(){
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  var CH='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/#%<>=';
+  function scramble(el){
+    var text=el.getAttribute('data-t'); if(text==null){text=el.textContent;el.setAttribute('data-t',text);}
+    var q=text.split('').map(function(c,i){return {c:c,end:Math.floor(5+i*0.6+Math.random()*9)};});
+    var f=0;
+    (function tick(){
+      var out='',d=0,k;
+      for(k=0;k<q.length;k++){var o=q[k]; if(o.c===' '){out+=' ';d++;} else if(f>=o.end){out+=o.c;d++;} else out+=CH.charAt(Math.random()*CH.length|0);}
+      el.textContent=out; if(d===q.length)return; f++; setTimeout(tick,28);
+    })();
+  }
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting&&!e.target.__gcScr){ e.target.__gcScr=1; scramble(e.target);} });},{threshold:.6});
+  document.querySelectorAll('.sec h2 .lr>span').forEach(function(el){io.observe(el);});
+})();
 </script>
 </body>
 </html>
