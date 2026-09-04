@@ -408,7 +408,7 @@ input:focus,select:focus{border-color:var(--accent)}
 .opp-flash{box-shadow:0 0 0 2px var(--accent),0 0 34px rgba(47,208,199,.45)}
 @media(max-width:700px){.opp-grid{grid-template-columns:1fr}}
 
-/* ══ INTEL BRIEF PANEL ══ */
+/* ══ OVERVIEW PANEL ══ */
 .intel-brief{display:none}
 .intel-brief.active{display:block}
 .brief-nav{display:flex;align-items:center;overflow-x:auto;margin-right:14px}
@@ -596,7 +596,7 @@ input:focus,select:focus{border-color:var(--accent)}
 <div id="tab-nav">
   <div class="brand"></div>
   <button onclick="showTab('map')"   id="tab-btn-map"   class="tab-btn active-tab">Tracker</button>
-  <button onclick="showTab('intel')" id="tab-btn-intel" class="tab-btn">Intel Briefs</button>
+  <button onclick="showTab('intel')" id="tab-btn-intel" class="tab-btn">Overview</button>
   <div style="flex:1"></div>
   <a href="logistics-capture-tool.html" target="_blank" rel="noopener" class="tab-btn tab-ext" title="Open the Logistics Capture Tool — RMGS Internal">Logistics Capture Tool ↗</a>
   <a href="stingrai.html" target="_blank" rel="noopener" class="tab-btn tab-ext" title="Open the STINGRAI capability page">STINGRAI ↗</a>
@@ -608,7 +608,7 @@ input:focus,select:focus{border-color:var(--accent)}
   <a class="nav-gcc nav-tab" href="#centcom"   style="--tab-color:#f0a830">CENTCOM</a>
   <a class="nav-gcc nav-tab" href="#indopacom" style="--tab-color:#a07cf4">INDOPACOM</a>
   <a class="nav-gcc nav-tab" href="#africom"   style="--tab-color:#f05a5a">AFRICOM</a>
-  <span class="gcc-menu"><a class="nav-gcc nav-tab" href="#southcom"  style="--tab-color:#2eccd6">SOUTHCOM</a><div class="gcc-drop" role="menu" aria-label="SOUTHCOM resources"><a href="#southcom" class="gcc-drop__item" role="menuitem" onclick="var t=document.querySelector('.nav-gcc[href=\'#southcom\']');if(t)t.click();return false;">SOUTHCOM Intel Brief</a><a href="southcom-navigator.html" class="gcc-drop__item" role="menuitem">SOUTHCOM Services &amp; Technologies &rarr;</a><a href="csuas-framework.html" class="gcc-drop__item" role="menuitem">C-UAS Considerations &rarr;</a></div></span>
+  <span class="gcc-menu"><a class="nav-gcc nav-tab" href="#southcom"  style="--tab-color:#2eccd6">SOUTHCOM</a><div class="gcc-drop" role="menu" aria-label="SOUTHCOM resources"><a href="#southcom" class="gcc-drop__item" role="menuitem" onclick="var t=document.querySelector('.nav-gcc[href=\'#southcom\']');if(t)t.click();return false;">SOUTHCOM Overview</a><a href="southcom-navigator.html" class="gcc-drop__item" role="menuitem">SOUTHCOM Services &amp; Technologies &rarr;</a><a href="csuas-framework.html" class="gcc-drop__item" role="menuitem">C-UAS Considerations &rarr;</a></div></span>
   <span class="gcc-nav-meta">click a command to fly the globe · drag to rotate · scroll to zoom</span>
 </nav>
 <div class="prog-header">
@@ -3075,7 +3075,7 @@ input:focus,select:focus{border-color:var(--accent)}
 <div class="intel-brief" id="brief-ecuador">
 <div class="aor-jumpbar">
   <span class="aor-jumpbar-l">Part of the SOUTHCOM AOR</span>
-  <button class="aor-jump back" onclick="showBrief('southcom');window.scrollTo(0,0);return false;">← SOUTHCOM Intel Brief</button>
+  <button class="aor-jump back" onclick="showBrief('southcom');window.scrollTo(0,0);return false;">← SOUTHCOM Overview</button>
   <button class="aor-jump" onclick="var c=document.getElementById('ct-south-ecuador-judsec');if(c){var t=c.querySelector('.ost-tab[data-ost=overview]');if(t&&!t.classList.contains('active'))t.click();c.scrollIntoView({behavior:'smooth',block:'center'});c.classList.add('map-find-flash');setTimeout(function(){c.classList.remove('map-find-flash');},2400);}return false;">INL Opportunity · RFI001J ↓</button>
 </div>
 <!-- HERO -->
@@ -5386,7 +5386,7 @@ function showDetail(loc, mapWrap){
     loc.type==='logcap'?`<div class="det-banner det-logcap"><div class="det-banner-title">◈ LOGCAP V + WEXMAC 2.0 Dual-Vehicle</div><div class="det-banner-body">LOGCAP V standing base contract active. WEXMAC 2.0 supplements with exercise surge and short-fuse task orders.</div></div>`:
     loc.type==='new'?`<div class="det-banner det-new"><div class="det-banner-title">★ New Award — Firm &amp; Value Undisclosed</div><div class="det-banner-body">New WEXMAC 2.0 contract. Awardee and value not publicly disclosed.</div></div>`:
     loc.type==='rmgsawd'?`<div class="det-banner" style="background:rgba(47,208,199,.09);border:1px solid rgba(47,208,199,.4)">${loc.id==='stingrai'?'<div class="det-banner-title" style="color:var(--accent)">◆ Pending Award — RMGS Positioned as Subcontractor</div><div class="det-banner-body">RMGS is positioned as a mission subcontractor on the pending STINGRAI award. Prime undisclosed.</div>':'<div class="det-banner-title" style="color:var(--accent)">◆ RMGS-Performed Award — Subcontractor</div><div class="det-banner-body">RMGS performs as a mission subcontractor. Prime undisclosed.</div>'}</div>`:
-    loc.type==='rmgspursuit'?`<div class="det-banner" style="background:rgba(47,208,199,.09);border:1px solid rgba(47,208,199,.4)"><div class="det-banner-title" style="color:var(--accent)">◆ RMGS Pursuit — GovWin Tracked Opp 264927 (Pre-RFP)</div><div class="det-banner-body">DoS INL market-research RFI (Sol. RFI001J). Click the map marker for the full SOUTHCOM Intel Brief dossier.</div></div>`:'';
+    loc.type==='rmgspursuit'?`<div class="det-banner" style="background:rgba(47,208,199,.09);border:1px solid rgba(47,208,199,.4)"><div class="det-banner-title" style="color:var(--accent)">◆ RMGS Pursuit — GovWin Tracked Opp 264927 (Pre-RFP)</div><div class="det-banner-body">DoS INL market-research RFI (Sol. RFI001J). Click the map marker for the full SOUTHCOM Overview dossier.</div></div>`:'';
   const cRows=loc.contractors.map(c=>`
     <div class="det-row">
       <div class="det-cname" style="color:${c.color}">${c.name} <span style="font-family:var(--mono);font-size:11px;color:var(--muted)">[${c.type}]</span></div>
@@ -7041,7 +7041,7 @@ body.embed #panel-map{position:fixed;inset:0;width:100vw;height:100vh;padding:0;
 }catch(e){}})();
 </script>
 <script>
-/* open a specific tab via ?tab=intel (used by the Intel Briefs card) */
+/* open a specific tab via ?tab=intel (used by the Overview card) */
 (function(){try{var t=new URLSearchParams(location.search).get('tab');if(t!=='intel')return;function go(){if(typeof showTab==='function')showTab('intel');}if(document.readyState!=='loading')setTimeout(go,350);else addEventListener('load',function(){setTimeout(go,350);});}catch(e){}})();
 </script>
 <script>
