@@ -38,6 +38,7 @@
   .sp-h1{font-size:clamp(42px,7vw,88px);line-height:.98;font-weight:500;letter-spacing:-.02em}
   .sp-h1 em{font-style:normal;color:var(--dim)}
   .sp-sub{margin-top:28px;max-width:640px;color:var(--dim);font-size:16px;line-height:1.55}
+  .sp-notice{margin-top:20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;line-height:1.5;text-transform:uppercase;color:var(--warn);border:1px solid var(--line2);border-left:2px solid var(--warn);display:inline-block;width:max-content;max-width:640px;padding:8px 12px}
   .sp-cta{margin-top:44px;display:flex;gap:16px;align-items:center}
   .sp-btn{background:var(--accent);color:#000;border:none;font-family:var(--mono);font-size:12px;letter-spacing:.18em;padding:15px 26px;cursor:pointer}
   .sp-btn:hover{background:#e8ff6a}
@@ -298,6 +299,7 @@
     <div class="sp-eyebrow">C-sUAS DECISION ARCHITECTURE · SAPIENT-COMPLIANT</div>
     <div class="sp-h1" data-i18n="heroH">Single Pane of Glass.<br><em>Every sensor. Every authority.</em></div>
     <div class="sp-sub" data-i18n="heroSub">SENTINEL fuses the sensors you already own into a single operational picture — with the legal authority to act pre-loaded for this operator, this location, this moment. Enter the live view, then tap a role to run its 5-minute decision drill.</div>
+    <div class="sp-notice" data-i18n="notionalBanner">NOTIONAL SCENARIO — FOR DEMONSTRATION ONLY. LOCATIONS, UNITS, AND TRACKS ARE FICTITIOUS.</div>
     <div class="sp-cta">
       <button class="sp-btn" onclick="enter()" data-i18n="ctaEnter">ENTER OPERATIONAL VIEW ↗</button>
       <button class="sp-ghost" onclick="toggleLang()" id="splashLang">ESPAÑOL</button>
@@ -315,7 +317,7 @@
 <div id="app">
   <header>
     <a class="h-brand" href="index.html" title="Back to RMGS">RMGS<span>◆</span>SENTINEL</a>
-    <div class="h-sector"><span class="live-dot"></span><span data-i18n="hdrSector">C-sUAS COP · SOTO CANO AB · JTF-BRAVO · LIVE</span></div>
+    <div class="h-sector"><span class="live-dot"></span><span data-i18n="hdrSector">C-sUAS COP · FORWARD OPERATING BASE · LIVE</span></div>
     <div class="h-spacer"></div>
     <div class="h-roles">
       <div class="role" data-role="strategic"><span data-i18n="roleS">STRATEGIC</span><small data-i18n="roleSsub">COCOM · DRILL</small></div>
@@ -345,11 +347,11 @@
 
     <div id="center">
       <canvas id="map"></canvas>
-      <div class="map-hud"><b class="chan" data-chan="grid" data-i18n="hudGrid">SOTO CANO AB · COMAYAGUA VALLEY · 16N</b><br><span class="chan" data-chan="acoustic">ACOUSTIC ×2</span> · <span class="chan" data-chan="rf">RF ×4</span> · <span class="chan" data-chan="eoir">EO/IR ×3</span> · <span class="chan" data-chan="gpsspoof">GPS-SPOOF ×1</span></div>
+      <div class="map-hud"><b class="chan" data-chan="grid" data-i18n="hudGrid">FORWARD OPERATING BASE · 16N</b><br><span class="chan" data-chan="acoustic">ACOUSTIC ×2</span> · <span class="chan" data-chan="rf">RF ×4</span> · <span class="chan" data-chan="eoir">EO/IR ×3</span> · <span class="chan" data-chan="gpsspoof">GPS-SPOOF ×1</span></div>
       <div class="map-legend">
         <span class="chan" data-chan="legTrack"><i class="lg-t">◆</i> <span data-i18n="lgTrack">SWARM CONTACT</span></span>&nbsp;&nbsp;
         <span class="chan" data-chan="legLaunch"><i class="lg-l">▲</i> <span data-i18n="lgLaunch">LAUNCH VECTOR (W)</span></span>&nbsp;&nbsp;
-        <span class="chan" data-chan="legPerim"><i class="lg-p">◯</i> <span data-i18n="lgPerim">JTF-BRAVO PERIMETER</span></span>&nbsp;&nbsp;
+        <span class="chan" data-chan="legPerim"><i class="lg-p">◯</i> <span data-i18n="lgPerim">BASE PERIMETER</span></span>&nbsp;&nbsp;
         <span class="chan" data-chan="infra"><i style="color:#9a86e6">▣</i> <span data-i18n="lgInfra">CRITICAL INFRA</span></span>&nbsp;&nbsp;
         <span class="chan" data-chan="predbeam"><i style="color:#9a86e6">◈</i> <span data-i18n="lgBeam">PREDICTION BEAM · NOTIONAL</span></span>
       </div>
@@ -361,7 +363,7 @@
   <footer>
     <span class="chan" data-chan="faa"><i class="g">● FAA/HN <span data-i18n="ftClear">CLEAR</span></i></span>
     <span class="chan" data-chan="spectrum"><i class="g">● <span data-i18n="ftSpectrum">SPECTRUM CLEAR</span></i></span>
-    <span class="chan" data-chan="coord"><i class="y">◐ <span data-i18n="ftCoord">HONDURAN COORD PENDING</span></i></span>
+    <span class="chan" data-chan="coord"><i class="y">◐ <span data-i18n="ftCoord">HOST-NATION COORD PENDING</span></i></span>
     <span class="chan" data-chan="coverage"><i class="g">● <span data-i18n="ftCoverage">COVERAGE FULL</span></i></span>
     <span class="chan" data-chan="voice"><i class="a">● <span data-i18n="ftVoice">VOICE ACTIVE</span></i></span>
     <span class="chan" data-chan="sapient"><i>SAPIENT v7 · 10/10 <span data-i18n="ftNodes">NODES</span></i></span>
@@ -377,12 +379,13 @@ const STR={
   heroH:'Single Pane of Glass.<br><em>Every sensor. Every authority.</em>',
   heroSub:'SENTINEL fuses the sensors you already own into a single operational picture — with the legal authority to act pre-loaded for this operator, this location, this moment. Enter the live view, then tap a role to run its 5-minute decision drill.',
   ctaEnter:'ENTER OPERATIONAL VIEW ↗', nDetect:'Detect',nDecide:'Decide',nReport:'Report',nDoctrine:'Train',
+  notionalBanner:'NOTIONAL SCENARIO — FOR DEMONSTRATION ONLY. LOCATIONS, UNITS, AND TRACKS ARE FICTITIOUS.',
   stLayers:'FRAMEWORK LAYERS FUSED',stLevels:'RESPONSE LEVELS · LEGAL-GATED',stPaths:'ROLE-BASED DECISION DRILLS',stReport:'REPORTS AUTO-GENERATED',
-  hdrSector:'C-sUAS COP · SOTO CANO AB · JTF-BRAVO · LIVE', roleS:'STRATEGIC',roleO:'OPERATIONAL',roleT:'TACTICAL',
+  hdrSector:'C-sUAS COP · FORWARD OPERATING BASE · LIVE', roleS:'STRATEGIC',roleO:'OPERATIONAL',roleT:'TACTICAL',
   roleSsub:'COCOM · DRILL',roleOsub:'SCO CHIEF · DRILL',roleTsub:'OPERATOR · DRILL',
-  secTracks:'ACTIVE TRACKS',secLog:'EVENT LOG · SAPIENT FEED', hudGrid:'SOTO CANO AB · COMAYAGUA VALLEY · 16N',
-  lgTrack:'SWARM CONTACT',lgLaunch:'LAUNCH VECTOR (W)',lgPerim:'JTF-BRAVO PERIMETER',lgInfra:'CRITICAL INFRA',lgBeam:'PREDICTION BEAM · NOTIONAL',
-  ftClear:'CLEAR',ftSpectrum:'SPECTRUM CLEAR',ftCoord:'HONDURAN COORD PENDING',ftCoverage:'COVERAGE FULL',ftVoice:'VOICE ACTIVE',ftNodes:'NODES',
+  secTracks:'ACTIVE TRACKS',secLog:'EVENT LOG · SAPIENT FEED', hudGrid:'FORWARD OPERATING BASE · 16N',
+  lgTrack:'SWARM CONTACT',lgLaunch:'LAUNCH VECTOR (W)',lgPerim:'BASE PERIMETER',lgInfra:'CRITICAL INFRA',lgBeam:'PREDICTION BEAM · NOTIONAL',
+  ftClear:'CLEAR',ftSpectrum:'SPECTRUM CLEAR',ftCoord:'HOST-NATION COORD PENDING',ftCoverage:'COVERAGE FULL',ftVoice:'VOICE ACTIVE',ftNodes:'NODES',
   yourAuth:'YOUR AUTHORITY',credible:'CREDIBLE THREAT',met:'MET',notMet:'NOT MET',pending:'PENDING',
   autoRep:'48-HR REPORT AUTO-GENERATES ON ACTION',
   respSpec:'RESPONSE SPECTRUM · CURRENT LEVEL',
@@ -401,12 +404,13 @@ const STR={
   heroH:'Single Pane of Glass.<br><em>Cada sensor. Cada autoridad.</em>',
   heroSub:'SENTINEL fusiona los sensores que ya posee en un solo cuadro operativo — con la autoridad legal para actuar precargada para este operador, esta ubicación, este momento. Entre a la vista en vivo y toque un rol para iniciar su ejercicio de decisión de 5 minutos.',
   ctaEnter:'ENTRAR A LA VISTA OPERACIONAL ↗', nDetect:'Detectar',nDecide:'Decidir',nReport:'Informar',nDoctrine:'Entrenar',
+  notionalBanner:'ESCENARIO FICTICIO — SOLO PARA DEMOSTRACIÓN. UBICACIONES, UNIDADES Y TRAZAS SON FICTICIAS.',
   stLayers:'CAPAS DEL MARCO FUSIONADAS',stLevels:'NIVELES DE RESPUESTA · CON CONTROL LEGAL',stPaths:'EJERCICIOS DE DECISIÓN POR ROL',stReport:'INFORMES AUTOGENERADOS',
-  hdrSector:'COP C-sUAS · BASE SOTO CANO · JTF-BRAVO · EN VIVO', roleS:'ESTRATÉGICO',roleO:'OPERACIONAL',roleT:'TÁCTICO',
+  hdrSector:'COP C-sUAS · BASE DE OPERACIONES AVANZADA · EN VIVO', roleS:'ESTRATÉGICO',roleO:'OPERACIONAL',roleT:'TÁCTICO',
   roleSsub:'COCOM · EJERC.',roleOsub:'JEFE SCO · EJERC.',roleTsub:'OPERADOR · EJERC.',
-  secTracks:'PISTAS ACTIVAS',secLog:'REGISTRO DE EVENTOS · FLUJO SAPIENT', hudGrid:'BASE SOTO CANO · VALLE DE COMAYAGUA · 16N',
-  lgTrack:'CONTACTO DE ENJAMBRE',lgLaunch:'VECTOR DE LANZAMIENTO (O)',lgPerim:'PERÍMETRO JTF-BRAVO',lgInfra:'INFRAESTRUCTURA CRÍTICA',lgBeam:'HAZ DE PREDICCIÓN · NOCIONAL',
-  ftClear:'LIBRE',ftSpectrum:'ESPECTRO LIBRE',ftCoord:'COORD. HONDUREÑA PENDIENTE',ftCoverage:'COBERTURA COMPLETA',ftVoice:'VOZ ACTIVA',ftNodes:'NODOS',
+  secTracks:'PISTAS ACTIVAS',secLog:'REGISTRO DE EVENTOS · FLUJO SAPIENT', hudGrid:'BASE DE OPERACIONES AVANZADA · 16N',
+  lgTrack:'CONTACTO DE ENJAMBRE',lgLaunch:'VECTOR DE LANZAMIENTO (O)',lgPerim:'PERÍMETRO DE LA BASE',lgInfra:'INFRAESTRUCTURA CRÍTICA',lgBeam:'HAZ DE PREDICCIÓN · NOCIONAL',
+  ftClear:'LIBRE',ftSpectrum:'ESPECTRO LIBRE',ftCoord:'COORD. DE LA NACIÓN ANFITRIONA PENDIENTE',ftCoverage:'COBERTURA COMPLETA',ftVoice:'VOZ ACTIVA',ftNodes:'NODOS',
   yourAuth:'SU AUTORIDAD',credible:'AMENAZA CREÍBLE',met:'CUMPLIDA',notMet:'NO CUMPLIDA',pending:'PENDIENTE',
   autoRep:'INFORME 48 HRS SE GENERA AUTOMÁTICAMENTE AL ACTUAR',
   respSpec:'ESPECTRO DE RESPUESTA · NIVEL ACTUAL',
@@ -426,32 +430,32 @@ let lang='en';
 const t=k=>STR[lang][k];
 const L=o=>o?(o[lang]||o.en):'';
 
-/* ================= swarm track data (Soto Cano) ================= */
+/* ================= swarm track data (notional) ================= */
 const tracks=[
  {id:'SWARM-A',lvl:3,cls:{en:'sUAS ×4 · quad · <400ft',es:'sUAS ×4 · quad · <400ft'},lane:.30,startX:.15,stagger:0,kind:'unknown',n:4,attacker:true,targetKey:'infra_power',
   behavior:{en:'Lead element — mountain pass, W→E toward field',es:'Elemento líder — paso de montaña, O→E hacia la base'},
   detail:{en:'RF-silent · terrain-masked · radar intermittent',es:'Silencioso RF · enmascarado por terreno · radar intermitente'},
   launch:{en:'West ridgeline — vector 088°',es:'Cresta oeste — vector 088°'},
   operator:{en:'Unknown — autonomous route',es:'Desconocido — ruta autónoma'},
-  affil:'TCO', airspace:{en:'Honduran',es:'Hondureño'}, confB:.69,confA:.58},
+  affil:'TCO', airspace:{en:'host-nation',es:'de la nación anfitriona'}, confB:.69,confA:.58},
  {id:'SWARM-B',lvl:3,cls:{en:'sUAS ×3 · FPV · <400ft',es:'sUAS ×3 · FPV · <400ft'},lane:.46,startX:.06,stagger:.10,kind:'unknown',n:3,attacker:true,targetKey:'infra_water',
   behavior:{en:'Trailing element — staggered on lead',es:'Elemento de cola — escalonado tras el líder'},
   detail:{en:'Acoustic-first · low & slow under canopy',es:'Acústico primero · bajo y lento bajo el dosel'},
   launch:{en:'West ridgeline — vector 091°',es:'Cresta oeste — vector 091°'},
   operator:{en:'Unknown',es:'Desconocido'},
-  affil:{en:'Unknown',es:'Desconocida'}, airspace:{en:'Honduran',es:'Hondureño'}, confB:.61,confA:.44},
+  affil:{en:'Unknown',es:'Desconocida'}, airspace:{en:'host-nation',es:'de la nación anfitriona'}, confB:.61,confA:.44},
  {id:'CONTACT-C',lvl:4,cls:{en:'sUAS ×2 · probe',es:'sUAS ×2 · sondeo'},lane:.60,startX:.11,stagger:.05,kind:'hostile',n:2,attacker:true,targetKey:'infra_fuel',
   behavior:{en:'Flanking probe — response-pattern mapping',es:'Sondeo de flanco — mapeo de patrón de respuesta'},
   detail:{en:'Deliberate cUAS-architecture probing',es:'Sondeo deliberado de arquitectura cUAS'},
   launch:{en:'Southwest saddle — vector 072°',es:'Silla suroeste — vector 072°'},
   operator:{en:'est. co-located, dispersing',es:'est. co-ubicados, dispersándose'},
-  affil:'TCO', airspace:{en:'Honduran',es:'Hondureño'}, confB:.71,confA:.66},
+  affil:'TCO', airspace:{en:'host-nation',es:'de la nación anfitriona'}, confB:.71,confA:.66},
  {id:'TRK-D',lvl:1,cls:{en:'sUAS · commercial',es:'sUAS · comercial'},lane:.72,startX:.02,stagger:.16,kind:'civil',n:1,
   behavior:{en:'Remote-ID broadcasting — likely agricultural',es:'ID remota transmitiendo — probable agrícola'},
   detail:{en:'Compliant · registered operator contactable',es:'Conforme · operador registrado contactable'},
-  launch:{en:'Comayagua town strip',es:'Pista del pueblo de Comayagua'},
+  launch:{en:'the valley airstrip',es:'pista del pueblo del valle'},
   operator:{en:'Registered — AgroSur Ltda.',es:'Registrado — AgroSur Ltda.'},
-  affil:{en:'Civil',es:'Civil'}, airspace:{en:'Honduran',es:'Hondureño'}, confB:.95,confA:.97}
+  affil:{en:'Civil',es:'Civil'}, airspace:{en:'host-nation',es:'de la nación anfitriona'}, confB:.95,confA:.97}
 ];
 let sel=0;
 
@@ -462,13 +466,13 @@ const TRAIN={
  tactical:{
   tag:B('TACTICAL DRILL','EJERCICIO TÁCTICO'),
   color:'#5fd4e0',
-  obj:B('<b>Operator · JTF-Bravo base defense.</b> Detect, attribute and act on a below-400ft swarm inbound from the western mountains — inside legal authority, without degrading base operations.',
-        '<b>Operador · defensa de la base JTF-Bravo.</b> Detectar, atribuir y actuar sobre un enjambre por debajo de 400 ft que llega desde las montañas del oeste — dentro de la autoridad legal, sin degradar las operaciones de la base.'),
+  obj:B('<b>Operator · base defense.</b> Detect, attribute and act on a below-400ft swarm inbound from the western mountains — inside legal authority, without degrading base operations.',
+        '<b>Operador · defensa de la base.</b> Detectar, atribuir y actuar sobre un enjambre por debajo de 400 ft que llega desde las montañas del oeste — dentro de la autoridad legal, sin degradar las operaciones de la base.'),
   beats:[
    {kind:'intro',adv:.05,clock:'T+00:00',phase:B('CONTACT','CONTACTO'),
     title:B('Low, slow, and inbound','Bajo, lento y entrante'),
-    body:B('Acoustic array WEST and RF node report multiple <em>low, slow contacts</em> entering the mountain passes and tracking east toward the Soto Cano airfield. Radar is degraded by terrain. You are the tactical operator on the SENTINEL COP. Work the picture in sequence — each decision only matters if the one before it survived.<br><br><em>[Training scenario: tracks, call signs and confidence values are illustrative; capacity figures such as certification timelines are planning estimates. Named policies, authorities and locations are real.]</em>',
-           'El arreglo acústico OESTE y el nodo RF reportan múltiples <em>contactos bajos y lentos</em> entrando por los pasos de montaña y avanzando al este hacia la pista de Soto Cano. El radar está degradado por el terreno. Usted es el operador táctico en el COP SENTINEL. Trabaje el cuadro en secuencia — cada decisión solo importa si la anterior sobrevivió.<br><br><em>[Escenario de entrenamiento: las pistas, indicativos y valores de confianza son ilustrativos; las cifras de capacidad como los plazos de certificación son estimaciones de planificación. Las políticas, autoridades y ubicaciones nombradas son reales.]</em>')},
+    body:B('Acoustic array WEST and RF node report multiple <em>low, slow contacts</em> entering the mountain passes and tracking east toward the forward operating base. Radar is degraded by terrain. You are the tactical operator on the SENTINEL COP. Work the picture in sequence — each decision only matters if the one before it survived.<br><br><em>[Training scenario: tracks, call signs and confidence values are illustrative; capacity figures such as certification timelines are planning estimates. Named policies, authorities and locations are real.]</em>',
+           'El arreglo acústico OESTE y el nodo RF reportan múltiples <em>contactos bajos y lentos</em> entrando por los pasos de montaña y avanzando al este hacia la pista de la base. El radar está degradado por el terreno. Usted es el operador táctico en el COP SENTINEL. Trabaje el cuadro en secuencia — cada decisión solo importa si la anterior sobrevivió.<br><br><em>[Escenario de entrenamiento: las pistas, indicativos y valores de confianza son ilustrativos; las cifras de capacidad como los plazos de certificación son estimaciones de planificación. Las políticas, autoridades y ubicaciones nombradas son reales.]</em>')},
    {kind:'decision',adv:.20,clock:'T+00:35',phase:B('LAYER 06 · DETECTION','CAPA 06 · DETECCIÓN'),
     title:B('Build the track picture','Construir el cuadro de pistas'),
     q:B('Radar can\'t hold the swarm below the ridgeline. What do you build your track picture on?',
@@ -499,8 +503,8 @@ const TRAIN={
           B('Credible threat = attribution + intent, both documented.','Amenaza creíble = atribución + intención, ambas documentadas.')]},
    {kind:'decision',adv:.55,clock:'T+02:10',phase:B('LAYER 01 · DECONFLICTION','CAPA 01 · DESCONFLICTO'),
     title:B('Spectrum before effect','Espectro antes del efecto'),
-    q:B('Soto Cano runs 24-hour C-5 operations and JTF-Bravo aviation. Before any RF effect against the swarm?',
-        'Soto Cano opera vuelos C-5 las 24 horas y aviación de JTF-Bravo. ¿Antes de cualquier efecto RF contra el enjambre?'),
+    q:B('The forward operating base runs 24-hour C-5 operations and base aviation. Before any RF effect against the swarm?',
+        'La base de operaciones avanzada opera vuelos C-5 las 24 horas y aviación de la base. ¿Antes de cualquier efecto RF contra el enjambre?'),
     opts:[
      B('Jam the swarm immediately — speed matters','Interferir el enjambre de inmediato — la velocidad importa'),
      B('Deconflict spectrum, notify tower/aviation, request airspace restriction first','Desconflictar el espectro, notificar torre/aviación, solicitar restricción del espacio aéreo primero'),
@@ -527,8 +531,8 @@ const TRAIN={
           B('Kinetic over the perimeter risks collateral and sets precedent.','Lo cinético sobre el perímetro arriesga daño colateral y sienta precedente.')]},
    {kind:'decision',adv:.90,clock:'T+04:00',phase:B('LAYER 08 · AUTHORITY GATE','CAPA 08 · CONTROL DE AUTORIDAD'),
     title:B('Authority pending, swarm inbound','Autoridad pendiente, enjambre entrante'),
-    q:B('Soft-defeat authority is pending Honduran coordination. Lead element is 90 seconds from the perimeter. Your move now?',
-        'La autoridad de derrota suave está pendiente de coordinación hondureña. El elemento líder está a 90 segundos del perímetro. ¿Su acción ahora?'),
+    q:B('Soft-defeat authority is pending host-nation coordination. Lead element is 90 seconds from the perimeter. Your move now?',
+        'La autoridad de derrota suave está pendiente de coordinación de la nación anfitriona. El elemento líder está a 90 segundos del perímetro. ¿Su acción ahora?'),
     opts:[
      B('Exceed authority "just this once" and defeat now','Exceder la autoridad "solo por esta vez" y derrotar ahora'),
      B('Shelter-in-place + perimeter lockdown + hold track while authority resolves','Refugio en el lugar + cierre de perímetro + mantener la pista mientras se resuelve la autoridad'),
@@ -548,31 +552,31 @@ const TRAIN={
  operational:{
   tag:B('OPERATIONAL DRILL','EJERCICIO OPERACIONAL'),
   color:'#d7f843',
-  obj:B('<b>SCO Chief · JTF-Bravo J3.</b> Turn a tactical detection into a lawful, deconflicted, approvable response — protecting the host-nation relationship and owning the coordination seam.',
-        '<b>Jefe SCO · J3 de JTF-Bravo.</b> Convertir una detección táctica en una respuesta legal, desconflictada y aprobable — protegiendo la relación con la nación anfitriona y apropiándose de la brecha de coordinación.'),
+  obj:B('<b>SCO Chief · the base J3.</b> Turn a tactical detection into a lawful, deconflicted, approvable response — protecting the host-nation relationship and owning the coordination seam.',
+        '<b>Jefe SCO · el J3 de la base.</b> Convertir una detección táctica en una respuesta legal, desconflictada y aprobable — protegiendo la relación con la nación anfitriona y apropiándose de la brecha de coordinación.'),
   beats:[
    {kind:'intro',adv:.06,clock:'T+00:00',phase:B('HANDOFF','TRASPASO'),
     title:B('From detection to a decision package','De la detección a un paquete de decisión'),
-    body:B('Tactical has a below-400ft swarm inbound from the western mountains at Soto Cano. You are the operational lead. Your product is not an effector shot — it is a coordinated, approvable package that COCOM can say yes to and the host nation can live with. Sequence the coordination, don\'t assume it.<br><br><em>[Training scenario: tracks, call signs and confidence values are illustrative; capacity figures such as certification timelines are planning estimates. Named policies, authorities and locations are real.]</em>',
-           'El nivel táctico tiene un enjambre por debajo de 400 ft entrando desde las montañas del oeste en Soto Cano. Usted es el líder operacional. Su producto no es un disparo de efector — es un paquete coordinado y aprobable que el COCOM pueda aceptar y la nación anfitriona pueda tolerar. Secuencie la coordinación, no la dé por hecha.<br><br><em>[Escenario de entrenamiento: las pistas, indicativos y valores de confianza son ilustrativos; las cifras de capacidad como los plazos de certificación son estimaciones de planificación. Las políticas, autoridades y ubicaciones nombradas son reales.]</em>')},
+    body:B('Tactical has a below-400ft swarm inbound from the western mountains at the forward operating base. You are the operational lead. Your product is not an effector shot — it is a coordinated, approvable package that COCOM can say yes to and the host nation can live with. Sequence the coordination, don\'t assume it.<br><br><em>[Training scenario: tracks, call signs and confidence values are illustrative; capacity figures such as certification timelines are planning estimates. Named policies, authorities and locations are real.]</em>',
+           'El nivel táctico tiene un enjambre por debajo de 400 ft entrando desde las montañas del oeste en la base de operaciones avanzada. Usted es el líder operacional. Su producto no es un disparo de efector — es un paquete coordinado y aprobable que el COCOM pueda aceptar y la nación anfitriona pueda tolerar. Secuencie la coordinación, no la dé por hecha.<br><br><em>[Escenario de entrenamiento: las pistas, indicativos y valores de confianza son ilustrativos; las cifras de capacidad como los plazos de certificación son estimaciones de planificación. Las políticas, autoridades y ubicaciones nombradas son reales.]</em>')},
    {kind:'decision',adv:.22,clock:'T+00:40',phase:B('LAYER 04 · HOST NATION','CAPA 04 · NACIÓN ANFITRIONA'),
-    title:B('When do you engage Honduras?','¿Cuándo involucra a Honduras?'),
-    q:B('Soto Cano is partner-hosted under a renewable agreement, and Honduras realigned toward Beijing in 2023. When do you engage the Honduran military liaison?',
-        'Soto Cano es alojada por la nación socia bajo un acuerdo renovable, y Honduras se reorientó hacia Beijing en 2023. ¿Cuándo involucra al enlace militar hondureño?'),
+    title:B('When do you engage the host nation?','¿Cuándo involucra a la nación anfitriona?'),
+    q:B('The forward operating base is partner-hosted under a renewable agreement, and the host nation realigned toward Beijing in 2023. When do you engage the host-nation military liaison?',
+        'La base de operaciones avanzada es alojada por la nación socia bajo un acuerdo renovable, y la nación anfitriona se reorientó hacia Beijing en 2023. ¿Cuándo involucra al enlace militar de la nación anfitriona?'),
     opts:[
      B('After the engagement, to avoid slowing the response','Después de la acción, para no frenar la respuesta'),
      B('Now — run host-nation coordination in parallel with planning','Ahora — coordinar con la nación anfitriona en paralelo a la planificación'),
      B('Skip it — it is a U.S.-operated base','Omitirlo — es una base operada por EE. UU.')],
     rec:1,
-    feedback:B('Run host-nation coordination in parallel, never in series — serial execution adds 30–90 days and is the most common coordination failure in this theater. Any effect that touches sovereign airspace or spectrum implicates Honduran sovereignty, and the relationship is a strategic asset in a contested hemisphere. Late notification is how a base-defense action becomes a diplomatic incident.',
-               'Coordine con la nación anfitriona en paralelo, nunca en serie — la ejecución en serie añade 30–90 días y es el fallo de coordinación más común en este teatro. Cualquier efecto que toque el espacio aéreo o el espectro soberano implica la soberanía hondureña, y la relación es un activo estratégico en un hemisferio disputado. La notificación tardía es cómo una acción de defensa de base se convierte en un incidente diplomático.'),
+    feedback:B('Run host-nation coordination in parallel, never in series — serial execution adds 30–90 days and is the most common coordination failure in this theater. Any effect that touches sovereign airspace or spectrum implicates host-nation sovereignty, and the relationship is a strategic asset in a contested hemisphere. Late notification is how a base-defense action becomes a diplomatic incident.',
+               'Coordine con la nación anfitriona en paralelo, nunca en serie — la ejecución en serie añade 30–90 días y es el fallo de coordinación más común en este teatro. Cualquier efecto que toque el espacio aéreo o el espectro soberano implica la soberanía de la nación anfitriona, y la relación es un activo estratégico en un hemisferio disputado. La notificación tardía es cómo una acción de defensa de base se convierte en un incidente diplomático.'),
     cons:[B('Parallel, not serial — serial coordination adds 30–90 days.','Paralela, no en serie — la coordinación en serie añade 30–90 días.'),
           B('Any cross-boundary spectrum effect implicates host-nation sovereignty.','Cualquier efecto de espectro transfronterizo implica la soberanía anfitriona.'),
           B('The partner relationship is a strategic asset — protect it early.','La relación con el socio es un activo estratégico — protéjala temprano.')]},
    {kind:'decision',adv:.40,clock:'T+01:30',phase:B('LAYER 01 · OWN THE SEAM','CAPA 01 · APROPIARSE DE LA BRECHA'),
     title:B('Who owns deconfliction?','¿Quién posee el desconflicto?'),
-    q:B('The 612th Air Base Squadron runs the runway, JTF-Bravo runs aviation, and SOF elements operate through here. Who owns deconfliction?',
-        'El 612.º Escuadrón de Base Aérea opera la pista, JTF-Bravo opera la aviación y elementos de SOF operan a través de aquí. ¿Quién posee el desconflicto?'),
+    q:B('The 612th Air Base Squadron runs the runway, base aviation runs the flightline, and SOF elements operate through here. Who owns deconfliction?',
+        'El 612.º Escuadrón de Base Aérea opera la pista, la base opera la aviación y elementos de SOF operan a través de aquí. ¿Quién posee el desconflicto?'),
     opts:[
      B('Each unit self-deconflicts on its own net','Cada unidad se desconflicta en su propia red'),
      B('Stand up one deconfliction picture across ABS, aviation and SOF at the data layer','Establecer un solo cuadro de desconflicto entre ABS, aviación y SOF a nivel de datos'),
@@ -585,8 +589,8 @@ const TRAIN={
           B('One deconfliction authority across runway, aviation and SOF.','Una sola autoridad de desconflicto entre pista, aviación y SOF.')]},
    {kind:'decision',adv:.58,clock:'T+02:25',phase:B('LAYER 13 · COUNTRY TEAM','CAPA 13 · EQUIPO PAÍS'),
     title:B('Surface the embassy equities','Sacar a la luz los intereses de la embajada'),
-    q:B('Before any mitigation over Honduran soil, which equities must you surface?',
-        'Antes de cualquier mitigación sobre suelo hondureño, ¿qué intereses debe sacar a la luz?'),
+    q:B('Before any mitigation over host-nation soil, which equities must you surface?',
+        'Antes de cualquier mitigación sobre suelo de la nación anfitriona, ¿qué intereses debe sacar a la luz?'),
     opts:[
      B('None — this is a tactical base-defense matter','Ninguno — es un asunto táctico de defensa de base'),
      B('Notify the country team; map embassy equities; flag conflicts early','Notificar al equipo país; mapear los intereses de la embajada; señalar conflictos temprano'),
@@ -639,8 +643,8 @@ const TRAIN={
   beats:[
    {kind:'intro',adv:.08,clock:'T+00:00',phase:B('COMMANDER\'S CALL','DECISIÓN DEL COMANDANTE'),
     title:B('A no-fail hub under threat','Un centro no-fallo bajo amenaza'),
-    body:B('A below-400ft swarm is inbound on Soto Cano — SOUTHCOM\'s only enduring forward hub and the only C-5-capable airfield in the AOR. It sustains JTF-Bravo, counter-TCO aviation, and HA/DR across the hemisphere. The operational team has a package ready and needs your decision. You own the political-military risk.<br><br><em>[Training scenario: tracks, call signs and confidence values are illustrative; capacity figures such as certification timelines are planning estimates. Named policies, authorities and locations are real.]</em>',
-           'Un enjambre por debajo de 400 ft se aproxima a Soto Cano — el único centro avanzado permanente del SOUTHCOM y la única pista con capacidad C-5 en el AOR. Sostiene a JTF-Bravo, la aviación contra las TCO y la asistencia humanitaria/respuesta a desastres en el hemisferio. El equipo operacional tiene un paquete listo y necesita su decisión. Usted posee el riesgo político-militar.<br><br><em>[Escenario de entrenamiento: las pistas, indicativos y valores de confianza son ilustrativos; las cifras de capacidad como los plazos de certificación son estimaciones de planificación. Las políticas, autoridades y ubicaciones nombradas son reales.]</em>')},
+    body:B('A below-400ft swarm is inbound on the forward operating base — SOUTHCOM\'s only enduring forward hub and the only C-5-capable airfield in the AOR. It sustains base aviation, counter-TCO aviation, and HA/DR across the hemisphere. The operational team has a package ready and needs your decision. You own the political-military risk.<br><br><em>[Training scenario: tracks, call signs and confidence values are illustrative; capacity figures such as certification timelines are planning estimates. Named policies, authorities and locations are real.]</em>',
+           'Un enjambre por debajo de 400 ft se aproxima a la base de operaciones avanzada — el único centro avanzado permanente del SOUTHCOM y la única pista con capacidad C-5 en el AOR. Sostiene la aviación de la base, la aviación contra las TCO y la asistencia humanitaria/respuesta a desastres en el hemisferio. El equipo operacional tiene un paquete listo y necesita su decisión. Usted posee el riesgo político-militar.<br><br><em>[Escenario de entrenamiento: las pistas, indicativos y valores de confianza son ilustrativos; las cifras de capacidad como los plazos de certificación son estimaciones de planificación. Las políticas, autoridades y ubicaciones nombradas son reales.]</em>')},
    {kind:'decision',adv:.24,clock:'T+00:45',phase:B('LAYER 17 · POL-MIL RISK','CAPA 17 · RIESGO POL-MIL'),
     title:B('Frame the risk','Enmarcar el riesgo'),
     q:B('Defending the base versus preserving the host-nation relationship — how do you frame the decision?',
@@ -648,11 +652,11 @@ const TRAIN={
     opts:[
      B('Defend the base at all costs; sovereignty is secondary','Defender la base a toda costa; la soberanía es secundaria'),
      B('Authorize proportionate base defense while directing State / host-nation engagement','Autorizar defensa de base proporcionada mientras dirige la gestión con el Estado / la nación anfitriona'),
-     B('Do nothing that could create friction with Honduras','No hacer nada que pueda crear fricción con Honduras')],
+     B('Do nothing that could create friction with the host nation','No hacer nada que pueda crear fricción con la nación anfitriona')],
     rec:1,
-    feedback:B('Soto Cano is a hard-to-replace, partner-hosted foothold in an increasingly contested hemisphere — the base cannot falter, but neither can you treat sovereignty as an afterthought. Authorize proportionate defense of the hub and simultaneously drive the diplomatic track. "At all costs" invites the sovereignty setback; "do nothing" surrenders a no-fail mission.',
-               'Soto Cano es un punto de apoyo difícil de reemplazar, alojado por el socio, en un hemisferio cada vez más disputado — la base no puede fallar, pero tampoco puede tratar la soberanía como algo secundario. Autorice la defensa proporcionada del centro y a la vez impulse la vía diplomática. "A toda costa" invita al revés de soberanía; "no hacer nada" entrega una misión no-fallo.'),
-    cons:[B('The hub is no-fail — it sustains JTF-Bravo, counter-TCO and HA/DR.','El centro es no-fallo — sostiene a JTF-Bravo, el contra-TCO y la HA/DR.'),
+    feedback:B('The forward operating base is a hard-to-replace, partner-hosted foothold in an increasingly contested hemisphere — the base cannot falter, but neither can you treat sovereignty as an afterthought. Authorize proportionate defense of the hub and simultaneously drive the diplomatic track. "At all costs" invites the sovereignty setback; "do nothing" surrenders a no-fail mission.',
+               'La base de operaciones avanzada es un punto de apoyo difícil de reemplazar, alojado por el socio, en un hemisferio cada vez más disputado — la base no puede fallar, pero tampoco puede tratar la soberanía como algo secundario. Autorice la defensa proporcionada del centro y a la vez impulse la vía diplomática. "A toda costa" invita al revés de soberanía; "no hacer nada" entrega una misión no-fallo.'),
+    cons:[B('The hub is no-fail — it sustains base aviation, counter-TCO and HA/DR.','El centro es no-fallo — sostiene la aviación de la base, el contra-TCO y la HA/DR.'),
           B('It is a hard-to-replace, partner-hosted foothold in a contested region.','Es un punto de apoyo difícil de reemplazar, alojado por el socio, en una región disputada.'),
           B('You own political-military risk — pair defense with diplomacy.','Usted posee el riesgo político-militar — combine defensa con diplomacia.')]},
    {kind:'decision',adv:.42,clock:'T+01:35',phase:B('LAYER 05 · RULES OF ENGAGEMENT','CAPA 05 · REGLAS DE ENFRENTAMIENTO'),
@@ -692,8 +696,8 @@ const TRAIN={
      B('Sovereignty optics, adversary observation, PRC positioning, and precedent','Óptica de soberanía, observación del adversario, posicionamiento de la RPC y precedente'),
      B('Delay the decision until a full effects study is complete','Retrasar la decisión hasta completar un estudio de efectos completo')],
     rec:1,
-    feedback:B('Every capability employment generates effects that must be surfaced before the decision, not after. The swarm is watching to map your response pattern in real time; a sovereignty misstep hands Honduras a domestic-interference narrative and accelerates PRC positioning; and whatever you do sets a hemisphere-wide precedent. Weigh them and decide — a full study you don\'t have time for is the same as doing nothing.',
-               'Cada empleo de capacidad genera efectos que deben salir a la luz antes de la decisión, no después. El enjambre observa para mapear su patrón de respuesta en tiempo real; un paso en falso de soberanía le da a Honduras una narrativa de interferencia interna y acelera el posicionamiento de la RPC; y lo que haga sienta un precedente hemisférico. Sopéselos y decida — un estudio completo para el que no tiene tiempo equivale a no hacer nada.'),
+    feedback:B('Every capability employment generates effects that must be surfaced before the decision, not after. The swarm is watching to map your response pattern in real time; a sovereignty misstep hands the host nation a domestic-interference narrative and accelerates PRC positioning; and whatever you do sets a hemisphere-wide precedent. Weigh them and decide — a full study you don\'t have time for is the same as doing nothing.',
+               'Cada empleo de capacidad genera efectos que deben salir a la luz antes de la decisión, no después. El enjambre observa para mapear su patrón de respuesta en tiempo real; un paso en falso de soberanía le da a la nación anfitriona una narrativa de interferencia interna y acelera el posicionamiento de la RPC; y lo que haga sienta un precedente hemisférico. Sopéselos y decida — un estudio completo para el que no tiene tiempo equivale a no hacer nada.'),
     cons:[B('The adversary observes and maps your response in real time.','El adversario observa y mapea su respuesta en tiempo real.'),
           B('A sovereignty misstep accelerates PRC strategic positioning.','Un paso en falso de soberanía acelera el posicionamiento estratégico de la RPC.'),
           B('Your decision sets a hemisphere-wide precedent — surface effects first.','Su decisión sienta un precedente hemisférico — saque los efectos a la luz primero.')]},
@@ -755,7 +759,7 @@ const CHAN={
   note:B('This is your most reliable sensor across terrain, which is exactly why it must be fused, not trusted alone — it only sees the spoofing technique, nothing else the swarm is doing.','Es su sensor más fiable en todo terreno, y por eso mismo debe fusionarse, no confiarse solo — solo ve la técnica de suplantación, nada más de lo que hace el enjambre.')},
  faa:{label:B('FAA / HOST-NATION AIRSPACE','ESPACIO AÉREO FAA / NACIÓN ANFITRIONA'),status:B('CLEAR','LIBRE'),cls:'g',
   rows:[
-   {k:B('Owner','Propietario'),v:B('FAA (U.S. equities) · Honduran CAA (sovereign airspace)','FAA (intereses de EE. UU.) · Autoridad de Aviación Civil hondureña (espacio soberano)')},
+   {k:B('Owner','Propietario'),v:B('FAA (U.S. equities) · host-nation CAA (sovereign airspace)','FAA (intereses de EE. UU.) · Autoridad de Aviación Civil de la nación anfitriona (espacio soberano)')},
    {k:B('Means','Significa'),v:B('No active TFR conflict; a deconfliction path is open','Sin conflicto de TFR activo; hay una vía de desconflicto abierta')},
    {k:B('Dependency','Dependencia'),v:B('Any RF/kinetic effect needs an airspace restriction requested first','Cualquier efecto RF/cinético requiere solicitar antes una restricción del espacio aéreo')},
    {k:B('Watch-out','Cuidado'),v:B('Authorization to deploy is not authority to operate the airspace','La autorización para desplegar no es autoridad para operar el espacio aéreo')}],
@@ -766,10 +770,10 @@ const CHAN={
    {k:B('Means','Significa'),v:B('No friendly emitter conflict on the candidate defeat bands','Sin conflicto de emisores amigos en las bandas de derrota candidatas')},
    {k:B('Risk','Riesgo'),v:B('A jammer can disable base comms, tower and GPS on adjacent bands','Un interferidor puede inhabilitar comunicaciones, torre y GPS en bandas adyacentes')},
    {k:B('Procurement tail','Cola de adquisición'),v:B('New spectrum-touching systems: 18–24 mo certification (planning est.)','Sistemas nuevos que tocan el espectro: 18–24 meses de certificación (estim.)')}],
-  note:B('Green here means it is technically safe to emit right now — but at Soto Cano an RF effect shares bands with 24-hour C-5 aviation, so you still deconflict with the tower before employing.','Verde aquí significa que es técnicamente seguro emitir ahora — pero en Soto Cano un efecto RF comparte bandas con la aviación C-5 de 24 horas, así que aún desconflicta con la torre antes de emplear.')},
+  note:B('Green here means it is technically safe to emit right now — but at the forward operating base an RF effect shares bands with 24-hour C-5 aviation, so you still deconflict with the tower before employing.','Verde aquí significa que es técnicamente seguro emitir ahora — pero en la base de operaciones avanzada un efecto RF comparte bandas con la aviación C-5 de 24 horas, así que aún desconflicta con la torre antes de emplear.')},
  coord:{label:B('HOST-NATION COORDINATION','COORDINACIÓN CON NACIÓN ANFITRIONA'),status:B('PENDING','PENDIENTE'),cls:'y',
   rows:[
-   {k:B('Partner','Socio'),v:B('Honduras — Soto Cano is partner-hosted under a renewable agreement','Honduras — Soto Cano es alojada por el socio bajo un acuerdo renovable')},
+   {k:B('Partner','Socio'),v:B('The host nation — the forward operating base is partner-hosted under a renewable agreement','La nación anfitriona — la base de operaciones avanzada es alojada por el socio bajo un acuerdo renovable')},
    {k:B('Status','Estado'),v:B('Liaison engaged; mitigation approval not yet granted','Enlace involucrado; aprobación de mitigación aún no otorgada')},
    {k:B('Rule','Regla'),v:B('Run in parallel, never in series — serial adds 30–90 days','Ejecutar en paralelo, nunca en serie — en serie añade 30–90 días')},
    {k:B('Stake','Riesgo'),v:B('Sovereignty; late notice turns base defense into a diplomatic incident','Soberanía; el aviso tardío convierte la defensa de base en un incidente diplomático')},
@@ -835,7 +839,7 @@ CHAN.terrain={label:B('TERRAIN · MOUNTAIN PASSES','TERRENO · PASOS DE MONTAÑA
    {k:B('Ingress','Ingreso'),v:B('Western passes are the swarm\'s low-altitude corridor, W→E into the valley','Los pasos del oeste son el corredor de baja altitud del enjambre, O→E hacia el valle')},
    {k:B('Radar','Radar'),v:B('Beaten by ground clutter below the ridgeline — a surveillance dead zone (planning est.)','Vencido por el desorden del terreno bajo la cresta — una zona muerta de vigilancia (estim.)')},
    {k:B('Best sensors','Mejores sensores'),v:B('Acoustic + elevated EO/IR + GPS-spoof carry the picture here','Acústico + EO/IR elevado + suplantación GPS sostienen el cuadro aquí')},
-   {k:B('River corridor','Corredor fluvial'),v:B('Comayagua valley floor — the low, masked approach line','Fondo del valle de Comayagua — la línea de aproximación baja y enmascarada')}],
+   {k:B('River corridor','Corredor fluvial'),v:B('the valley floor — the low, masked approach line','Fondo del valle — la línea de aproximación baja y enmascarada')}],
   note:B('The terrain is the adversary\'s ally: sub-400ft flight through these passes is deliberately chosen to defeat radar. It is why the tactical answer starts with sensor fusion, not a single feed.','El terreno es aliado del adversario: el vuelo por debajo de 400 ft por estos pasos se elige deliberadamente para vencer al radar. Por eso la respuesta táctica empieza con la fusión de sensores, no un solo flujo.')};
 Object.assign(CHAN,{
  infra:{label:B('CRITICAL INFRASTRUCTURE','INFRAESTRUCTURA CRÍTICA'),status:B('PROTECTED','PROTEGIDA'),cls:'',
@@ -896,8 +900,8 @@ lvlChan(4,'PROTECT','PROTEGER','INCIDENT CMDR','CMDTE. DE INCIDENTE','',
 lvlChan(5,'SOFT DEFEAT','DERROTA SUAVE','SAFER SKIES CERT','CERT. SAFER SKIES','y',
  [{k:B('Requires','Requiere'),v:B('Credible-threat determination + Safer Skies certification + spectrum deconfliction','Determinación de amenaza creíble + certificación Safer Skies + desconflicto de espectro')},
   {k:B('Action','Acción'),v:B('Non-kinetic: RF jam, spoof, geofence — 48-hr report auto-generates','No cinético: interferencia RF, suplantación, geocercado — informe 48 hrs autogenerado')}],
- 'The first level that touches the drone. Every prerequisite above must be green first — and over Soto Cano, host-nation coordination gates it.',
- 'El primer nivel que toca el dron. Todo requisito anterior debe estar en verde primero — y sobre Soto Cano, la coordinación anfitriona lo controla.');
+ 'The first level that touches the drone. Every prerequisite above must be green first — and over the forward operating base, host-nation coordination gates it.',
+ 'El primer nivel que toca el dron. Todo requisito anterior debe estar en verde primero — y sobre la base de operaciones avanzada, la coordinación anfitriona lo controla.');
 lvlChan(6,'HARD DEFEAT','DERROTA DURA','FED LE / MILITARY','FF.OO. FED. / MILITAR','y',
  [{k:B('Threshold','Umbral'),v:B('Imminent threat to life — the highest authority threshold','Amenaza inminente a la vida — el umbral de autoridad más alto')},
   {k:B('Action','Acción'),v:B('Kinetic / directed energy; full documentation and chain of custody automatic','Cinético / energía dirigida; documentación completa y cadena de custodia automáticas')}],
@@ -927,12 +931,12 @@ Object.assign(CHAN,{
    {k:B('Affiliation','Afiliación'),v:B('How firmly the track is tied to a specific actor / group','Qué tan firmemente la pista se vincula a un actor / grupo específico')},
    {k:B('Source','Fuente'),v:B('Computed across the fused sensor picture — not any single feed','Calculada sobre el cuadro de sensores fusionado — no un solo flujo')}],
   note:B('Credible threat is built from behavior + attribution together. Low affiliation confidence is exactly why an RF-silent lead stays at investigate, not defeat.','La amenaza creíble se construye con conducta + atribución juntas. La baja confianza de afiliación es justo por qué un líder silencioso RF permanece en investigar, no en derrota.')},
- grid:{label:B('SOTO CANO AB · JTF-BRAVO','BASE SOTO CANO · JTF-BRAVO'),status:B('HOME HUB','CENTRO PROPIO'),cls:'g',
+ grid:{label:B('FORWARD OPERATING BASE','BASE DE OPERACIONES AVANZADA'),status:B('HOME HUB','CENTRO PROPIO'),cls:'g',
   rows:[
-   {k:B('Location','Ubicación'),v:B('Comayagua valley, Honduras · grid 16N','Valle de Comayagua, Honduras · cuadrícula 16N')},
+   {k:B('Location','Ubicación'),v:B('river valley · grid 16N','valle fluvial · cuadrícula 16N')},
    {k:B('Significance','Relevancia'),v:B('Only enduring U.S. forward hub in Central America; only C-5-capable field in the AOR','Único centro avanzado permanente de EE. UU. en Centroamérica; única pista con capacidad C-5 en el AOR')},
    {k:B('Terrain','Terreno'),v:B('Mountain passes to the west — the swarm\'s <400ft ingress route','Pasos de montaña al oeste — la ruta de ingreso del enjambre por debajo de 400 ft')}],
-  note:B('The base cannot falter — it sustains JTF-Bravo, counter-TCO aviation and HA/DR. That is why a low, slow swarm through the western passes is a no-fail defense problem.','La base no puede fallar — sostiene a JTF-Bravo, la aviación contra las TCO y la HA/DR. Por eso un enjambre bajo y lento por los pasos del oeste es un problema de defensa no-fallo.')},
+  note:B('The base cannot falter — it sustains base aviation, counter-TCO aviation and HA/DR. That is why a low, slow swarm through the western passes is a no-fail defense problem.','La base no puede fallar — sostiene la aviación de la base, la aviación contra las TCO y la HA/DR. Por eso un enjambre bajo y lento por los pasos del oeste es un problema de defensa no-fallo.')},
  legTrack:{label:B('SWARM CONTACT MARKER','MARCADOR DE CONTACTO'),status:B('LIVE','EN VIVO'),cls:'',
   rows:[
    {k:B('Symbol','Símbolo'),v:B('◆ diamond + cluster dots = one detected sUAS element','◆ rombo + puntos = un elemento sUAS detectado')},
@@ -943,7 +947,7 @@ Object.assign(CHAN,{
    {k:B('Symbol','Símbolo'),v:B('▲ marker + dashed line = back-tracked launch bearing','▲ marcador + línea discontinua = rumbo de lanzamiento retrocedido')},
    {k:B('Caveat','Salvedad'),v:B('Launch point is not the operator — crews launch and relocate','El punto de lanzamiento no es el operador — las tripulaciones lanzan y se reubican')}],
   note:B('Back-tracking builds attribution toward the credible-threat standard, but chasing the launch point rarely finds the operator.','El retroceso construye la atribución hacia el estándar de amenaza creíble, pero perseguir el punto de lanzamiento rara vez encuentra al operador.')},
- legPerim:{label:B('JTF-BRAVO PERIMETER','PERÍMETRO JTF-BRAVO'),status:B('PROTECTED','PROTEGIDO'),cls:'g',
+ legPerim:{label:B('BASE PERIMETER','PERÍMETRO DE LA BASE'),status:B('PROTECTED','PROTEGIDO'),cls:'g',
   rows:[
    {k:B('Inner ring','Anillo interno'),v:B('Airfield / installation keep-out — highest protection priority','Zona de exclusión de la pista / instalación — máxima prioridad de protección')},
    {k:B('Outer ring','Anillo externo'),v:B('Early-warning band where tracks are engaged for decision','Banda de alerta temprana donde las pistas se tratan para decisión')}],
@@ -1258,7 +1262,7 @@ let prog=0.12, spCur=0.12;
 let hitContacts=[], hitInfra=[], hitBeams=[];   // live hit buffers, refreshed each frame
 let cam={z:1, ex:0, ey:0};                       // camera: scale + translate, recomputed each frame
 let fireballs=[];                                 // impact explosions (persist across frames, own lifetime)
-const INFRA=[   // located ON the base — inside the JTF-Bravo perimeter (centre ~0.80,0.50)
+const INFRA=[   // located ON the base — inside the base perimeter (centre ~0.80,0.50)
  {key:'infra_power', x:0.745, y:0.43, glyph:'P', label:{en:'SUBSTATION',es:'SUBESTACIÓN'}},
  {key:'infra_fuel',  x:0.875, y:0.55, glyph:'F', label:{en:'FUEL FARM',es:'COMBUSTIBLE'}},
  {key:'infra_water', x:0.78,  y:0.60, glyph:'W', label:{en:'WATER PUMP',es:'BOMBEO'}}
@@ -1294,7 +1298,7 @@ function draw(ts){
   // valley / river
   ctx.strokeStyle='#12303a';ctx.lineWidth=5*s;ctx.beginPath();
   ctx.moveTo(0,H*.80);ctx.bezierCurveTo(W*.3,H*.74,W*.6,H*.88,W,H*.82);ctx.stroke();
-  // airfield perimeter (east) — Soto Cano
+  // airfield perimeter (east) — forward operating base
   const px=W*.80,py=H*.5,pr=66*s;
   // runway
   ctx.save();ctx.translate(px,py);ctx.rotate(-0.18);
@@ -1306,8 +1310,8 @@ function draw(ts){
   ctx.beginPath();ctx.arc(px,py,pr,0,7);ctx.stroke();
   ctx.strokeStyle='rgba(215,248,67,.14)';ctx.beginPath();ctx.arc(px,py,pr*1.7,0,7);ctx.stroke();
   ctx.fillStyle='rgba(215,248,67,.7)'; ctx.textAlign='center';
-  ctx.fillText('SOTO CANO AB', px, py-pr*1.7-20*s);
-  ctx.fillText('JTF-BRAVO', px, py-pr*1.7-8*s);
+  ctx.fillText('FORWARD OPERATING BASE', px, py-pr*1.7-20*s);
+  ctx.fillText('BASE GARRISON', px, py-pr*1.7-8*s);
   ctx.textAlign='left';
   // critical infrastructure (protected assets — likely swarm targets)
   const ci='#9a86e6';
@@ -1440,7 +1444,7 @@ function hitTest(mx,my){
   for(const c of hitContacts){ if(Math.hypot(mx-c.x,my-c.y) < c.r+8*s) return {key:'trk'+c.i, sel:c.i}; }
   // 2. critical infrastructure assets
   for(const o of hitInfra){ if(Math.hypot(mx-o.x,my-o.y) < o.r+6*s) return {key:o.key}; }
-  // 3. Soto Cano perimeter + runway (east)
+  // 3. forward operating base perimeter + runway (east)
   if(Math.hypot(mx-W*0.80,my-H*0.5) < 66*s*1.75) return {key:'legPerim'};
   // 4. launch vectors (west edge arrows + dashed bearings)
   if(mx < 90*s){ for(const k of [0,1,2]){ if(Math.abs(my-H*(0.34+k*0.18)) < 28*s) return {key:'legLaunch'}; } }
@@ -1557,7 +1561,7 @@ document.addEventListener('click',e=>{
 /* init */
 assignTargets();
 renderTracks();renderDetail();resize();
-addLog(lang==='en'?'SENTINEL COP · Soto Cano node SC-01 · session start':'COP SENTINEL · nodo Soto Cano SC-01 · inicio de sesión','hot');
+addLog(lang==='en'?'SENTINEL COP · forward operating base node SC-01 · session start':'COP SENTINEL · nodo de la base SC-01 · inicio de sesión','hot');
 addLog(lang==='en'?'⚠ Low/slow swarm inbound from western passes — tap a role to drill':'⚠ Enjambre bajo/lento entrante desde los pasos del oeste — toque un rol para entrenar','warn');
 </script>
 <style>
