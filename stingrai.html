@@ -957,7 +957,7 @@ function toggleLang(){var es=document.body.classList.toggle('lang-es');document.
   var idx=null; function ensure(){if(!idx)idx=buildIndex();return idx;}
   function searchC(q){q=q.toLowerCase().trim();if(!q)return[];var t=q.split(/\s+/);return ensure().filter(function(e){var l=e.label.toLowerCase();return t.every(function(x){return l.indexOf(x)>=0;});}).slice(0,8);}
   /* index every other page (incl. the gated Logistics Capture Tool) so search covers the whole site */
-  var EXT=[{f:'soto-cano.html',l:'Soto Cano'},{f:'southcom-navigator.html',l:'SOUTHCOM Acquisition Tool'},{f:'csuas-framework.html',l:'Counter-UAS'},{f:'logistics-capture-tool.html',l:'Logistics Capture Tool'},{f:'wexmac-maps-rmgs.html',l:'Opportunity Map'},{f:'index.html',l:'RMGS Home'},{f:'sentinel-cop-prototype.html',l:'Sentinel COP'}];
+  var EXT=[{f:'soto-cano.html',l:'Soto Cano'},{f:'southcom-navigator.html',l:'SOUTHCOM Acquisition Tool'},{f:'csuas-framework.html',l:'Counter-UAS'},{f:'wexmac-maps-rmgs.html',l:'Opportunity Map'},{f:'index.html',l:'RMGS Home'},{f:'sentinel-cop-prototype.html',l:'Sentinel COP'}];
   var extIdx=null,extTried=false;
   function anchorFor(el){var n=el;while(n&&n.tagName!=='BODY'){if(n.id)return n.id;n=n.parentElement;}return '';}
   function loadExt(){ if(extTried)return; extTried=true; var acc=[],pend=EXT.length;

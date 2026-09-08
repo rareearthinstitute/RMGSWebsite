@@ -641,7 +641,6 @@ input:focus,select:focus{border-color:var(--accent)}
   <button onclick="showTab('map')"   id="tab-btn-map"   class="tab-btn active-tab">Tracker</button>
   <button onclick="showTab('intel')" id="tab-btn-intel" class="tab-btn">Overview</button>
   <div style="flex:1"></div>
-  <a href="logistics-capture-tool.html" target="_blank" rel="noopener" class="tab-btn tab-ext" title="Open the Logistics Capture Tool — RMGS Internal">Logistics Capture Tool ↗</a>
   <a href="stingrai.html" target="_blank" rel="noopener" class="tab-btn tab-ext" title="Open the STINGRAI capability page">STINGRAI ↗</a>
 </div>
 <div id="panel-map">
@@ -6887,7 +6886,7 @@ document.readyState === 'loading'
   var idx=null; function ensure(){if(!idx)idx=buildIndex();return idx;}
   function searchC(q){q=q.toLowerCase().trim();if(!q)return[];var toks=q.split(/\s+/);return ensure().filter(function(e){return toks.every(function(t){return e.text.indexOf(t)>=0;});}).slice(0,7);}
   /* all-pages index (fetch every other page) so the map search covers the whole site */
-  var EXT=[{f:'index.html',l:'RMGS Home'},{f:'stingrai.html',l:'STINGRAI'},{f:'soto-cano.html',l:'Soto Cano'},{f:'southcom-navigator.html',l:'SOUTHCOM Acquisition Tool'},{f:'csuas-framework.html',l:'Counter-UAS'},{f:'logistics-capture-tool.html',l:'Logistics Capture Tool'},{f:'sentinel-cop-prototype.html',l:'Sentinel COP'}];
+  var EXT=[{f:'index.html',l:'RMGS Home'},{f:'stingrai.html',l:'STINGRAI'},{f:'soto-cano.html',l:'Soto Cano'},{f:'southcom-navigator.html',l:'SOUTHCOM Acquisition Tool'},{f:'csuas-framework.html',l:'Counter-UAS'},{f:'sentinel-cop-prototype.html',l:'Sentinel COP'}];
   var extIdx=null,extTried=false;
   function anchorFor(el){var n=el;while(n&&n.tagName!=='BODY'){if(n.id)return n.id;n=n.parentElement;}return '';}
   function loadExt(){if(extTried)return;extTried=true;var acc=[],pend=EXT.length;function fin(){if(--pend<=0){extIdx=acc;if(!ov.hidden&&input.value.trim())render(build(input.value));}}EXT.forEach(function(p){fetch(p.f).then(function(r){return r.text();}).then(function(tx){try{var doc=new DOMParser().parseFromString(tx,'text/html'),seen={};doc.querySelectorAll('h1,h2,h3,h4').forEach(function(hd){var label=(hd.textContent||'').replace(/\s+/g,' ').trim();if(!label||label.length<3||label.length>96)return;var k=label.toLowerCase();if(seen[k])return;seen[k]=1;var id=anchorFor(hd),sc2=(hd.closest&&hd.closest('section,article,.page,.blk,main'))||hd.parentElement,tt=(label+' '+((sc2&&sc2.textContent)||'')).replace(/\s+/g,' ');acc.push({label:label,sub:p.l,url:p.f+(id?('#'+id):''),text:tt.toLowerCase().slice(0,1600)});});}catch(_){}}).catch(function(){}).then(fin);});}
@@ -7093,17 +7092,6 @@ body.embed #panel-map{position:fixed;inset:0;width:100vw;height:100vh;padding:0;
   var p=new URLSearchParams(location.search);
   if(p.get('embed')==='1')return;
   var loc=p.get('loc'),ll=p.get('ll'),k=parseFloat(p.get('k')||'')||null,gcc=p.get('gcc')||'',back=p.get('back');
-  if(back!==null){
-    var btn=document.createElement('a');
-    btn.href='logistics-capture-tool.html'+(back?('?back='+encodeURIComponent(back)):'');
-    btn.id='ct-return';
-    btn.textContent='\u2190 RETURN TO CAPTURE TOOL';
-    btn.setAttribute('style','position:fixed;left:18px;bottom:18px;z-index:9999;font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.12em;padding:11px 18px;background:rgba(6,24,46,.95);border:1px solid #2fd0c7;color:#2fd0c7;text-decoration:none;box-shadow:0 10px 34px rgba(0,0,0,.5)');
-    btn.onmouseenter=function(){btn.style.background='#2fd0c7';btn.style.color='#06182e';};
-    btn.onmouseleave=function(){btn.style.background='rgba(6,24,46,.95)';btn.style.color='#2fd0c7';};
-    function addBtn(){document.body.appendChild(btn);}
-    if(document.body)addBtn();else document.addEventListener('DOMContentLoaded',addBtn);
-  }
   if(!loc&&!ll)return;
   var t=0;
   function ensureContracts(){

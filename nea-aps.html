@@ -1228,7 +1228,7 @@
 (function(){
   if(document.querySelector('.site-search'))return;
   var SELF=(location.pathname.split('/').pop()||'index.html'); if(!SELF)SELF='index.html';
-  var ALL=[{f:'index.html',l:'RMGS Home'},{f:'stingrai.html',l:'STINGRAI'},{f:'soto-cano.html',l:'Soto Cano'},{f:'southcom-navigator.html',l:'SOUTHCOM Acquisition Tool'},{f:'csuas-framework.html',l:'Counter-UAS'},{f:'logistics-capture-tool.html',l:'Logistics Capture Tool'},{f:'wexmac-maps-rmgs.html',l:'Opportunity Map'},{f:'sentinel-cop-prototype.html',l:'Sentinel COP'},{f:'critical-infrastructure.html',l:'Critical Infrastructure'},{f:'nea-aps.html',l:'Economic Statecraft'}];
+  var ALL=[{f:'index.html',l:'RMGS Home'},{f:'stingrai.html',l:'STINGRAI'},{f:'soto-cano.html',l:'Soto Cano'},{f:'southcom-navigator.html',l:'SOUTHCOM Acquisition Tool'},{f:'csuas-framework.html',l:'Counter-UAS'},{f:'wexmac-maps-rmgs.html',l:'Opportunity Map'},{f:'sentinel-cop-prototype.html',l:'Sentinel COP'},{f:'critical-infrastructure.html',l:'Critical Infrastructure'},{f:'nea-aps.html',l:'Economic Statecraft'}];
   var EXT=ALL.filter(function(p){return p.f!==SELF;});
   var CSS='.nav-search-btn{background:none;border:none;color:#e6edf5;cursor:pointer;padding:8px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;transition:color .2s,background .2s;flex:none}.nav-search-btn:hover{color:#2fd0c7;background:rgba(255,255,255,.06)}'
    +'.site-search[hidden]{display:none}.site-search{position:fixed;inset:0;z-index:4000;display:flex;align-items:flex-start;justify-content:center;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}'
