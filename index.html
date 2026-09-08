@@ -4499,9 +4499,7 @@ document.querySelectorAll('header.nav nav a').forEach(a=>{
   if(document.getElementById('net-ca'))initOceanScene(document.getElementById('net-ca'));
 
   const views={home:homeView,overview:ovView,msofs:document.getElementById('msofs-view'),aemss:document.getElementById('aemss-view'),careers:document.getElementById('careers-view'),rmx:document.getElementById('rmx-view'),redteam:document.getElementById('redteam-view'),gapanalysis:document.getElementById('gapanalysis-view'),onetool:document.getElementById('onetool-view'),southcomacq:document.getElementById('southcomacq-view')};
-  function __aiGate(){if(window.__aiAuth)return true;var p=prompt('AI Leadership is for RMGS staff. Enter the access password:');if(p==='RMGSAI26'){window.__aiAuth=true;return true;}if(p!==null)alert('Incorrect password.');return false;}
   function applyView(name){
-    if(name==='onetool'&&!__aiGate())name='rmx';
     Object.keys(views).forEach(k=>{if(views[k])views[k].style.display=(k===name)?'':'none';});
     scrollTo(0,0);
     const view=views[name];if(!view)return;
@@ -4512,7 +4510,6 @@ document.querySelectorAll('header.nav nav a').forEach(a=>{
   }
   function showView(name){
     if(!views[name])name='home';
-    if(name==='onetool'&&!__aiGate())name='rmx';
     applyView(name);
     const url=name==='home'?location.pathname+location.search:'#'+name;   // shareable URL per view
     try{history.replaceState(null,'',url);}catch(e){}
@@ -4866,11 +4863,6 @@ document.querySelectorAll('header.nav nav a').forEach(a=>{
 </script>
 <script>
 (function(){var list=document.querySelector('#onetool-view .rmx-outcomes__list');if(!list)return;list.querySelectorAll('.rmx-outcome__toggle').forEach(function(b){b.setAttribute('aria-expanded','false');var p=document.getElementById(b.getAttribute('aria-controls'));if(p)p.hidden=true;});list.addEventListener('click',function(e){var b=e.target.closest('.rmx-outcome__toggle');if(!b)return;var li=b.closest('.rmx-outcome');if(li)li.classList.add('is-revealed');var open=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',String(open));var p=document.getElementById(b.getAttribute('aria-controls'));if(p)p.hidden=!open;});})();
-</script>
-<script>
-/* password gate for the Global Opportunity Map tile (session-remembered) */
-(function(){var t=document.querySelector('a.wwd-cta[href="wexmac-maps-rmgs.html"]');if(!t)return;t.addEventListener('click',function(e){try{if(localStorage.getItem('rmgsMapAuth')==='1')return;}catch(_){}
-e.preventDefault();var pw=prompt('Global Opportunity Map — access restricted. Enter the password:');if(pw==='STINGRAI26'){try{localStorage.setItem('rmgsMapAuth','1');}catch(_){}window.location.href=t.getAttribute('href');}else if(pw!==null){alert('Incorrect password.');}});})();
 </script>
 <script>
 (function(){var FLAG='<svg class="us-flag" viewBox="0 0 38 20" role="img" aria-label="United States flag"><rect width="38" height="20" fill="#fff"/><g fill="#b22234"><rect y="0.000" width="38" height="1.538"/><rect y="3.077" width="38" height="1.538"/><rect y="6.154" width="38" height="1.538"/><rect y="9.231" width="38" height="1.538"/><rect y="12.308" width="38" height="1.538"/><rect y="15.385" width="38" height="1.538"/><rect y="18.462" width="38" height="1.538"/></g><rect width="15.2" height="10.77" fill="#3c3b6e"/><g fill="#fff"><circle cx="1.55" cy="1.15" r="0.42"/><circle cx="4.05" cy="1.15" r="0.42"/><circle cx="6.55" cy="1.15" r="0.42"/><circle cx="9.05" cy="1.15" r="0.42"/><circle cx="11.55" cy="1.15" r="0.42"/><circle cx="14.05" cy="1.15" r="0.42"/><circle cx="2.80" cy="3.25" r="0.42"/><circle cx="5.30" cy="3.25" r="0.42"/><circle cx="7.80" cy="3.25" r="0.42"/><circle cx="10.30" cy="3.25" r="0.42"/><circle cx="12.80" cy="3.25" r="0.42"/><circle cx="1.55" cy="5.35" r="0.42"/><circle cx="4.05" cy="5.35" r="0.42"/><circle cx="6.55" cy="5.35" r="0.42"/><circle cx="9.05" cy="5.35" r="0.42"/><circle cx="11.55" cy="5.35" r="0.42"/><circle cx="14.05" cy="5.35" r="0.42"/><circle cx="2.80" cy="7.45" r="0.42"/><circle cx="5.30" cy="7.45" r="0.42"/><circle cx="7.80" cy="7.45" r="0.42"/><circle cx="10.30" cy="7.45" r="0.42"/><circle cx="12.80" cy="7.45" r="0.42"/><circle cx="1.55" cy="9.55" r="0.42"/><circle cx="4.05" cy="9.55" r="0.42"/><circle cx="6.55" cy="9.55" r="0.42"/><circle cx="9.05" cy="9.55" r="0.42"/><circle cx="11.55" cy="9.55" r="0.42"/><circle cx="14.05" cy="9.55" r="0.42"/></g></svg>';document.querySelectorAll('header.nav .nav-inner').forEach(function(inner){if(inner.querySelector('.us-flag-wrap'))return;var s=document.createElement('span');s.className='us-flag-wrap';s.innerHTML=FLAG;inner.appendChild(s);});})();
