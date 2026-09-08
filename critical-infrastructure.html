@@ -1143,5 +1143,45 @@
   try{var ss=new URLSearchParams(location.search).get('ss');if(ss){open();input.value=ss;render(build(ss));}}catch(e){}
 })();
 </script>
+<!-- cookie consent banner -->
+<div id="rmgs-cc" class="rmgs-cc" role="dialog" aria-live="polite" aria-label="Cookie notice" hidden>
+  <p class="rmgs-cc__msg">We use cookies to understand how this site is used and to improve it. See our <a href="privacy-policy.html">Privacy Policy</a>.</p>
+  <div class="rmgs-cc__btns">
+    <button type="button" class="rmgs-cc__btn rmgs-cc__decline" data-cc="decline">Decline</button>
+    <button type="button" class="rmgs-cc__btn rmgs-cc__accept" data-cc="accept">Accept</button>
+  </div>
+</div>
+<style>
+.rmgs-cc{position:fixed;left:16px;right:16px;bottom:16px;z-index:2147483000;max-width:660px;margin:0 auto;background:#071a30;color:#cdd9e8;border:1px solid rgba(255,255,255,.14);border-radius:10px;box-shadow:0 18px 48px rgba(0,0,0,.5);padding:15px 18px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:13.5px;line-height:1.5}
+.rmgs-cc[hidden]{display:none}
+.rmgs-cc__msg{margin:0;flex:1 1 300px;color:#cdd9e8}
+.rmgs-cc__msg a{color:#2fd0c7;text-decoration:underline}
+.rmgs-cc__btns{display:flex;gap:10px;flex:0 0 auto;margin-left:auto}
+.rmgs-cc__btn{cursor:pointer;border-radius:6px;padding:9px 18px;font:700 13px/1 inherit;border:1px solid transparent;transition:background .15s,border-color .15s,color .15s}
+.rmgs-cc__decline{background:transparent;color:#cdd9e8;border-color:rgba(255,255,255,.3)}
+.rmgs-cc__decline:hover{border-color:#cdd9e8;color:#fff}
+.rmgs-cc__accept{background:#2fd0c7;color:#04101d}
+.rmgs-cc__accept:hover{background:#57e0d8}
+@media(max-width:520px){.rmgs-cc{flex-direction:column;align-items:stretch}.rmgs-cc__btns{margin-left:0;justify-content:flex-end}}
+@keyframes rmgsCcIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:no-preference){.rmgs-cc:not([hidden]){animation:rmgsCcIn .4s ease}}
+</style>
+<script>
+(function(){
+  var KEY='rmgsCookieConsent',el=document.getElementById('rmgs-cc');
+  if(!el)return;
+  var choice=null;try{choice=localStorage.getItem(KEY);}catch(e){}
+  /* If 'accept' was previously stored, initialize analytics/tracking here. */
+  if(choice){return;}
+  el.hidden=false;
+  el.addEventListener('click',function(e){
+    var b=e.target.closest('[data-cc]');if(!b)return;
+    try{localStorage.setItem(KEY,b.getAttribute('data-cc'));}catch(e){}
+    el.hidden=true;
+    /* if(b.getAttribute('data-cc')==='accept'){ /* load analytics here */ /*} */
+  });
+})();
+</script>
+<!-- /cookie consent banner -->
 </body>
 </html>
