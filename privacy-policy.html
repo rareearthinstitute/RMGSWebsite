@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy · RMGS, Inc.</title>
+<link rel="canonical" href="https://www.rmgsinc.com/privacy-policy.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="RMGS, Inc.">
+<meta property="og:title" content="Privacy Policy · RMGS, Inc.">
+<meta property="og:description" content="How RMGS, Inc. collects, uses, and protects personal information on this website — device data, contact and careers submissions, cookies, sharing, and your rights.">
+<meta property="og:url" content="https://www.rmgsinc.com/privacy-policy.html">
+<meta property="og:image" content="https://www.rmgsinc.com/media/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Privacy Policy · RMGS, Inc.">
+<meta name="twitter:description" content="How RMGS, Inc. collects, uses, and protects personal information on this website — device data, contact and careers submissions, cookies, sharing, and your rights.">
+<meta name="twitter:image" content="https://www.rmgsinc.com/media/og-default.png">
+<meta name="description" content="How RMGS, Inc. collects, uses, and protects personal information on this website — device data, contact and careers submissions, cookies, sharing, and your rights.">
+<meta name="theme-color" content="#04101d">
+<meta name="color-scheme" content="dark">
+<meta name="author" content="RMGS, Inc.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='0' fill='%23f0efe9'/><path d='M14 30 A18 18 0 0 1 50 30' fill='none' stroke='%230d0d0b' stroke-width='5' stroke-linecap='round'/><path d='M50 34 A18 18 0 0 1 14 34' fill='none' stroke='%2371705f' stroke-width='5' stroke-linecap='round'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+  :root{
+    --paper:#04101d;     /* bone — Anduril field */
+    --paper-2:#0a2036;
+    --ink:#eef4f8;       /* near-black */
+    --ink-2:#c3d2e0;
+    --muted:#8da4bf;
+    --hair:rgba(255,255,255,.08);
+    --hair-2:rgba(255,255,255,.16);
+    --blue:#2fd0c7;      /* primary accent is black */
+    --blue-deep:#1c8f88;
+    --navy:#04101d;      /* dark sections go black */
+    --nav-navy:#06182e;  /* RMGS navy — header only, ties into the main site */
+    --cyan:#2fd0c7;      /* RMGS accent — header only */
+    --volt:#e2f317;      /* acid accent — used sparingly */
+    --maxw:1280px;
+    --mono:"SF Mono",ui-monospace,"Cascadia Mono",Consolas,"Roboto Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;background:var(--paper);color-scheme:dark;-webkit-text-size-adjust:100%}
+  html,body{background-color:#04101d}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  section[id]{scroll-margin-top:88px} /* keep anchored headings clear of the fixed nav */
+  body{
+    font-family:"Archivo","Helvetica Neue",Arial,system-ui,sans-serif;
+    background:var(--paper);
+    color:var(--ink-2);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  /* volt page-load bar */
+  .loadbar{position:fixed;top:0;left:0;height:2px;background:var(--volt);width:0;z-index:400;pointer-events:none;animation:loadbar 1.1s ease .1s forwards}
+  @keyframes loadbar{0%{width:0;opacity:1}75%{width:100%;opacity:1}100%{width:100%;opacity:0}}
+  @media(prefers-reduced-motion:reduce){.loadbar{display:none}}
+
+  /* masked line reveals */
+  .lr{display:block;overflow:hidden}
+  html.js .lr>span{display:block;transform:translateY(112%);transition:transform .85s cubic-bezier(.22,.61,.21,1)}
+  html.js .in .lr>span,html.js .in.lr>span{transform:none}
+  .hl .lr:nth-child(2)>span{transition-delay:.1s}
+  .hl .lr:nth-child(3)>span{transition-delay:.2s}
+  @media(prefers-reduced-motion:reduce){html.js .lr>span{transform:none;transition:none}}
+  a{color:inherit;text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:4px}
+  .skip{position:fixed;left:12px;top:-60px;z-index:300;background:var(--blue);color:#fff;font-weight:700;padding:10px 16px;border-radius:6px;transition:top .2s}
+  .skip:focus{top:12px}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  h1,h2,h3,h4{color:var(--ink);font-weight:700;line-height:1.04;letter-spacing:-.02em}
+  section{position:relative}
+
+  .kicker{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--blue);font-weight:600;display:flex;align-items:center;gap:14px;margin-bottom:20px;
+  }
+  .kicker .idx{color:var(--muted)}
+  .kicker::after{content:"";height:1px;flex:0 0 56px;background:var(--hair-2)}
+
+  /* ---------- NAV (matches RMGS index) ---------- */
+  header.nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    backdrop-filter:blur(10px);
+    background:rgba(6,24,46,.72);
+    border-bottom:1px solid transparent;
+    transition:background .3s,border-color .3s,transform .35s ease;
+  }
+  header.nav.hidden{transform:translateY(-100%)}
+  header.nav.scrolled{background:rgba(4,16,31,.95);border-bottom:1px solid rgba(255,255,255,.12)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:74px;max-width:1320px;margin:0 auto;padding:0 32px;gap:22px}
+  .logo{display:flex;align-items:center;gap:0;font-weight:800;color:#fff;letter-spacing:.04em;font-size:20px}
+  .logo-mark{width:56px;height:56px;flex:none;display:block;transition:transform .35s cubic-bezier(.34,1.45,.4,1)}
+  .logo:hover .logo-mark{transform:scale(1.08)}
+  .logo-svg{width:100%;height:100%;display:block;overflow:visible}
+  .logo-svg .arc{fill:none;stroke-width:9;stroke-linecap:round;stroke-dasharray:120;stroke-dashoffset:120;animation:logoDraw 1.1s ease forwards}
+  .logo-svg .arc-blue{stroke:#1f86c9}
+  .logo-svg .arc-gray{stroke:#8b9298;animation-delay:.22s}
+  .logo-svg .ring{transform-origin:50px 50px;transition:transform 1.05s cubic-bezier(.34,1.4,.4,1)}
+  .logo:hover .logo-svg .ring{transform:rotate(360deg)}
+  .logo-svg .orbit{fill:none;stroke:#8ff0e6;stroke-width:9;stroke-linecap:round;stroke-dasharray:5 246;stroke-dashoffset:0;animation:logoOrbit 3.6s linear infinite;filter:drop-shadow(0 0 3px rgba(143,240,230,.85))}
+  .logo:hover .logo-svg .orbit{animation-duration:1.5s}
+  .logo-svg .logo-word{fill:#fff;font:800 30px/1 "Helvetica Neue",Arial,sans-serif;letter-spacing:-1px;opacity:0;animation:logoWord .55s ease .5s forwards}
+  @keyframes logoDraw{to{stroke-dashoffset:0}}
+  @keyframes logoWord{from{opacity:0}to{opacity:1}}
+  @keyframes logoOrbit{to{stroke-dashoffset:-251.3}}
+  .logo-tag{display:block;flex:none;font-size:9px;line-height:1.3;letter-spacing:.16em;color:#8da4bf;font-weight:600;text-transform:uppercase;width:82px;margin-left:12px;padding-left:12px;border-left:1px solid rgba(255,255,255,.12)}
+  @media(prefers-reduced-motion:reduce){
+    .logo-svg .arc{animation:none;stroke-dashoffset:0}
+    .logo-svg .logo-word{animation:none;opacity:1}
+    .logo-svg .orbit{animation:none;opacity:0}
+    .logo:hover .logo-svg .ring{transform:none}
+    .logo:hover .logo-mark{transform:none}
+  }
+  @media(min-width:941px){header.nav .nav-inner>nav{flex:1;display:flex;justify-content:center}}
+  header.nav nav ul{display:flex;gap:26px;list-style:none;align-items:center}
+  header.nav nav a{font-size:12.5px;color:#e6edf5;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;transition:color .2s}
+  header.nav nav a:hover{color:var(--cyan)}
+  .nav-cta{border:1px solid var(--cyan);color:var(--cyan) !important;padding:13px 26px;border-radius:5px;font-size:13px;white-space:nowrap;transition:all .2s;margin-left:8px}
+  .nav-cta:hover{background:var(--cyan);color:#03101f !important}
+  .nav-right{display:flex;align-items:center;gap:28px}
+  .nav-search{display:flex;color:#e6edf5;transition:color .2s}
+  .nav-search:hover{color:var(--cyan)}
+  .nav-flag{display:flex;border-radius:5px;overflow:hidden;line-height:0}
+  @media(max-width:1180px){header.nav nav ul{gap:22px}}
+  @media(max-width:620px){.nav-right{display:none}}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:0}
+  .burger span{width:24px;height:2px;background:#fff;display:block}
+  @media(max-width:940px){
+    header.nav nav{display:none;position:absolute;top:74px;left:0;right:0;background:#050e1a;border-bottom:1px solid rgba(255,255,255,.12);padding:18px 32px 24px;z-index:200;box-shadow:0 26px 44px rgba(0,0,0,.5)}
+    header.nav nav.open{display:block}
+    header.nav nav ul{flex-direction:column;align-items:flex-start;gap:16px}
+    .burger{display:flex}
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  .sec{padding:118px 0;border-top:1px solid var(--hair-2)}
+  .sec h2{
+    font-size:clamp(34px,4.8vw,68px);max-width:20ch;margin-bottom:26px;
+    text-transform:uppercase;letter-spacing:-.022em;line-height:.96;
+  }
+  .sec .sub{font-size:17px;color:var(--ink-2);max-width:68ch}
+  .sec .sub strong{color:var(--ink)}
+
+  /* ---------- FOOTER — tall black block, giant wordmark ---------- */
+  footer{background:#050f1c;color:#8da4bf;padding:80px 0 40px;border-top:1px solid rgba(255,255,255,.1)}
+  footer a{color:#d6d5cc}
+  footer a:hover{color:var(--volt)}
+  footer .mono{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+  .foot-mark{
+    font-size:clamp(96px,19vw,260px);font-weight:800;line-height:.78;letter-spacing:-.045em;
+    color:var(--ink);text-transform:uppercase;user-select:none;
+    padding-bottom:44px;border-bottom:1px solid rgba(240,239,233,.18);
+  }
+  .foot-mark span{color:#24405c}
+  .foot-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px;padding:52px 0 72px;border-bottom:1px solid rgba(240,239,233,.18)}
+  .foot-cols .fh{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#71705f;margin-bottom:18px}
+  .foot-cols ul{list-style:none}
+  .foot-cols li{margin-bottom:11px}
+  .foot-cols a{font-size:14.5px}
+  .foot-cols .fp{font-size:13.5px;color:#a4a396;line-height:1.7}
+  .foot-legal{display:flex;flex-wrap:wrap;gap:12px 34px;justify-content:space-between;padding-top:26px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#71705f}
+  @media(max-width:760px){.foot-cols{grid-template-columns:1fr;gap:34px;padding:40px 0 48px}.foot-mark{padding-bottom:30px}footer{padding-top:56px}}
+
+  /* back to top */
+  .totop{
+    position:fixed;right:22px;bottom:22px;z-index:90;width:44px;height:44px;border-radius:0;
+    background:var(--ink);color:var(--paper);border:1px solid rgba(240,239,233,.2);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:16px;
+    opacity:0;pointer-events:none;transform:translateY(8px);
+    transition:opacity .25s,transform .25s,background .2s,color .2s;
+  }
+  .totop.show{opacity:1;pointer-events:auto;transform:none}
+  .totop:hover{background:var(--volt);color:var(--paper);border-color:var(--ink)}
+
+  /* ---------- MOBILE OPTIMIZATION ---------- */
+  @media(max-width:640px){
+    .wrap{padding:0 20px}
+    .nav-inner{padding:0 20px;height:64px}
+    .logo-mark{width:46px;height:46px}
+    header.nav nav{top:64px}
+    .sec{padding:64px 0}
+    .sec h2{font-size:clamp(30px,9vw,40px)}
+    .sec .sub{font-size:15.5px}
+    .kicker{letter-spacing:.18em;margin-bottom:16px}
+    .kicker::after{flex-basis:34px}
+    footer .wrap{flex-direction:column;align-items:flex-start;gap:10px;font-size:12px}
+  }
+
+  /* ---------- LEGAL / PRIVACY PROSE (scoped) ---------- */
+  .sec>.wrap.legal{max-width:840px}
+  .legal{padding-top:96px}
+  .legal .updated{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+  .legal h1{font-size:clamp(34px,5.4vw,60px);text-transform:uppercase;letter-spacing:-.02em;line-height:1;margin-bottom:26px}
+  .legal h2{font-size:clamp(20px,2.8vw,30px);text-transform:uppercase;letter-spacing:-.012em;line-height:1.08;margin:52px 0 16px}
+  .legal p{font-size:16px;color:var(--ink-2);margin-bottom:16px}
+  .legal p strong{color:var(--ink)}
+  .legal ul{margin:0 0 18px 22px}
+  .legal li{font-size:16px;color:var(--ink-2);margin-bottom:11px;padding-left:4px}
+  .legal a{color:var(--blue)}
+  .legal a:hover{text-decoration:underline}
+  .legal .addr{font-size:16px;color:var(--ink-2);line-height:1.8;margin-bottom:16px}
+  @media(max-width:640px){.legal{padding-top:44px}}
+</style>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [{"@type": "WebPage", "@id": "https://www.rmgsinc.com/privacy-policy.html#webpage", "url": "https://www.rmgsinc.com/privacy-policy.html", "name": "Privacy Policy", "description": "How RMGS, Inc. collects, uses, and protects personal information on this website — device data, contact and careers submissions, cookies, sharing, and your rights.", "about": {"@id": "https://www.rmgsinc.com/#organization"}}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "RMGS", "item": "https://www.rmgsinc.com/"}, {"@type": "ListItem", "position": 2, "name": "Privacy Policy", "item": "https://www.rmgsinc.com/privacy-policy.html"}]}]}
+</script>
+</head>
+<body id="top">
+<div class="loadbar" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="logo" href="index.html" aria-label="RMGS — Special Operations Solutions">
+      <span class="logo-mark"><svg class="logo-svg" viewBox="0 0 100 100" role="img" aria-label="RMGS"><g class="ring"><path class="arc arc-blue" d="M10.15 46.5 A40 40 0 0 1 89.85 46.5"/><path class="arc arc-gray" d="M89.85 53.5 A40 40 0 0 1 10.15 53.5"/></g><circle class="orbit" cx="50" cy="50" r="40"/><text class="logo-word" x="50" y="59" text-anchor="middle" textLength="70" lengthAdjust="spacingAndGlyphs">RMGS</text></svg></span>
+      <span class="logo-tag">Special Operations Solutions</span>
+    </a>
+    <nav id="menu" aria-label="Primary">
+      <ul>
+        <li><a href="index.html#capabilities">what we do</a></li>
+        <li><a href="index.html#performance">performance</a></li>
+        <li><a href="index.html#partners">partners</a></li>
+        <li><a href="index.html">company</a></li>
+        <li><a href="index.html">careers</a></li>
+        <li><a class="nav-cta" href="index.html#contact">partner with us</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <span class="nav-flag" role="img" aria-label="United States">
+        <svg width="44" height="30" viewBox="0 0 76 52" aria-hidden="true">
+          <rect width="76" height="52" fill="#fff"/>
+          <g fill="#b22234">
+            <rect y="0" width="76" height="4"/><rect y="8" width="76" height="4"/><rect y="16" width="76" height="4"/><rect y="24" width="76" height="4"/><rect y="32" width="76" height="4"/><rect y="40" width="76" height="4"/><rect y="48" width="76" height="4"/>
+          </g>
+          <rect width="34" height="28" fill="#3c3b6e"/>
+          <g fill="#fff">
+            <circle cx="5" cy="4" r="1.3"/><circle cx="12" cy="4" r="1.3"/><circle cx="19" cy="4" r="1.3"/><circle cx="26" cy="4" r="1.3"/>
+            <circle cx="8.5" cy="9" r="1.3"/><circle cx="15.5" cy="9" r="1.3"/><circle cx="22.5" cy="9" r="1.3"/><circle cx="29.5" cy="9" r="1.3"/>
+            <circle cx="5" cy="14" r="1.3"/><circle cx="12" cy="14" r="1.3"/><circle cx="19" cy="14" r="1.3"/><circle cx="26" cy="14" r="1.3"/>
+            <circle cx="8.5" cy="19" r="1.3"/><circle cx="15.5" cy="19" r="1.3"/><circle cx="22.5" cy="19" r="1.3"/><circle cx="29.5" cy="19" r="1.3"/>
+            <circle cx="5" cy="24" r="1.3"/><circle cx="12" cy="24" r="1.3"/><circle cx="19" cy="24" r="1.3"/><circle cx="26" cy="24" r="1.3"/>
+          </g>
+        </svg>
+      </span>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="sec">
+  <div class="wrap legal">
+    <p class="updated">Last updated: September 8, 2026</p>
+    <h1>Privacy Policy</h1>
+    <p>This Privacy Policy describes how RMGS, Inc. ("RMGS," "we," or "us") collects, uses, and shares personal information when you visit www.rmgsinc.com (the "Site").</p>
+
+    <h2>Personal information we collect</h2>
+    <p>When you visit the Site, we automatically collect certain information about your device, including your web browser, IP address, time zone, and some of the cookies installed on your device. As you browse the Site, we collect information about the individual pages you view, the websites or search terms that referred you to the Site, and how you interact with the Site. We refer to this automatically collected information as "Device Information," and we collect it using the following technologies:</p>
+    <ul>
+      <li><strong>Cookies</strong> — data files placed on your device or computer, often including an anonymous unique identifier. To learn more about cookies and how to disable them, visit allaboutcookies.org.</li>
+      <li><strong>Log files</strong> — track actions occurring on the Site and collect data including your IP address, browser type, internet service provider, referring and exit pages, and date/time stamps.</li>
+      <li><strong>Web beacons, tags, and pixels</strong> — electronic files used to record information about how you browse the Site.</li>
+      <li><strong>Local storage</strong> — the Site may store preferences (such as filter selections or language choice) locally in your browser to improve your experience; this information remains on your device.</li>
+    </ul>
+    <p>When you contact us through a form or by email, we collect the information you provide, such as your name and email address. When you apply for a position through our third-party job-application service, that service collects and sends us information including your name, email address, mailing address, phone number, eligibility to work in the United States, professional memberships, degrees, and prior employer information. We refer to this as "Contact Information."</p>
+    <p>When we refer to "Personal Information" in this policy, we mean both Device Information and Contact Information.</p>
+
+    <h2>How we use your personal information</h2>
+    <p>We use the Contact Information we collect to communicate with you and to evaluate job applicants. We use the Device Information we collect to help screen for potential risk and fraud (in particular, your IP address), and more generally to improve and optimize the Site — for example, by understanding how visitors browse and interact with it.</p>
+
+    <h2>Sharing your personal information</h2>
+    <p>We do not sell your Personal Information. Information you submit when applying for a position is collected by our third-party job-application service and transmitted to us. We may also disclose Personal Information to comply with applicable laws and regulations, to respond to a subpoena, search warrant, or other lawful request for information we receive, or to otherwise protect our rights.</p>
+
+    <h2>Your rights</h2>
+    <p>Depending on where you live, you may have the right to access, correct, update, or delete the personal information we hold about you. If you are a resident of the European Economic Area, you have these rights, and we process your information to pursue the legitimate business interests described above; your information may be transferred outside of Europe, including to the United States. To exercise any of these rights, please contact us using the details below.</p>
+
+    <h2>Data retention</h2>
+    <p>We retain your Personal Information for as long as necessary to fulfill the purposes described in this policy, unless a longer retention period is required or permitted by law.</p>
+
+    <h2>Changes</h2>
+    <p>We may update this Privacy Policy from time to time to reflect changes to our practices or for other operational, legal, or regulatory reasons.</p>
+
+    <h2>Contact us</h2>
+    <p>For more information about our privacy practices, if you have questions, or if you would like to make a request, contact us at <a href="mailto:info@rmgsinc.com">info@rmgsinc.com</a> or by mail:</p>
+    <p class="addr">RMGS, Inc.<br>500 Viking Drive, Suite 302<br>Virginia Beach, VA 23452<br>United States<br>Phone: +1 (757) 227-9362</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-mark" aria-hidden="true">RMGS<span>.</span></div>
+    <div class="foot-cols">
+      <div>
+        <div class="fh">Site</div>
+        <ul>
+          <li><a href="index.html"><span class="sl">Main site</span></a></li>
+          <li><a href="index.html#capabilities"><span class="sl">What we do</span></a></li>
+          <li><a href="index.html#performance"><span class="sl">Performance</span></a></li>
+          <li><a href="index.html#contact"><span class="sl">Partner with us</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="fh">This page</div>
+        <ul>
+          <li><a href="#mission"><span class="sl">The requirement</span></a></li>
+          <li><a href="#deliver"><span class="sl">What we deliver</span></a></li>
+          <li><a href="#sectors"><span class="sl">Sectors</span></a></li>
+          <li><a href="#events"><span class="sl">Special events</span></a></li>
+          <li><a href="#experience"><span class="sl">Experience</span></a></li>
+          <li><a href="#framework"><span class="sl">How it works</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="fh">Contact</div>
+        <ul>
+          <li><a href="mailto:hansenb@rmgsinc.com"><span class="sl">hansenb@rmgsinc.com</span></a></li>
+        </ul>
+        <p class="fp">500 Viking Drive, Suite 302<br>Virginia Beach, VA 23452</p>
+      </div>
+    </div>
+    <div class="foot-legal">
+      <span>© 2026 RMGS, Inc.</span>
+      <span><a href="privacy-policy.html">Privacy Policy</a></span>
+      <span>CAGE 57NE1 · SDVOSB · ISO 9001 · ISO 18788 · PSC-1 · CMMC L2</span>
+    </div>
+  </div>
+</footer>
+
+<button class="totop" id="totop" aria-label="Back to top">↑</button>
+
+<script>
+  // nav scroll state (hide on scroll down, return on scroll up) + back-to-top visibility
+  const nav=document.getElementById('nav'),totop=document.getElementById('totop');
+  let lastY=0;
+  addEventListener('scroll',()=>{
+    const y=scrollY;
+    nav.classList.toggle('scrolled',y>10);
+    nav.classList.toggle('hidden',y>180&&y>lastY&&!document.getElementById('menu').classList.contains('open'));
+    totop.classList.toggle('show',y>700);
+    lastY=y;
+  },{passive:true});
+
+  totop.addEventListener('click',()=>scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}));
+
+  // mobile menu
+  const burger=document.getElementById('burger'),menu=document.getElementById('menu');
+  burger.addEventListener('click',()=>{
+    const open=menu.classList.toggle('open');
+    burger.setAttribute('aria-expanded',open);
+  });
+</script>
+</body>
+</html>
